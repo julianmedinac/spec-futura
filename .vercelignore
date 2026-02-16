@@ -1,15 +1,10 @@
 output/
 data/
-*.png
-!public/logo.png
 *.xlsx
 *.pyc
 __pycache__/
 .git/
 .agent/
 *.md
-!public/
-!api/
-!src/
-!vercel.json
-!requirements.txt
+NQ DOR PRO - SPEC.xlsx
+SPEC RESEARCH LOGO V5 PNG.png
