@@ -1,0 +1,179 @@
+================================================================================
+DISTRIBUTION OF RETURNS ANALYSIS: NASDAQ 100 E-mini Futures
+Generated: 2026-02-09 18:54:17
+================================================================================
+
+
+========================================
+TIMEFRAME: 1D
+========================================
+Observations: 2511
+
+OVERALL STATISTICS
+  Mean (period):     +0.0831%
+  Mean (annual):     +20.95%
+  Std (period):      1.4074%
+  Std (annual):      22.34%
+  Skewness:          -0.166
+  Excess Kurtosis:   +7.469
+
+UPSIDE (Positive Returns)
+  Count:             1412 (56.2%)
+  Mean:              +0.9312%
+  Std (semi-dev):    0.9655%
+  Std (annual):      15.33%
+
+DOWNSIDE (Negative Returns)
+  Count:             1099 (43.8%)
+  Mean:              -1.0065%
+  Std (semi-dev):    1.1031%
+  Std (annual):      17.51%
+
+ASYMMETRY ANALYSIS
+  Vol Asymmetry (Down/Up): 1.142x
+  Interpretation: Downside vol > Upside
+
+========================================
+TIMEFRAME: 1W
+========================================
+Observations: 521
+
+OVERALL STATISTICS
+  Mean (period):     +0.3906%
+  Mean (annual):     +20.31%
+  Std (period):      2.7317%
+  Std (annual):      19.70%
+  Skewness:          -0.138
+  Excess Kurtosis:   +1.121
+
+UPSIDE (Positive Returns)
+  Count:             310 (59.5%)
+  Mean:              +2.1047%
+  Std (semi-dev):    1.7508%
+  Std (annual):      12.63%
+
+DOWNSIDE (Negative Returns)
+  Count:             211 (40.5%)
+  Mean:              -2.1279%
+  Std (semi-dev):    1.8046%
+  Std (annual):      13.01%
+
+ASYMMETRY ANALYSIS
+  Vol Asymmetry (Down/Up): 1.031x
+  Interpretation: Downside vol > Upside
+
+========================================
+TIMEFRAME: 1M
+========================================
+Observations: 120
+
+OVERALL STATISTICS
+  Mean (period):     +1.6408%
+  Mean (annual):     +19.69%
+  Std (period):      5.2813%
+  Std (annual):      18.29%
+  Skewness:          -0.302
+  Excess Kurtosis:   +0.086
+
+UPSIDE (Positive Returns)
+  Count:             80 (66.7%)
+  Mean:              +4.5518%
+  Std (semi-dev):    3.2566%
+  Std (annual):      11.28%
+
+DOWNSIDE (Negative Returns)
+  Count:             40 (33.3%)
+  Mean:              -4.1811%
+  Std (semi-dev):    3.3880%
+  Std (annual):      11.74%
+
+ASYMMETRY ANALYSIS
+  Vol Asymmetry (Down/Up): 1.040x
+  Interpretation: Downside vol > Upside
+
+========================================
+TIMEFRAME: 1Q
+========================================
+Observations: 40
+
+OVERALL STATISTICS
+  Mean (period):     +4.9067%
+  Mean (annual):     +19.63%
+  Std (period):      10.1353%
+  Std (annual):      20.27%
+  Skewness:          -0.347
+  Excess Kurtosis:   +0.779
+
+UPSIDE (Positive Returns)
+  Count:             29 (72.5%)
+  Mean:              +9.4706%
+  Std (semi-dev):    6.7142%
+  Std (annual):      13.43%
+
+DOWNSIDE (Negative Returns)
+  Count:             11 (27.5%)
+  Mean:              -7.1255%
+  Std (semi-dev):    7.3990%
+  Std (annual):      14.80%
+
+ASYMMETRY ANALYSIS
+  Vol Asymmetry (Down/Up): 1.102x
+  Interpretation: Downside vol > Upside
+
+========================================
+TIMEFRAME: 6M
+========================================
+Observations: 20
+
+OVERALL STATISTICS
+  Mean (period):     +10.0440%
+  Mean (annual):     +20.09%
+  Std (period):      12.6594%
+  Std (annual):      17.90%
+  Skewness:          +0.480
+  Excess Kurtosis:   +1.114
+
+UPSIDE (Positive Returns)
+  Count:             16 (80.0%)
+  Mean:              +14.5159%
+  Std (semi-dev):    9.5673%
+  Std (annual):      13.53%
+
+DOWNSIDE (Negative Returns)
+  Count:             4 (20.0%)
+  Mean:              -7.8435%
+  Std (semi-dev):    4.9030%
+  Std (annual):      6.93%
+
+ASYMMETRY ANALYSIS
+  Vol Asymmetry (Down/Up): 0.512x
+  Interpretation: Upside vol > Downside
+
+========================================
+TIMEFRAME: 1Y
+========================================
+Observations: 10
+
+OVERALL STATISTICS
+  Mean (period):     +20.8108%
+  Mean (annual):     +20.81%
+  Std (period):      26.0457%
+  Std (annual):      26.05%
+  Skewness:          -0.723
+  Excess Kurtosis:   -0.211
+
+UPSIDE (Positive Returns)
+  Count:             7 (70.0%)
+  Mean:              +34.7006%
+  Std (semi-dev):    12.5878%
+  Std (annual):      12.59%
+
+DOWNSIDE (Negative Returns)
+  Count:             3 (30.0%)
+  Mean:              -11.5986%
+  Std (semi-dev):    18.0707%
+  Std (annual):      18.07%
+
+ASYMMETRY ANALYSIS
+  Vol Asymmetry (Down/Up): 1.436x
+  Interpretation: Downside vol > Upside

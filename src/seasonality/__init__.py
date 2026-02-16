@@ -1,0 +1,3 @@
+"""
+Seasonality analysis module.
+"""

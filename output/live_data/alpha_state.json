@@ -1,0 +1,135 @@
+{
+    "timestamp": "2026-02-16 13:50:20",
+    "system_status": "ACTIVE",
+    "assets": [
+        {
+            "asset": "NQ",
+            "price": 24826.0,
+            "layers": {
+                "monthly_signals": [
+                    {
+                        "name": "MONTHLY BIAS",
+                        "condition": "BEARISH (W2 < 50%)",
+                        "target": "RED CLOSE",
+                        "prob": 0.917,
+                        "status": "ACTIVE",
+                        "color": "RED",
+                        "grade": "DIAMOND \ud83d\udc8e"
+                    },
+                    {
+                        "name": "EXTENSION BIAS",
+                        "condition": "BEARISH (W2 < 50%)",
+                        "target": "NEW MONTH LOW",
+                        "prob": 0.5,
+                        "status": "PENDING \u23f3",
+                        "color": "RED",
+                        "grade": "GOLD +"
+                    }
+                ],
+                "weekly": {
+                    "status": "NEUTRAL",
+                    "o2c": -0.0017144182575459614,
+                    "prob": 0.5,
+                    "color": "GRAY",
+                    "grade": "NOISE"
+                },
+                "daily": {
+                    "status": "INSIDE NOISE",
+                    "o2c": 0.0009172185096711117,
+                    "sigma_level": 0.0135,
+                    "prob": 0.0,
+                    "target": "None",
+                    "color": "GRAY",
+                    "grade": "NOISE"
+                }
+            },
+            "last_update": "13:50:20"
+        },
+        {
+            "asset": "ES",
+            "price": 6861.75,
+            "layers": {
+                "monthly_signals": [
+                    {
+                        "name": "MONTHLY BIAS",
+                        "condition": "BEARISH (W2 < 50%)",
+                        "target": "RED CLOSE",
+                        "prob": 0.667,
+                        "status": "ACTIVE",
+                        "color": "RED",
+                        "grade": "GOLD +"
+                    },
+                    {
+                        "name": "EXTENSION BIAS",
+                        "condition": "BEARISH (W2 < 50%)",
+                        "target": "NEW MONTH LOW",
+                        "prob": 0.6,
+                        "status": "PENDING \u23f3",
+                        "color": "RED",
+                        "grade": "GOLD +"
+                    }
+                ],
+                "weekly": {
+                    "status": "NEUTRAL",
+                    "o2c": 0.00025538124771981027,
+                    "prob": 0.5,
+                    "color": "GRAY",
+                    "grade": "NOISE"
+                },
+                "daily": {
+                    "status": "INSIDE NOISE",
+                    "o2c": 0.0016422158966498796,
+                    "sigma_level": 0.0109,
+                    "prob": 0.0,
+                    "target": "None",
+                    "color": "GRAY",
+                    "grade": "NOISE"
+                }
+            },
+            "last_update": "13:50:20"
+        },
+        {
+            "asset": "YM",
+            "price": 49641.0,
+            "layers": {
+                "monthly_signals": [
+                    {
+                        "name": "MONTHLY BIAS",
+                        "condition": "BULLISH (W2 > 50%)",
+                        "target": "GREEN CLOSE",
+                        "prob": 0.75,
+                        "status": "ACTIVE",
+                        "color": "GREEN",
+                        "grade": "GOLD +"
+                    },
+                    {
+                        "name": "EXTENSION BIAS",
+                        "condition": "BULLISH (W2 > 50%)",
+                        "target": "NEW MONTH HIGH",
+                        "prob": 0.85,
+                        "status": "PENDING \u23f3",
+                        "color": "GREEN",
+                        "grade": "GOLD +"
+                    }
+                ],
+                "weekly": {
+                    "status": "NEUTRAL",
+                    "o2c": 0.0011503763950836546,
+                    "prob": 0.5,
+                    "color": "GRAY",
+                    "grade": "NOISE"
+                },
+                "daily": {
+                    "status": "INSIDE NOISE",
+                    "o2c": 0.0014525207286812322,
+                    "sigma_level": 0.0106,
+                    "prob": 0.0,
+                    "target": "None",
+                    "color": "GRAY",
+                    "grade": "NOISE"
+                }
+            },
+            "last_update": "13:50:20"
+        }
+    ]
+}
