@@ -4,679 +4,387 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPEC FUTURA | 3-Layer Alpha Intelligence</title>
-    <meta name="description" content="Real-time 3-Layer Alpha Intelligence for trading community members">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>SPEC FUTURA | Community Dashboard</title>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --bg: #030305;
-            --bg2: #0a0a10;
-            --card: rgba(14, 14, 22, 0.7);
-            --card-border: rgba(255, 255, 255, 0.06);
-            --text: #f0f0f5;
-            --text2: #777790;
-            --text3: #444455;
+            --bg: #050508;
+            --clay: rgba(20, 20, 30, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
             --green: #00ff9d;
-            --green-dim: rgba(0, 255, 157, 0.08);
-            --green-glow: rgba(0, 255, 157, 0.3);
             --red: #ff3366;
-            --red-dim: rgba(255, 51, 102, 0.08);
-            --red-glow: rgba(255, 51, 102, 0.3);
             --gold: #ffd700;
-            --gold-dim: rgba(255, 215, 0, 0.06);
-            --purple: #bb86fc;
-            --purple-dim: rgba(187, 134, 252, 0.08);
-            --cyan: #00d4ff;
-            --cyan-dim: rgba(0, 212, 255, 0.08);
-            --fmain: 'Inter', -apple-system, sans-serif;
-            --fmono: 'JetBrains Mono', 'Fira Code', monospace;
+            --text: #ffffff;
+            --text-dim: #888899;
         }
 
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box
+            box-sizing: border-box;
         }
 
         body {
-            background: var(--bg);
+            background-color: var(--bg);
             color: var(--text);
-            font-family: var(--fmain);
-            min-height: 100vh;
-            background-image: radial-gradient(ellipse at 15% 10%, rgba(0, 255, 157, .02) 0%, transparent 50%),
-                radial-gradient(ellipse at 85% 90%, rgba(187, 134, 252, .02) 0%, transparent 50%)
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% -20%, rgba(0, 255, 157, 0.05), transparent);
         }
 
-        .container {
-            max-width: 1440px;
-            margin: 0 auto;
-            padding: 32px 24px
-        }
-
-        /* HEADER */
-        header {
+        .header {
+            padding: 30px 40px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--card-border);
-            margin-bottom: 32px
+            border-bottom: 1px solid var(--border);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
 
         .brand {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 900;
-            letter-spacing: -1px
+            letter-spacing: -1px;
         }
 
         .brand span {
-            color: var(--green)
-        }
-
-        .sys-badge {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-family: var(--fmono);
-            font-size: 10px;
             color: var(--green);
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            padding: 6px 14px;
-            border-radius: 20px;
-            backdrop-filter: blur(8px)
         }
 
-        .dot {
-            width: 6px;
-            height: 6px;
-            background: var(--green);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--green);
-            animation: pulse 2s infinite
-        }
-
-        /* SYNC BAR */
-        .sync-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-            font-family: var(--fmono);
+        .sync {
+            font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
-            color: var(--text2)
+            color: var(--text-dim);
         }
 
-        .sync-bar .month-tag {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-weight: 700;
-            color: var(--text)
-        }
-
-        /* LAYER SECTION */
-        .layer-section {
-            margin-bottom: 40px
-        }
-
-        .layer-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px
-        }
-
-        .layer-icon {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: 900;
-            font-family: var(--fmono)
-        }
-
-        .layer-icon.m {
-            background: var(--purple-dim);
-            color: var(--purple);
-            border: 1px solid rgba(187, 134, 252, .2)
-        }
-
-        .layer-icon.w {
-            background: var(--cyan-dim);
-            color: var(--cyan);
-            border: 1px solid rgba(0, 212, 255, .2)
-        }
-
-        .layer-icon.d {
-            background: var(--gold-dim);
-            color: var(--gold);
-            border: 1px solid rgba(255, 215, 0, .2)
-        }
-
-        .layer-title {
-            font-size: 13px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px
-        }
-
-        .layer-sub {
-            font-size: 10px;
-            color: var(--text2);
-            font-family: var(--fmono)
-        }
-
-        /* ASSET GRID */
-        .asset-grid {
+        .dashboard {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 16px
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: var(--border);
+            min-height: calc(100vh - 100px);
         }
 
-        /* CARD */
-        .alpha-card {
-            background: var(--card);
-            border: 1px solid var(--card-border);
-            border-radius: 14px;
-            padding: 22px;
-            backdrop-filter: blur(12px);
-            transition: all .25s ease;
+        .column {
+            background: var(--bg);
+            padding: 40px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .col-header {
+            margin-bottom: 20px;
+        }
+
+        .col-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: var(--text-dim);
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .col-tag {
+            font-size: 20px;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .col-tag::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .m-col .col-tag::before {
+            background: var(--gold);
+            box-shadow: 0 0 10px var(--gold);
+        }
+
+        .w-col .col-tag::before {
+            background: #00d4ff;
+            box-shadow: 0 0 10px #00d4ff;
+        }
+
+        .d-col .col-tag::before {
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green);
+        }
+
+        .asset-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .card {
+            background: var(--clay);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 24px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
-            overflow: hidden
+            overflow: hidden;
         }
 
-        .alpha-card:hover {
-            border-color: rgba(255, 255, 255, .12);
-            transform: translateY(-1px)
+        .card:hover {
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+            background: rgba(30, 30, 45, 0.8);
         }
 
-        .alpha-card.no-signal {
-            opacity: .45
-        }
-
-        .card-top {
+        .card-head {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 14px;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--card-border)
+            align-items: flex-end;
+            margin-bottom: 15px;
         }
 
-        .card-asset {
-            font-size: 22px;
+        .asset-symbol {
+            font-size: 24px;
             font-weight: 900;
-            letter-spacing: -1px
         }
 
-        .card-price {
-            font-family: var(--fmono);
-            font-size: 12px;
-            color: var(--text2);
-            margin-top: 2px
+        .asset-price {
+            font-family: 'JetBrains Mono';
+            font-size: 13px;
+            color: var(--text-dim);
         }
 
-        .bias-tag {
-            font-family: var(--fmono);
+        .bias {
             font-size: 10px;
             font-weight: 700;
-            padding: 3px 10px;
-            border-radius: 5px;
-            display: inline-flex;
-            align-items: center;
-            gap: 5px
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono';
         }
 
-        .bias-tag.bear {
-            background: var(--red-dim);
-            color: var(--red);
-            border: 1px solid rgba(255, 51, 102, .25)
-        }
-
-        .bias-tag.bull {
-            background: var(--green-dim);
+        .bias.bull {
+            background: rgba(0, 255, 157, 0.1);
             color: var(--green);
-            border: 1px solid rgba(0, 255, 157, .25)
+            border: 1px solid rgba(0, 255, 157, 0.3);
         }
 
-        .pos-label {
-            font-family: var(--fmono);
-            font-size: 9px;
-            color: var(--text2);
-            margin-top: 5px;
-            text-align: right
+        .bias.bear {
+            background: rgba(255, 51, 102, 0.1);
+            color: var(--red);
+            border: 1px solid rgba(255, 51, 102, 0.3);
         }
 
-        .sniper-tag {
-            font-family: var(--fmono);
-            font-size: 9px;
-            padding: 2px 6px;
-            border-radius: 3px;
-            background: rgba(255, 215, 0, .12);
-            color: var(--gold);
-            border: 1px solid rgba(255, 215, 0, .2);
-            margin-top: 5px;
-            display: inline-block
-        }
-
-        /* SIGNAL ROW */
-        .sig-row {
+        .signal {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 12px;
-            border-radius: 7px;
-            margin-bottom: 4px;
-            border-left: 3px solid transparent;
-            transition: all .2s
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            margin-top: 10px;
         }
 
-        .sig-row.red {
-            border-left-color: var(--red);
-            background: var(--red-dim)
-        }
-
-        .sig-row.green {
-            border-left-color: var(--green);
-            background: var(--green-dim)
-        }
-
-        .sig-row.gold {
-            border-left-color: var(--gold);
-            background: var(--gold-dim)
-        }
-
-        .sig-row.gray {
-            border-left-color: #444;
-            background: rgba(255, 255, 255, .02)
-        }
-
-        .sig-left {
-            display: flex;
-            flex-direction: column;
-            gap: 1px
-        }
-
-        .sig-name {
+        .sig-main {
+            font-size: 13px;
             font-weight: 700;
-            font-size: 12px;
-            letter-spacing: .3px
         }
 
-        .sig-detail {
-            font-family: var(--fmono);
-            font-size: 8px;
-            color: var(--text2);
-            text-transform: uppercase
-        }
-
-        .sig-right {
-            text-align: right;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 2px
+        .sig-sub {
+            font-size: 9px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-top: 3px;
         }
 
         .sig-prob {
-            font-family: var(--fmono);
-            font-size: 14px;
-            font-weight: 700
-        }
-
-        .sig-prob.red {
-            color: var(--red)
-        }
-
-        .sig-prob.green {
-            color: var(--green)
-        }
-
-        .sig-prob.gold {
-            color: var(--gold)
-        }
-
-        .sig-prob.gray {
-            color: var(--text3)
-        }
-
-        .sig-badge {
-            font-size: 7px;
-            padding: 1px 5px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, .05);
-            color: var(--text2);
-            border: 1px solid rgba(255, 255, 255, .08);
-            font-family: var(--fmono)
+            font-family: 'JetBrains Mono';
+            font-size: 16px;
+            font-weight: 700;
         }
 
         .prob-bar {
             height: 2px;
-            background: rgba(255, 255, 255, .04);
+            background: rgba(255, 255, 255, 0.05);
+            margin-top: 5px;
             border-radius: 1px;
-            margin-top: 3px;
-            overflow: hidden
+            overflow: hidden;
         }
 
         .prob-fill {
             height: 100%;
-            border-radius: 1px;
-            transition: width .6s ease
+            transition: width 1s ease;
         }
 
-        .prob-fill.red {
-            background: var(--red)
-        }
-
-        .prob-fill.green {
-            background: var(--green)
-        }
-
-        .prob-fill.gold {
-            background: var(--gold)
-        }
-
-        /* LOADING */
         .loading {
-            text-align: center;
-            padding: 60px;
-            font-family: var(--fmono);
-            font-size: 12px;
-            color: var(--text2)
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--bg);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s;
         }
 
         .spinner {
-            width: 28px;
-            height: 28px;
-            border: 2px solid var(--card-border);
-            border-top: 2px solid var(--green);
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--green);
             border-radius: 50%;
             animation: spin 1s linear infinite;
-            margin: 0 auto 14px
-        }
-
-        .error-msg {
-            color: var(--red);
-            font-family: var(--fmono);
-            font-size: 11px;
-            padding: 12px;
-            background: var(--red-dim);
-            border-radius: 8px
-        }
-
-        /* FOOTER */
-        footer {
-            margin-top: 48px;
-            text-align: center;
-            color: var(--text3);
-            font-family: var(--fmono);
-            font-size: 9px;
-            line-height: 1.8;
-            opacity: .6
-        }
-
-        @keyframes pulse {
-            0% {
-                opacity: 1;
-                transform: scale(1)
-            }
-
-            50% {
-                opacity: .3;
-                transform: scale(.6)
-            }
-
-            100% {
-                opacity: 1;
-                transform: scale(1)
-            }
         }
 
         @keyframes spin {
             to {
-                transform: rotate(360deg)
+                transform: rotate(360deg);
             }
         }
 
-        @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px)
+        @media (max-width: 1000px) {
+            .dashboard {
+                grid-template-columns: 1fr;
             }
 
-            to {
-                opacity: 1;
-                transform: translateY(0)
+            .column {
+                padding: 40px 20px;
             }
         }
 
-        .fade-up {
-            animation: fadeUp .35s ease both
-        }
-
-        @media(max-width:600px) {
-            .container {
-                padding: 20px 14px
-            }
-
-            .asset-grid {
-                grid-template-columns: 1fr
-            }
-
-            header {
-                flex-direction: column;
-                gap: 12px;
-                align-items: flex-start
-            }
-
-            .sync-bar {
-                flex-direction: column;
-                gap: 8px;
-                align-items: flex-start
-            }
+        .empty-msg {
+            color: var(--text-dim);
+            font-style: italic;
+            font-size: 12px;
+            text-align: center;
+            padding: 20px;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <header>
-            <div class="brand">SPEC <span>FUTURA</span></div>
-            <div class="sys-badge">
-                <div class="dot"></div><span id="sys-status">CONNECTING...</span>
-            </div>
-        </header>
 
-        <div class="sync-bar">
-            <div><span id="sync-time">SYNCING...</span></div>
-            <div style="display:flex;gap:10px;align-items:center">
-                <span class="month-tag" id="month-tag">...</span>
-                <span id="weekday-tag" style="color:var(--text2)"></span>
+    <div class="loading" id="loader">
+        <div class="spinner"></div>
+        <div style="margin-top: 20px; font-family: 'JetBrains Mono'; font-size: 12px;">CALCULATING ALPHAS...</div>
+    </div>
+
+    <div class="header">
+        <div class="brand">SPEC <span>FUTURA</span></div>
+        <div class="sync" id="timestamp">SYNC: --:--:--</div>
+    </div>
+
+    <div class="dashboard">
+        <!-- MONTHLY -->
+        <div class="column m-col">
+            <div class="col-header">
+                <div class="col-title">Strategic Layer</div>
+                <div class="col-tag">MENSUAL</div>
             </div>
+            <div class="asset-list" id="monthly-list"></div>
         </div>
 
-        <!-- LAYER 1: MONTHLY -->
-        <div class="layer-section" id="monthly-section">
-            <div class="layer-header">
-                <div class="layer-icon m">M</div>
-                <div>
-                    <div class="layer-title">Monthly Alpha — W2 Fractal</div>
-                    <div class="layer-sub">Signal: W2 Close vs W1+W2 Range (50% Level)</div>
-                </div>
+        <!-- WEEKLY -->
+        <div class="column w-col">
+            <div class="col-header">
+                <div class="col-title">Tactical Layer</div>
+                <div class="col-tag">SEMANAL</div>
             </div>
-            <div class="asset-grid" id="monthly-grid">
-                <div class="loading">
-                    <div class="spinner"></div>Downloading monthly data...
-                </div>
-            </div>
+            <div class="asset-list" id="weekly-list"></div>
         </div>
 
-        <!-- LAYER 2: WEEKLY -->
-        <div class="layer-section" id="weekly-section">
-            <div class="layer-header">
-                <div class="layer-icon w">W</div>
-                <div>
-                    <div class="layer-title">Weekly Alpha — D2 Fractal</div>
-                    <div class="layer-sub">Signal: Tuesday Close vs Mon+Tue Range (50% Level)</div>
-                </div>
+        <!-- DAILY -->
+        <div class="column d-col">
+            <div class="col-header">
+                <div class="col-title">Execution Layer</div>
+                <div class="col-tag">DIARIO</div>
             </div>
-            <div class="asset-grid" id="weekly-grid">
-                <div class="loading">
-                    <div class="spinner"></div>Downloading weekly data...
-                </div>
-            </div>
+            <div class="asset-list" id="daily-list"></div>
         </div>
-
-        <!-- LAYER 3: DAILY -->
-        <div class="layer-section" id="daily-section">
-            <div class="layer-header">
-                <div class="layer-icon d">D</div>
-                <div>
-                    <div class="layer-title">Daily Alpha — Sigma Edge</div>
-                    <div class="layer-sub">Signal: Today's O2C vs ±1σ Threshold</div>
-                </div>
-            </div>
-            <div class="asset-grid" id="daily-grid">
-                <div class="loading">
-                    <div class="spinner"></div>Downloading intraday data...
-                </div>
-            </div>
-        </div>
-
-        <footer>
-            PROBABILITIES FROM AUDITED HISTORICAL RESEARCH (2000-2025)<br>
-            SIGNAL DETECTION IS REAL-TIME FROM YAHOO FINANCE<br>
-            SPEC RESEARCH INC. &copy; 2026 — FOR COMMUNITY MEMBERS ONLY
-        </footer>
     </div>
 
     <script>
-        function mapStatus(s) {
-            if (s === 'ACTIVE') return 'IN PROGRESS...';
-            if (s === 'PENDING') return 'WAITING...';
-            if (s === 'FORMING') return 'FORMING ⏳';
-            if (s === 'FULFILLED') return 'COMPLETED ✅';
-            if (s === 'NO TRIGGER') return 'NO SIGNAL';
-            return s;
-        }
-        function renderSignals(signals, container) {
-            if (!signals || !signals.length) { container.innerHTML = '<div style="color:var(--text3);font-size:11px;font-style:italic;padding:8px">No active signals</div>'; return }
-            let html = '';
-            signals.forEach(sig => {
-                const c = sig.color || 'gray';
-                const statusText = mapStatus(sig.status);
-                const triggerInfo = sig.trigger ? `<span style="margin-left:4px;opacity:.7">${sig.trigger}</span>` : '';
-                const samplesInfo = sig.samples ? ` · ${sig.samples} SAMPLES` : '';
-                const sniperHtml = sig.sniper ? `<span class="sniper-tag">⚡ ${sig.sniper}</span>` : '';
-                html += `
-        <div class="sig-row ${c}">
-            <div class="sig-left">
-                <span class="sig-name">${sig.target}</span>
-                <span class="sig-detail">${statusText}${samplesInfo}${triggerInfo}</span>
-                ${sniperHtml}
-            </div>
-            <div class="sig-right">
-                <span class="sig-prob ${c}">${sig.prob !== undefined ? sig.prob.toFixed(1) + '%' : '—'}</span>
-                <span class="sig-badge">${sig.grade || ''}</span>
-            </div>
-        </div>
-        <div class="prob-bar"><div class="prob-fill ${c}" style="width:${sig.prob || 0}%"></div></div>`;
-            });
-            container.innerHTML = html;
-        }
-        function renderLayerCards(gridId, assets, layerKey) {
-            const grid = document.getElementById(gridId);
-            grid.innerHTML = '';
-            assets.forEach((a, i) => {
-                const layer = a[layerKey];
-                if (!layer || a.error) {
-                    const card = document.createElement('div');
-                    card.className = 'alpha-card no-signal fade-up';
-                    card.style.animationDelay = `${i * .08}s`;
-                    card.innerHTML = `<div class="card-top"><div><div class="card-asset">${a.asset}</div><div class="card-price">${a.fullName || ''}</div></div></div>
-                            <div class="error-msg">${a.error || layer?.status || layer?.detail || 'No data'}</div>`;
-                    grid.appendChild(card);
-                    return;
-                }
-                const noSignal = (!layer.signals || !layer.signals.length) && (layer.status === 'FORMING' || layer.status === 'NO_DATA');
-                const card = document.createElement('div');
-                card.className = `alpha-card${noSignal ? ' no-signal' : ''} fade-up`;
-                card.style.animationDelay = `${i * .08}s`;
-
-                // Bias tag
-                let biasHtml = '';
-                if (layer.bias) {
-                    const bc = layer.bias === 'BEAR' ? 'bear' : 'bull';
-                    biasHtml = `<div class="bias-tag ${bc}">${layer.bias}</div>`;
-                }
-                // Position info
-                let posHtml = '';
-                if (layer.w2_position !== undefined) posHtml = `<div class="pos-label">W2 Position: ${layer.w2_position}%</div>`;
-                if (layer.d2_position !== undefined) posHtml = `<div class="pos-label">D2 Position: ${layer.d2_position}%</div>`;
-                if (layer.sigma_multiple !== undefined) posHtml = `<div class="pos-label">σ Multiple: ${layer.sigma_multiple}x | O2C: ${layer.o2c_pct}%</div>`;
-
-                // Confirmed badge (weekly)
-                let confirmedHtml = '';
-                if (layer.confirmed === true) confirmedHtml = '<div style="font-family:var(--fmono);font-size:9px;color:var(--green);margin-top:3px">✓ CONFIRMED (D3 Breakout)</div>';
-                if (layer.confirmed === false && layer.pattern === 'D2 FRACTAL') confirmedHtml = '<div style="font-family:var(--fmono);font-size:9px;color:var(--text3);margin-top:3px">⏳ UNCONFIRMED</div>';
-
-                // Sniper tag
-                let sniperHtml = '';
-                if (layer.sniper_tag) sniperHtml = `<div class="sniper-tag">⚡ ${layer.sniper_tag}</div>`;
-
-                // Forming state
-                let formingHtml = '';
-                if (layer.status === 'FORMING') formingHtml = `<div style="color:var(--text2);font-size:11px;font-style:italic;padding:8px">${layer.detail || 'Signal forming...'}</div>`;
-
-                const priceHtml = a.price ? `<div class="card-price">$${a.price.toLocaleString()}</div>` : '';
-
-                card.innerHTML = `
-            <div class="card-top">
-                <div><div class="card-asset">${a.asset}</div>${priceHtml}</div>
-                <div style="text-align:right">${biasHtml}${posHtml}${confirmedHtml}${sniperHtml}</div>
-            </div>
-            <div class="signals-area"></div>
-            ${formingHtml}`;
-                const sigArea = card.querySelector('.signals-area');
-                renderSignals(layer.signals, sigArea);
-                grid.appendChild(card);
-            });
-        }
-
-        async function loadData() {
+        async function fetchDashboard() {
             try {
-                const r = await fetch('/api/index');
-                if (!r.ok) throw new Error(`API ${r.status}`);
-                const d = await r.json();
+                const res = await fetch('/api/index');
+                const json = await res.json();
 
-                document.getElementById('sys-status').textContent = d.system;
-                document.getElementById('sync-time').textContent = `SYNC: ${d.timestamp}`;
-                document.getElementById('month-tag').textContent = d.month;
-                document.getElementById('weekday-tag').textContent = d.weekday;
+                document.getElementById('timestamp').innerText = `SYNC: ${json.timestamp}`;
+                renderSection('monthly-list', json.data, 'monthly');
+                renderSection('weekly-list', json.data, 'weekly');
+                renderSection('daily-list', json.data, 'daily');
 
-                renderLayerCards('monthly-grid', d.assets, 'monthly');
-                renderLayerCards('weekly-grid', d.assets, 'weekly');
-                renderLayerCards('daily-grid', d.assets, 'daily');
+                document.getElementById('loader').style.opacity = '0';
+                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
             } catch (e) {
                 console.error(e);
-                ['monthly-grid', 'weekly-grid', 'daily-grid'].forEach(id => {
-                    document.getElementById(id).innerHTML = `<div class="error-msg">CONNECTION ERROR: ${e.message}<br><span style="font-size:9px;opacity:.5">Retrying in 30s...</span></div>`;
-                });
-                setTimeout(loadData, 30000);
+                alert("Comm error. Retrying...");
+                setTimeout(fetchDashboard, 5000);
             }
         }
 
-        loadData();
-        setInterval(loadData, 300000); // Refresh 5 min
+        function renderSection(id, assets, layerKey) {
+            const container = document.getElementById(id);
+            container.innerHTML = '';
+
+            let hasSignals = false;
+
+            assets.forEach(asset => {
+                if (asset.error) return;
+                const layer = asset.layers[layerKey];
+                if (!layer.signals || layer.signals.length === 0) return;
+
+                hasSignals = true;
+                const card = document.createElement('div');
+                card.className = 'card';
+
+                let signalsHtml = layer.signals.map(s => `
+                    <div class="signal">
+                        <div>
+                            <div class="sig-main">${s.target} ${s.val ? `<span style="color:var(--text-dim);font-weight:400">[${s.val}]</span>` : ''}</div>
+                            <div class="sig-sub">${s.status} | ${s.grade || 'GRADED'}</div>
+                        </div>
+                        <div class="sig-prob" style="color: var(--${s.color})">${s.prob}%</div>
+                    </div>
+                    <div class="prob-bar">
+                        <div class="prob-fill" style="width: ${s.prob}%; background: var(--${s.color})"></div>
+                    </div>
+                `).join('');
+
+                card.innerHTML = `
+                    <div class="card-head">
+                        <div>
+                            <div class="asset-symbol">${asset.asset}</div>
+                            <div class="asset-price">$${asset.price.toLocaleString()}</div>
+                        </div>
+                        <div style="text-align: right">
+                            ${layer.bias ? `<div class="bias ${layer.bias.toLowerCase()}">${layer.bias}</div>` : ''}
+                        </div>
+                    </div>
+                    ${signalsHtml}
+                `;
+                container.appendChild(card);
+            });
+
+            if (!hasSignals) {
+                container.innerHTML = '<div class="empty-msg">No active alphas detected for this layer.</div>';
+            }
+        }
+
+        fetchDashboard();
+        setInterval(fetchDashboard, 60000);
     </script>
 </body>
 
