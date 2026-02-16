@@ -4,338 +4,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPEC FUTURA | LIVE ALPHA</title>
-    <meta name="description" content="Real-time Audited Seasonal Intelligence Dashboard">
+    <title>SPEC FUTURA | 3-Layer Alpha Intelligence</title>
+    <meta name="description" content="Real-time 3-Layer Alpha Intelligence for trading community members">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800;900&family=JetBrains+Mono:wght@400;500;700&display=swap"
         rel="stylesheet">
     <style>
         :root {
-            --bg-color: #050505;
-            --card-bg: rgba(20, 20, 20, 0.6);
-            --card-border: rgba(255, 255, 255, 0.08);
-            --text-primary: #ffffff;
-            --text-secondary: #888888;
-            --accent-green: #00ff9d;
-            --accent-green-dim: rgba(0, 255, 157, 0.1);
-            --accent-green-glow: rgba(0, 255, 157, 0.4);
-            --accent-red: #ff3366;
-            --accent-red-dim: rgba(255, 51, 102, 0.1);
-            --accent-red-glow: rgba(255, 51, 102, 0.4);
-            --accent-gold: #ffd700;
-            --accent-gold-dim: rgba(255, 215, 0, 0.08);
-            --font-main: 'Inter', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --bg: #030305;
+            --bg2: #0a0a10;
+            --card: rgba(14, 14, 22, 0.7);
+            --card-border: rgba(255, 255, 255, 0.06);
+            --text: #f0f0f5;
+            --text2: #777790;
+            --text3: #444455;
+            --green: #00ff9d;
+            --green-dim: rgba(0, 255, 157, 0.08);
+            --green-glow: rgba(0, 255, 157, 0.3);
+            --red: #ff3366;
+            --red-dim: rgba(255, 51, 102, 0.08);
+            --red-glow: rgba(255, 51, 102, 0.3);
+            --gold: #ffd700;
+            --gold-dim: rgba(255, 215, 0, 0.06);
+            --purple: #bb86fc;
+            --purple-dim: rgba(187, 134, 252, 0.08);
+            --cyan: #00d4ff;
+            --cyan-dim: rgba(0, 212, 255, 0.08);
+            --fmain: 'Inter', -apple-system, sans-serif;
+            --fmono: 'JetBrains Mono', 'Fira Code', monospace;
         }
 
         * {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
+            box-sizing: border-box
         }
 
         body {
-            background-color: var(--bg-color);
-            color: var(--text-primary);
-            font-family: var(--font-main);
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            background-image:
-                radial-gradient(circle at 10% 20%, rgba(0, 255, 157, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 90% 80%, rgba(187, 134, 252, 0.03) 0%, transparent 40%);
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--fmain);
             min-height: 100vh;
+            background-image: radial-gradient(ellipse at 15% 10%, rgba(0, 255, 157, .02) 0%, transparent 50%),
+                radial-gradient(ellipse at 85% 90%, rgba(187, 134, 252, .02) 0%, transparent 50%)
         }
 
+        .container {
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 32px 24px
+        }
+
+        /* HEADER */
         header {
-            width: 100%;
-            max-width: 1400px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            padding-bottom: 24px;
             border-bottom: 1px solid var(--card-border);
+            margin-bottom: 32px
         }
 
         .brand {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -1px;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -1px
         }
 
         .brand span {
-            color: var(--accent-green);
+            color: var(--green)
         }
 
-        .status-pill {
-            background: var(--card-bg);
-            border: 1px solid var(--card-border);
-            padding: 6px 14px;
-            border-radius: 20px;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--accent-green);
+        .sys-badge {
             display: flex;
             align-items: center;
             gap: 8px;
-            backdrop-filter: blur(5px);
+            font-family: var(--fmono);
+            font-size: 10px;
+            color: var(--green);
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            padding: 6px 14px;
+            border-radius: 20px;
+            backdrop-filter: blur(8px)
         }
 
-        .live-dot {
+        .dot {
             width: 6px;
             height: 6px;
-            background: var(--accent-green);
+            background: var(--green);
             border-radius: 50%;
-            box-shadow: 0 0 8px var(--accent-green);
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 8px var(--green);
+            animation: pulse 2s infinite
         }
 
-        /* MARKET BANNER */
-        .market-banner {
-            width: 100%;
-            max-width: 1400px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 20px 28px;
-            margin-bottom: 28px;
+        /* SYNC BAR */
+        .sync-bar {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            backdrop-filter: blur(10px);
-            background: rgba(255, 255, 255, 0.02);
+            margin-bottom: 28px;
+            font-family: var(--fmono);
+            font-size: 11px;
+            color: var(--text2)
         }
 
-        .banner-left {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .sync-bar .month-tag {
+            background: var(--card);
+            border: 1px solid var(--card-border);
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-weight: 700;
+            color: var(--text)
         }
 
-        .banner-title {
-            font-size: 10px;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-secondary);
-            font-weight: 600;
+        /* LAYER SECTION */
+        .layer-section {
+            margin-bottom: 40px
         }
 
-        .banner-signal {
-            font-size: 18px;
-            font-weight: 800;
+        .layer-header {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            margin-bottom: 16px
         }
 
-        .banner-tag {
-            font-size: 9px;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-family: var(--font-mono);
-            font-weight: 700;
+        .layer-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            font-family: var(--fmono)
         }
 
-        .banner-tag.bear {
-            background: var(--accent-red-dim);
-            color: var(--accent-red);
+        .layer-icon.m {
+            background: var(--purple-dim);
+            color: var(--purple);
+            border: 1px solid rgba(187, 134, 252, .2)
         }
 
-        .banner-tag.bull {
-            background: var(--accent-green-dim);
-            color: var(--accent-green);
+        .layer-icon.w {
+            background: var(--cyan-dim);
+            color: var(--cyan);
+            border: 1px solid rgba(0, 212, 255, .2)
         }
 
-        .banner-right {
-            text-align: right;
-            font-family: var(--font-mono);
-            font-size: 11px;
-            color: var(--text-secondary);
-            line-height: 1.8;
+        .layer-icon.d {
+            background: var(--gold-dim);
+            color: var(--gold);
+            border: 1px solid rgba(255, 215, 0, .2)
         }
 
-        /* LOADING */
-        .loading-state {
-            width: 100%;
-            max-width: 1400px;
-            text-align: center;
-            padding: 80px 20px;
-            color: var(--text-secondary);
-            font-family: var(--font-mono);
+        .layer-title {
             font-size: 13px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px
         }
 
-        .loading-spinner {
-            width: 30px;
-            height: 30px;
-            border: 2px solid var(--card-border);
-            border-top: 2px solid var(--accent-green);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 16px;
+        .layer-sub {
+            font-size: 10px;
+            color: var(--text2);
+            font-family: var(--fmono)
         }
 
-        /* GRID */
-        .grid {
+        /* ASSET GRID */
+        .asset-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-            gap: 24px;
-            width: 100%;
-            max-width: 1400px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 16px
         }
 
         /* CARD */
-        .card {
-            background: var(--card-bg);
+        .alpha-card {
+            background: var(--card);
             border: 1px solid var(--card-border);
-            border-radius: 16px;
-            padding: 28px;
+            border-radius: 14px;
+            padding: 22px;
             backdrop-filter: blur(12px);
-            transition: transform 0.2s ease, border-color 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            animation: fadeIn 0.4s ease;
+            transition: all .25s ease;
+            position: relative;
+            overflow: hidden
         }
 
-        .card:hover {
-            border-color: rgba(255, 255, 255, 0.15);
-            transform: translateY(-2px);
+        .alpha-card:hover {
+            border-color: rgba(255, 255, 255, .12);
+            transform: translateY(-1px)
         }
 
-        .asset-header {
+        .alpha-card.no-signal {
+            opacity: .45
+        }
+
+        .card-top {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
-            padding-bottom: 14px;
-            border-bottom: 1px solid var(--card-border);
-        }
-
-        .asset-name {
-            font-size: 28px;
-            font-weight: 800;
-            letter-spacing: -1px;
-            line-height: 1;
-        }
-
-        .asset-sub {
-            font-family: var(--font-mono);
-            font-size: 12px;
-            color: var(--text-secondary);
-            margin-top: 4px;
-        }
-
-        .asset-price {
-            font-family: var(--font-mono);
-            font-size: 14px;
-            color: var(--text-primary);
-            margin-top: 2px;
-        }
-
-        .badge-area {
-            text-align: right;
-        }
-
-        .bias-badge {
-            font-family: var(--font-mono);
-            font-size: 11px;
-            font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 6px;
-            display: inline-block;
-        }
-
-        .bias-badge.bear {
-            background: var(--accent-red-dim);
-            color: var(--accent-red);
-            border: 1px solid rgba(255, 51, 102, 0.3);
-        }
-
-        .bias-badge.bull {
-            background: var(--accent-green-dim);
-            color: var(--accent-green);
-            border: 1px solid rgba(0, 255, 157, 0.3);
-        }
-
-        .w2-pos {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            color: var(--text-secondary);
-            margin-top: 6px;
-        }
-
-        /* SECTION */
-        .section-label {
-            font-size: 10px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            display: flex;
             align-items: center;
-            gap: 6px;
+            margin-bottom: 14px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--card-border)
         }
 
-        .section-label::before {
-            content: '';
-            width: 3px;
-            height: 3px;
-            background: var(--text-secondary);
-            border-radius: 50%;
+        .card-asset {
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: -1px
+        }
+
+        .card-price {
+            font-family: var(--fmono);
+            font-size: 12px;
+            color: var(--text2);
+            margin-top: 2px
+        }
+
+        .bias-tag {
+            font-family: var(--fmono);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 3px 10px;
+            border-radius: 5px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px
+        }
+
+        .bias-tag.bear {
+            background: var(--red-dim);
+            color: var(--red);
+            border: 1px solid rgba(255, 51, 102, .25)
+        }
+
+        .bias-tag.bull {
+            background: var(--green-dim);
+            color: var(--green);
+            border: 1px solid rgba(0, 255, 157, .25)
+        }
+
+        .pos-label {
+            font-family: var(--fmono);
+            font-size: 9px;
+            color: var(--text2);
+            margin-top: 5px;
+            text-align: right
+        }
+
+        .sniper-tag {
+            font-family: var(--fmono);
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 3px;
+            background: rgba(255, 215, 0, .12);
+            color: var(--gold);
+            border: 1px solid rgba(255, 215, 0, .2);
+            margin-top: 5px;
+            display: inline-block
         }
 
         /* SIGNAL ROW */
-        .signal-row {
+        .sig-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 14px;
-            border-radius: 8px;
-            margin-bottom: 5px;
+            padding: 10px 12px;
+            border-radius: 7px;
+            margin-bottom: 4px;
             border-left: 3px solid transparent;
-            transition: all 0.2s ease;
+            transition: all .2s
         }
 
-        .signal-row:hover {
-            filter: brightness(1.1);
+        .sig-row.red {
+            border-left-color: var(--red);
+            background: var(--red-dim)
         }
 
-        .signal-row.red {
-            border-left-color: var(--accent-red);
-            background: var(--accent-red-dim);
+        .sig-row.green {
+            border-left-color: var(--green);
+            background: var(--green-dim)
         }
 
-        .signal-row.green {
-            border-left-color: var(--accent-green);
-            background: var(--accent-green-dim);
+        .sig-row.gold {
+            border-left-color: var(--gold);
+            background: var(--gold-dim)
         }
 
-        .signal-row.gold {
-            border-left-color: var(--accent-gold);
-            background: var(--accent-gold-dim);
+        .sig-row.gray {
+            border-left-color: #444;
+            background: rgba(255, 255, 255, .02)
         }
 
         .sig-left {
             display: flex;
             flex-direction: column;
-            gap: 2px;
+            gap: 1px
         }
 
-        .sig-target {
+        .sig-name {
             font-weight: 700;
-            font-size: 13px;
-            letter-spacing: 0.3px;
+            font-size: 12px;
+            letter-spacing: .3px
         }
 
-        .sig-status {
-            font-family: var(--font-mono);
-            font-size: 9px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
+        .sig-detail {
+            font-family: var(--fmono);
+            font-size: 8px;
+            color: var(--text2);
+            text-transform: uppercase
         }
 
         .sig-right {
@@ -343,73 +324,104 @@
             display: flex;
             flex-direction: column;
             align-items: flex-end;
-            gap: 3px;
+            gap: 2px
         }
 
         .sig-prob {
-            font-family: var(--font-mono);
-            font-size: 15px;
-            font-weight: 700;
-        }
-
-        .sig-grade {
-            font-size: 8px;
-            padding: 2px 6px;
-            border-radius: 3px;
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--text-secondary);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            font-family: var(--font-mono);
+            font-family: var(--fmono);
+            font-size: 14px;
+            font-weight: 700
         }
 
         .sig-prob.red {
-            color: var(--accent-red);
+            color: var(--red)
         }
 
         .sig-prob.green {
-            color: var(--accent-green);
+            color: var(--green)
         }
 
         .sig-prob.gold {
-            color: var(--accent-gold);
+            color: var(--gold)
         }
 
-        .prob-bar-wrap {
-            height: 3px;
-            background: rgba(255, 255, 255, 0.06);
-            border-radius: 2px;
-            margin-top: 3px;
-            overflow: hidden;
+        .sig-prob.gray {
+            color: var(--text3)
+        }
+
+        .sig-badge {
+            font-size: 7px;
+            padding: 1px 5px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, .05);
+            color: var(--text2);
+            border: 1px solid rgba(255, 255, 255, .08);
+            font-family: var(--fmono)
         }
 
         .prob-bar {
+            height: 2px;
+            background: rgba(255, 255, 255, .04);
+            border-radius: 1px;
+            margin-top: 3px;
+            overflow: hidden
+        }
+
+        .prob-fill {
             height: 100%;
-            border-radius: 2px;
-            transition: width 0.8s ease;
+            border-radius: 1px;
+            transition: width .6s ease
         }
 
-        .prob-bar.red {
-            background: var(--accent-red);
-            box-shadow: 0 0 6px var(--accent-red-glow);
+        .prob-fill.red {
+            background: var(--red)
         }
 
-        .prob-bar.green {
-            background: var(--accent-green);
-            box-shadow: 0 0 6px var(--accent-green-glow);
+        .prob-fill.green {
+            background: var(--green)
         }
 
-        .prob-bar.gold {
-            background: var(--accent-gold);
+        .prob-fill.gold {
+            background: var(--gold)
         }
 
-        footer {
-            margin-top: 50px;
-            color: var(--text-secondary);
-            font-family: var(--font-mono);
-            font-size: 10px;
+        /* LOADING */
+        .loading {
             text-align: center;
-            opacity: 0.4;
+            padding: 60px;
+            font-family: var(--fmono);
+            font-size: 12px;
+            color: var(--text2)
+        }
+
+        .spinner {
+            width: 28px;
+            height: 28px;
+            border: 2px solid var(--card-border);
+            border-top: 2px solid var(--green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 14px
+        }
+
+        .error-msg {
+            color: var(--red);
+            font-family: var(--fmono);
+            font-size: 11px;
+            padding: 12px;
+            background: var(--red-dim);
+            border-radius: 8px
+        }
+
+        /* FOOTER */
+        footer {
+            margin-top: 48px;
+            text-align: center;
+            color: var(--text3);
+            font-family: var(--fmono);
+            font-size: 9px;
             line-height: 1.8;
+            opacity: .6
         }
 
         @keyframes pulse {
@@ -419,8 +431,8 @@
             }
 
             50% {
-                opacity: .4;
-                transform: scale(.7)
+                opacity: .3;
+                transform: scale(.6)
             }
 
             100% {
@@ -431,190 +443,240 @@
 
         @keyframes spin {
             to {
-                transform: rotate(360deg);
+                transform: rotate(360deg)
             }
         }
 
-        @keyframes fadeIn {
+        @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(8px)
             }
 
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0)
             }
         }
 
-        @media (max-width: 500px) {
-            body {
-                padding: 20px 14px;
+        .fade-up {
+            animation: fadeUp .35s ease both
+        }
+
+        @media(max-width:600px) {
+            .container {
+                padding: 20px 14px
             }
 
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .market-banner {
-                flex-direction: column;
-                gap: 14px;
-            }
-
-            .banner-right {
-                text-align: left;
+            .asset-grid {
+                grid-template-columns: 1fr
             }
 
             header {
                 flex-direction: column;
                 gap: 12px;
-                align-items: flex-start;
+                align-items: flex-start
+            }
+
+            .sync-bar {
+                flex-direction: column;
+                gap: 8px;
+                align-items: flex-start
             }
         }
     </style>
 </head>
 
 <body>
-    <header>
-        <div class="brand">SPEC <span>FUTURA</span></div>
-        <div class="status-pill">
-            <div class="live-dot"></div>
-            <span id="system-status">CONNECTING...</span>
-        </div>
-    </header>
+    <div class="container">
+        <header>
+            <div class="brand">SPEC <span>FUTURA</span></div>
+            <div class="sys-badge">
+                <div class="dot"></div><span id="sys-status">CONNECTING...</span>
+            </div>
+        </header>
 
-    <div id="banner-container"></div>
-    <div class="grid" id="asset-grid">
-        <div class="loading-state">
-            <div class="loading-spinner"></div>
-            DOWNLOADING LIVE DATA...<br>
-            <span style="font-size:10px;opacity:0.5">Fetching NQ, ES, YM, GC from Yahoo Finance</span>
+        <div class="sync-bar">
+            <div><span id="sync-time">SYNCING...</span></div>
+            <div style="display:flex;gap:10px;align-items:center">
+                <span class="month-tag" id="month-tag">...</span>
+                <span id="weekday-tag" style="color:var(--text2)"></span>
+            </div>
         </div>
+
+        <!-- LAYER 1: MONTHLY -->
+        <div class="layer-section" id="monthly-section">
+            <div class="layer-header">
+                <div class="layer-icon m">M</div>
+                <div>
+                    <div class="layer-title">Monthly Alpha — W2 Fractal</div>
+                    <div class="layer-sub">Signal: W2 Close vs W1+W2 Range (50% Level)</div>
+                </div>
+            </div>
+            <div class="asset-grid" id="monthly-grid">
+                <div class="loading">
+                    <div class="spinner"></div>Downloading monthly data...
+                </div>
+            </div>
+        </div>
+
+        <!-- LAYER 2: WEEKLY -->
+        <div class="layer-section" id="weekly-section">
+            <div class="layer-header">
+                <div class="layer-icon w">W</div>
+                <div>
+                    <div class="layer-title">Weekly Alpha — D2 Fractal</div>
+                    <div class="layer-sub">Signal: Tuesday Close vs Mon+Tue Range (50% Level)</div>
+                </div>
+            </div>
+            <div class="asset-grid" id="weekly-grid">
+                <div class="loading">
+                    <div class="spinner"></div>Downloading weekly data...
+                </div>
+            </div>
+        </div>
+
+        <!-- LAYER 3: DAILY -->
+        <div class="layer-section" id="daily-section">
+            <div class="layer-header">
+                <div class="layer-icon d">D</div>
+                <div>
+                    <div class="layer-title">Daily Alpha — Sigma Edge</div>
+                    <div class="layer-sub">Signal: Today's O2C vs ±1σ Threshold</div>
+                </div>
+            </div>
+            <div class="asset-grid" id="daily-grid">
+                <div class="loading">
+                    <div class="spinner"></div>Downloading intraday data...
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            PROBABILITIES FROM AUDITED HISTORICAL RESEARCH (2000-2025)<br>
+            SIGNAL DETECTION IS REAL-TIME FROM YAHOO FINANCE<br>
+            SPEC RESEARCH INC. &copy; 2026 — FOR COMMUNITY MEMBERS ONLY
+        </footer>
     </div>
-
-    <footer>
-        <div id="last-sync">LAST SYNC: --</div>
-        <div style="margin-top:4px">DATA SOURCE: AUDITED_W2_STATS.MD | SPEC RESEARCH &copy; 2026</div>
-    </footer>
 
     <script>
         function mapStatus(s) {
             if (s === 'ACTIVE') return 'IN PROGRESS...';
             if (s === 'PENDING') return 'WAITING...';
+            if (s === 'FORMING') return 'FORMING ⏳';
             if (s === 'FULFILLED') return 'COMPLETED ✅';
+            if (s === 'NO TRIGGER') return 'NO SIGNAL';
             return s;
         }
+        function renderSignals(signals, container) {
+            if (!signals || !signals.length) { container.innerHTML = '<div style="color:var(--text3);font-size:11px;font-style:italic;padding:8px">No active signals</div>'; return }
+            let html = '';
+            signals.forEach(sig => {
+                const c = sig.color || 'gray';
+                const statusText = mapStatus(sig.status);
+                const triggerInfo = sig.trigger ? `<span style="margin-left:4px;opacity:.7">${sig.trigger}</span>` : '';
+                const samplesInfo = sig.samples ? ` · ${sig.samples} SAMPLES` : '';
+                const sniperHtml = sig.sniper ? `<span class="sniper-tag">⚡ ${sig.sniper}</span>` : '';
+                html += `
+        <div class="sig-row ${c}">
+            <div class="sig-left">
+                <span class="sig-name">${sig.target}</span>
+                <span class="sig-detail">${statusText}${samplesInfo}${triggerInfo}</span>
+                ${sniperHtml}
+            </div>
+            <div class="sig-right">
+                <span class="sig-prob ${c}">${sig.prob !== undefined ? sig.prob.toFixed(1) + '%' : '—'}</span>
+                <span class="sig-badge">${sig.grade || ''}</span>
+            </div>
+        </div>
+        <div class="prob-bar"><div class="prob-fill ${c}" style="width:${sig.prob || 0}%"></div></div>`;
+            });
+            container.innerHTML = html;
+        }
+        function renderLayerCards(gridId, assets, layerKey) {
+            const grid = document.getElementById(gridId);
+            grid.innerHTML = '';
+            assets.forEach((a, i) => {
+                const layer = a[layerKey];
+                if (!layer || a.error) {
+                    const card = document.createElement('div');
+                    card.className = 'alpha-card no-signal fade-up';
+                    card.style.animationDelay = `${i * .08}s`;
+                    card.innerHTML = `<div class="card-top"><div><div class="card-asset">${a.asset}</div><div class="card-price">${a.fullName || ''}</div></div></div>
+                            <div class="error-msg">${a.error || layer?.status || layer?.detail || 'No data'}</div>`;
+                    grid.appendChild(card);
+                    return;
+                }
+                const noSignal = (!layer.signals || !layer.signals.length) && (layer.status === 'FORMING' || layer.status === 'NO_DATA');
+                const card = document.createElement('div');
+                card.className = `alpha-card${noSignal ? ' no-signal' : ''} fade-up`;
+                card.style.animationDelay = `${i * .08}s`;
 
-        function getColorVar(c) {
-            if (c === 'red') return 'var(--accent-red)';
-            if (c === 'green') return 'var(--accent-green)';
-            if (c === 'gold') return 'var(--accent-gold)';
-            return 'var(--text-secondary)';
+                // Bias tag
+                let biasHtml = '';
+                if (layer.bias) {
+                    const bc = layer.bias === 'BEAR' ? 'bear' : 'bull';
+                    biasHtml = `<div class="bias-tag ${bc}">${layer.bias}</div>`;
+                }
+                // Position info
+                let posHtml = '';
+                if (layer.w2_position !== undefined) posHtml = `<div class="pos-label">W2 Position: ${layer.w2_position}%</div>`;
+                if (layer.d2_position !== undefined) posHtml = `<div class="pos-label">D2 Position: ${layer.d2_position}%</div>`;
+                if (layer.sigma_multiple !== undefined) posHtml = `<div class="pos-label">σ Multiple: ${layer.sigma_multiple}x | O2C: ${layer.o2c_pct}%</div>`;
+
+                // Confirmed badge (weekly)
+                let confirmedHtml = '';
+                if (layer.confirmed === true) confirmedHtml = '<div style="font-family:var(--fmono);font-size:9px;color:var(--green);margin-top:3px">✓ CONFIRMED (D3 Breakout)</div>';
+                if (layer.confirmed === false && layer.pattern === 'D2 FRACTAL') confirmedHtml = '<div style="font-family:var(--fmono);font-size:9px;color:var(--text3);margin-top:3px">⏳ UNCONFIRMED</div>';
+
+                // Sniper tag
+                let sniperHtml = '';
+                if (layer.sniper_tag) sniperHtml = `<div class="sniper-tag">⚡ ${layer.sniper_tag}</div>`;
+
+                // Forming state
+                let formingHtml = '';
+                if (layer.status === 'FORMING') formingHtml = `<div style="color:var(--text2);font-size:11px;font-style:italic;padding:8px">${layer.detail || 'Signal forming...'}</div>`;
+
+                const priceHtml = a.price ? `<div class="card-price">$${a.price.toLocaleString()}</div>` : '';
+
+                card.innerHTML = `
+            <div class="card-top">
+                <div><div class="card-asset">${a.asset}</div>${priceHtml}</div>
+                <div style="text-align:right">${biasHtml}${posHtml}${confirmedHtml}${sniperHtml}</div>
+            </div>
+            <div class="signals-area"></div>
+            ${formingHtml}`;
+                const sigArea = card.querySelector('.signals-area');
+                renderSignals(layer.signals, sigArea);
+                grid.appendChild(card);
+            });
         }
 
-        async function loadDashboard() {
+        async function loadData() {
             try {
-                const res = await fetch('/api/index');
-                if (!res.ok) throw new Error(`API Error: ${res.status}`);
-                const data = await res.json();
+                const r = await fetch('/api/index');
+                if (!r.ok) throw new Error(`API ${r.status}`);
+                const d = await r.json();
 
-                // Update status
-                document.getElementById('system-status').textContent = data.system || 'LIVE';
-                document.getElementById('last-sync').textContent = `LAST SYNC: ${data.timestamp}`;
+                document.getElementById('sys-status').textContent = d.system;
+                document.getElementById('sync-time').textContent = `SYNC: ${d.timestamp}`;
+                document.getElementById('month-tag').textContent = d.month;
+                document.getElementById('weekday-tag').textContent = d.weekday;
 
-                // Banner
-                const bannerEl = document.getElementById('banner-container');
-                const bears = data.assets.filter(a => a.bias === 'BEAR' && !a.error);
-                const bulls = data.assets.filter(a => a.bias === 'BULL' && !a.error);
-                const alignment = bears.length > bulls.length ? 'RISK-OFF' : 'RISK-ON';
-                const alignColor = alignment === 'RISK-OFF' ? 'var(--accent-red)' : 'var(--accent-green)';
-
-                let assetTags = data.assets.filter(a => !a.error).map(a => {
-                    const c = a.bias === 'BEAR' ? 'var(--accent-red)' : 'var(--accent-green)';
-                    return `${a.asset}: <strong style="color:${c}">${a.bias}</strong>`;
-                }).join(' &nbsp;|&nbsp; ');
-
-                bannerEl.innerHTML = `
-                <div class="market-banner" style="border-color: ${alignColor}20; background: ${alignColor}08">
-                    <div class="banner-left">
-                        <div class="banner-title">Market Alignment — ${data.month} ${new Date().getFullYear()}</div>
-                        <div class="banner-signal" style="color:${alignColor}">
-                            ${alignment} ALIGNMENT
-                            <span class="banner-tag ${alignment === 'RISK-OFF' ? 'bear' : 'bull'}">${bears.length} BEAR / ${bulls.length} BULL</span>
-                        </div>
-                    </div>
-                    <div class="banner-right">${assetTags}</div>
-                </div>`;
-
-                // Cards
-                const grid = document.getElementById('asset-grid');
-                grid.innerHTML = '';
-
-                data.assets.forEach((asset, i) => {
-                    if (asset.error) {
-                        const card = document.createElement('div');
-                        card.className = 'card';
-                        card.innerHTML = `<div class="asset-header"><div><div class="asset-name">${asset.asset}</div><div class="asset-sub">${asset.fullName || ''}</div></div></div><div style="color:var(--text-secondary);font-style:italic;font-size:12px">Error: ${asset.error}</div>`;
-                        card.style.animationDelay = `${i * 0.1}s`;
-                        grid.appendChild(card);
-                        return;
-                    }
-
-                    const biasClass = asset.bias === 'BEAR' ? 'bear' : 'bull';
-
-                    let signalsHtml = asset.signals.map(sig => {
-                        const statusText = mapStatus(sig.status);
-                        return `
-                        <div class="signal-row ${sig.color}">
-                            <div class="sig-left">
-                                <span class="sig-target">${sig.target}</span>
-                                <span class="sig-status">${statusText} &bull; ${sig.samples} SAMPLES</span>
-                            </div>
-                            <div class="sig-right">
-                                <span class="sig-prob ${sig.color}">${sig.prob.toFixed(1)}%</span>
-                                <span class="sig-grade">${sig.grade}</span>
-                            </div>
-                        </div>
-                        <div class="prob-bar-wrap">
-                            <div class="prob-bar ${sig.color}" style="width: ${sig.prob}%"></div>
-                        </div>`;
-                    }).join('');
-
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.style.animationDelay = `${i * 0.1}s`;
-                    card.innerHTML = `
-                        <div class="asset-header">
-                            <div>
-                                <div class="asset-name">${asset.asset}</div>
-                                <div class="asset-sub">${asset.fullName}</div>
-                                <div class="asset-price">$${asset.price.toLocaleString()}</div>
-                            </div>
-                            <div class="badge-area">
-                                <div class="bias-badge ${biasClass}">${asset.bias} SIGNAL</div>
-                                <div class="w2-pos">W2 Position: ${asset.w2_position}%</div>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="section-label">W2 FRACTAL PREDICTION (${data.month})</div>
-                            ${signalsHtml}
-                        </div>
-                    `;
-                    grid.appendChild(card);
+                renderLayerCards('monthly-grid', d.assets, 'monthly');
+                renderLayerCards('weekly-grid', d.assets, 'weekly');
+                renderLayerCards('daily-grid', d.assets, 'daily');
+            } catch (e) {
+                console.error(e);
+                ['monthly-grid', 'weekly-grid', 'daily-grid'].forEach(id => {
+                    document.getElementById(id).innerHTML = `<div class="error-msg">CONNECTION ERROR: ${e.message}<br><span style="font-size:9px;opacity:.5">Retrying in 30s...</span></div>`;
                 });
-
-            } catch (err) {
-                console.error('Dashboard Error:', err);
-                document.getElementById('asset-grid').innerHTML = `
-                <div class="loading-state" style="color:var(--accent-red)">
-                    CONNECTION ERROR<br>
-                    <span style="font-size:10px;opacity:0.6">${err.message}</span>
-                </div>`;
+                setTimeout(loadData, 30000);
             }
         }
 
-        loadDashboard();
-        setInterval(loadDashboard, 300000); // Refresh every 5 minutes
+        loadData();
+        setInterval(loadData, 300000); // Refresh 5 min
     </script>
 </body>
 
