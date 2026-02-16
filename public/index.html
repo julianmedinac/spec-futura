@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPEC FUTURA | Community Dashboard</title>
+    <title>SPEC RESEARCH | Alpha Dashboard</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap"
         rel="stylesheet">
@@ -46,16 +46,6 @@
             z-index: 100;
         }
 
-        .brand {
-            font-size: 24px;
-            font-weight: 900;
-            letter-spacing: -1px;
-        }
-
-        .brand span {
-            color: var(--green);
-        }
-
         .sync {
             font-family: 'JetBrains Mono', monospace;
             font-size: 11px;
@@ -64,7 +54,6 @@
 
         .dashboard {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
             gap: 2px;
             background: var(--border);
             min-height: calc(100vh - 100px);
@@ -254,7 +243,7 @@
 
         @media (max-width: 1000px) {
             .dashboard {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
             }
 
             .column {
@@ -262,14 +251,28 @@
             }
         }
 
-        .empty-msg {
-            color: var(--text-dim);
-            font-style: italic;
-            font-size: 12px;
+        .empty-state {
             text-align: center;
-            padding: 20px;
-            border: 1px dashed var(--border);
-            border-radius: 8px;
+            padding: 120px 40px;
+        }
+
+        .empty-state .icon {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .empty-state .title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .empty-state .desc {
+            color: var(--text-dim);
+            font-size: 14px;
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -278,7 +281,7 @@
 
     <div class="loading" id="loader">
         <div class="spinner"></div>
-        <div style="margin-top: 20px; font-family: 'JetBrains Mono'; font-size: 12px;">CALCULATING ALPHAS...</div>
+        <div style="margin-top: 20px; font-family: 'JetBrains Mono'; font-size: 12px;">SCANNING MARKETS...</div>
     </div>
 
     <div class="header">
@@ -286,27 +289,22 @@
         <div class="sync" id="timestamp">SYNC: --:--:--</div>
     </div>
 
-    <div class="dashboard">
-        <!-- MONTHLY -->
-        <div class="column m-col">
+    <div class="dashboard" id="dashboard" style="display:none">
+        <div class="column m-col" id="col-monthly" style="display:none">
             <div class="col-header">
                 <div class="col-title">Strategic Layer</div>
                 <div class="col-tag">MENSUAL</div>
             </div>
             <div class="asset-list" id="monthly-list"></div>
         </div>
-
-        <!-- WEEKLY -->
-        <div class="column w-col">
+        <div class="column w-col" id="col-weekly" style="display:none">
             <div class="col-header">
                 <div class="col-title">Tactical Layer</div>
                 <div class="col-tag">SEMANAL</div>
             </div>
             <div class="asset-list" id="weekly-list"></div>
         </div>
-
-        <!-- DAILY -->
-        <div class="column d-col">
+        <div class="column d-col" id="col-daily" style="display:none">
             <div class="col-header">
                 <div class="col-title">Execution Layer</div>
                 <div class="col-tag">DIARIO</div>
@@ -315,72 +313,93 @@
         </div>
     </div>
 
+    <div class="empty-state" id="empty-state" style="display:none">
+        <div class="icon">⏳</div>
+        <div class="title">No hay alphas activos</div>
+        <div class="desc">
+            Las señales aparecen conforme se confirman:<br>
+            <strong>Mensual</strong> → después del día 13 (cierre W2)<br>
+            <strong>Semanal</strong> → después del martes (cierre D2)<br>
+            <strong>Diario</strong> → cuando el O2C rompe ±1σ
+        </div>
+    </div>
+
     <script>
         async function fetchDashboard() {
             try {
-                const res = await fetch('/api/index');
-                const json = await res.json();
+                var res = await fetch('/api/index');
+                var json = await res.json();
 
-                document.getElementById('timestamp').innerText = `SYNC: ${json.timestamp}`;
-                renderSection('monthly-list', json.data, 'monthly');
-                renderSection('weekly-list', json.data, 'weekly');
-                renderSection('daily-list', json.data, 'daily');
+                document.getElementById('timestamp').innerText = 'SYNC: ' + json.timestamp;
+
+                var hasMonthly = renderSection('monthly-list', json.data, 'monthly');
+                var hasWeekly = renderSection('weekly-list', json.data, 'weekly');
+                var hasDaily = renderSection('daily-list', json.data, 'daily');
+
+                document.getElementById('col-monthly').style.display = hasMonthly ? '' : 'none';
+                document.getElementById('col-weekly').style.display = hasWeekly ? '' : 'none';
+                document.getElementById('col-daily').style.display = hasDaily ? '' : 'none';
+
+                var anyActive = hasMonthly || hasWeekly || hasDaily;
+                var dash = document.getElementById('dashboard');
+                dash.style.display = anyActive ? '' : 'none';
+                document.getElementById('empty-state').style.display = anyActive ? 'none' : '';
+
+                var cols = [hasMonthly, hasWeekly, hasDaily].filter(Boolean).length;
+                dash.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
 
                 document.getElementById('loader').style.opacity = '0';
-                setTimeout(() => document.getElementById('loader').style.display = 'none', 500);
+                setTimeout(function () { document.getElementById('loader').style.display = 'none'; }, 500);
             } catch (e) {
                 console.error(e);
-                alert("Comm error. Retrying...");
+                document.getElementById('loader').innerHTML = '<div style="color:var(--red);font-family:JetBrains Mono;font-size:12px">Connection error. Retrying...</div>';
                 setTimeout(fetchDashboard, 5000);
             }
         }
 
         function renderSection(id, assets, layerKey) {
-            const container = document.getElementById(id);
+            var container = document.getElementById(id);
             container.innerHTML = '';
+            var hasSignals = false;
 
-            let hasSignals = false;
-
-            assets.forEach(asset => {
-                if (asset.error) return;
-                const layer = asset.layers[layerKey];
-                if (!layer.signals || layer.signals.length === 0) return;
+            for (var i = 0; i < assets.length; i++) {
+                var asset = assets[i];
+                if (asset.error) continue;
+                var layer = asset.layers[layerKey];
+                if (!layer.signals || layer.signals.length === 0) continue;
 
                 hasSignals = true;
-                const card = document.createElement('div');
+                var card = document.createElement('div');
                 card.className = 'card';
+                var html = '';
 
-                let signalsHtml = layer.signals.map(s => `
-                    <div class="signal">
-                        <div>
-                            <div class="sig-main">${s.target} ${s.val ? `<span style="color:var(--text-dim);font-weight:400">[${s.val}]</span>` : ''}</div>
-                            <div class="sig-sub">${s.status} | ${s.grade || 'GRADED'}</div>
-                        </div>
-                        <div class="sig-prob" style="color: var(--${s.color})">${s.prob}%</div>
-                    </div>
-                    <div class="prob-bar">
-                        <div class="prob-fill" style="width: ${s.prob}%; background: var(--${s.color})"></div>
-                    </div>
-                `).join('');
+                for (var j = 0; j < layer.signals.length; j++) {
+                    var s = layer.signals[j];
+                    html += '<div class="signal"><div>';
+                    html += '<div class="sig-main">' + s.target;
+                    if (s.val) html += ' <span style="color:var(--text-dim);font-weight:400">[' + s.val + ']</span>';
+                    html += '</div>';
+                    html += '<div class="sig-sub">' + s.status + ' | ' + (s.grade || 'GRADED') + '</div>';
+                    html += '</div>';
+                    html += '<div class="sig-prob" style="color:var(--' + s.color + ')">' + s.prob + '%</div>';
+                    html += '</div>';
+                    html += '<div class="prob-bar"><div class="prob-fill" style="width:' + s.prob + '%;background:var(--' + s.color + ')"></div></div>';
+                }
 
-                card.innerHTML = `
-                    <div class="card-head">
-                        <div>
-                            <div class="asset-symbol">${asset.asset}</div>
-                            <div class="asset-price">$${asset.price.toLocaleString()}</div>
-                        </div>
-                        <div style="text-align: right">
-                            ${layer.bias ? `<div class="bias ${layer.bias.toLowerCase()}">${layer.bias}</div>` : ''}
-                        </div>
-                    </div>
-                    ${signalsHtml}
-                `;
+                var biasHtml = '';
+                if (layer.bias) {
+                    biasHtml = '<div class="bias ' + layer.bias.toLowerCase() + '">' + layer.bias + '</div>';
+                }
+
+                card.innerHTML = '<div class="card-head"><div>' +
+                    '<div class="asset-symbol">' + asset.asset + '</div>' +
+                    '<div class="asset-price">$' + asset.price.toLocaleString() + '</div>' +
+                    '</div><div style="text-align:right">' + biasHtml + '</div></div>' + html;
+
                 container.appendChild(card);
-            });
-
-            if (!hasSignals) {
-                container.innerHTML = '<div class="empty-msg">No active alphas detected for this layer.</div>';
             }
+
+            return hasSignals;
         }
 
         fetchDashboard();

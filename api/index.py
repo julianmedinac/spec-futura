@@ -84,11 +84,11 @@ def calc_layers(asset, df):
     month = now.month
     year = now.year
     
-    # 1. Monthly
+    # 1. Monthly — Only show if W2 signal is LOCKED (day > 13)
     month_df = df[(df.index.month == month) & (df.index.year == year)]
     m_signals = []
-    m_bias = "FORMING"
-    if len(month_df) >= 3:
+    m_bias = None
+    if now.day > 13 and len(month_df) >= 5:
         w1w2 = month_df[month_df.index.day <= 13]
         if not w1w2.empty:
             hi, lo = float(w1w2['High'].max()), float(w1w2['Low'].min())
@@ -109,14 +109,12 @@ def calc_layers(asset, df):
                     m_signals.append({'target': 'GREEN CLOSE', 'prob': p_set['prob_green'], 'status': 'ACTIVE', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
                     s = 'FULFILLED' if curr_hi > hi else 'PENDING'
                     m_signals.append({'target': 'NEW HIGH', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green'})
-            else:
-                m_signals.append({'target': 'MONTHLY TARGET', 'prob': 65, 'status': 'AUDITING', 'grade': 'SILVER', 'color': 'gray'})
 
-    # 2. Weekly
+    # 2. Weekly — Only show after Tuesday close (>= 2 trading days this week)
     current_week = now.isocalendar()[1]
     week_df = df[(df.index.isocalendar().week == current_week) & (df.index.isocalendar().year == year)]
     w_signals = []
-    w_bias = "FORMING"
+    w_bias = None
     if len(week_df) >= 2:
         d1, d2 = week_df.iloc[0], week_df.iloc[1]
         hi, lo = max(float(d1['High']), float(d2['High'])), min(float(d1['Low']), float(d2['Low']))
@@ -131,8 +129,6 @@ def calc_layers(asset, df):
         else:
             w_signals.append({'target': 'NEW LOW', 'prob': gen.get('bear_low', 70), 'status': 'FULFILLED' if curr_lo < lo else 'PENDING', 'grade': 'GOLD', 'color': 'red'})
             w_signals.append({'target': 'RED WEEK', 'prob': gen.get('bear_red', 65), 'status': 'ACTIVE', 'grade': 'SILVER', 'color': 'red'})
-    else:
-        w_signals.append({'target': 'WAITING TUE CLOSE', 'prob': 0, 'status': 'FORMING', 'grade': 'WAITING', 'color': 'gray'})
 
     # 3. Daily — Specific Triggers + General Expansion Bias
     d_signals = []
@@ -187,14 +183,7 @@ def calc_layers(asset, df):
             'color': 'red',
             'val': f'{day_name} PANIC: {o2c*100:+.2f}% (broke -1σ)'
         })
-    else:
-        d_signals.append({
-            'target': 'INSIDE RANGE',
-            'prob': 50,
-            'status': 'NO SIGNAL',
-            'grade': 'NOISE',
-            'color': 'gray'
-        })
+    # If inside ±1σ, no daily alpha — return empty signals
 
     return {'monthly': {'bias': m_bias, 'signals': m_signals}, 'weekly': {'bias': w_bias, 'signals': w_signals}, 'daily': {'signals': d_signals}}
 
