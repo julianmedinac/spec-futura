@@ -53,8 +53,25 @@ D2_WEEKLY_GENERAL = {
 
 SIGMA = {'NQ': 0.0135, 'ES': 0.0109, 'YM': 0.0106, 'GC': 0.0085}
 
+# --- DAILY SPECIFIC TRIGGERS (Validated T-stats from Daily Alpha Matrix) ---
+# Key: (asset, weekday) where weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
+# Only includes combos with real statistical significance
+DAILY_TRIGGERS = {
+    # NQ Tuesday Panic → Wednesday Rebound | T>2.1 GOLD
+    ('NQ', 1, 'panic'):  {'target': 'WED REBOUND', 'prob': 55.4, 'grade': 'GOLD (T>2.1)', 'avg_ret': '+0.54%'},
+    # YM Friday Panic → Monday Rebound | T>1.5 SILVER
+    ('YM', 4, 'panic'):  {'target': 'MON REBOUND', 'prob': 67.9, 'grade': 'SILVER (T>1.5)', 'avg_ret': '+0.44%'},
+    # NQ Thursday Drive → Friday Reversion | T>1.4 BRONZE
+    ('NQ', 3, 'drive'):  {'target': 'FRI REVERSION', 'prob': 57.8, 'grade': 'BRONZE (T>1.4)', 'avg_ret': '-0.27%'},
+    # NQ Friday Drive → Monday Continuation
+    ('NQ', 4, 'drive'):  {'target': 'MON CONTINUATION', 'prob': 64.5, 'grade': 'SILVER', 'avg_ret': '+0.11%'},
+    # YM Wednesday Panic → Thursday Rebound
+    ('YM', 2, 'panic'):  {'target': 'THU REBOUND', 'prob': 63.3, 'grade': 'BRONZE', 'avg_ret': '-0.12%'},
+}
+
 ASSET_TICKERS = {'NQ': 'NQ=F', 'ES': 'ES=F', 'YM': 'YM=F', 'GC': 'GC=F'}
 ASSET_NAMES = {'NQ': 'NASDAQ 100', 'ES': 'S&P 500', 'YM': 'DOW JONES', 'GC': 'GOLD'}
+DAY_NAMES = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN']
 
 def get_grade(p):
     if p >= 90: return 'DIAMOND'
@@ -117,15 +134,68 @@ def calc_layers(asset, df):
     else:
         w_signals.append({'target': 'WAITING TUE CLOSE', 'prob': 0, 'status': 'FORMING', 'grade': 'WAITING', 'color': 'gray'})
 
-    # 3. Daily
+    # 3. Daily — Specific Triggers + General Expansion Bias
     d_signals = []
     today = df.iloc[-1]
     o, c = float(today['Open']), float(today['Close'])
-    o2c = (c-o)/o if o!=0 else 0
-    s = SIGMA.get(asset, 0.013)
-    if o2c > s: d_signals.append({'target': 'BULL DRIVE', 'prob': 82, 'status': 'ACTIVE', 'grade': 'GOLD+', 'color': 'green', 'val': f'{o2c*100:.2f}%'})
-    elif o2c < -s: d_signals.append({'target': 'BEAR PANIC', 'prob': 84, 'status': 'ACTIVE', 'grade': 'GOLD+', 'color': 'red', 'val': f'{o2c*100:.2f}%'})
-    else: d_signals.append({'target': 'INSIDE σ', 'prob': 50, 'status': 'NO SIGNAL', 'grade': 'NOISE', 'color': 'gray', 'val': f'{o2c*100:.2f}%'})
+    o2c = (c - o) / o if o != 0 else 0
+    sigma = SIGMA.get(asset, 0.013)
+    weekday = now.weekday()  # 0=Mon ... 4=Fri
+    day_name = DAY_NAMES[weekday] if weekday < 7 else '?'
+
+    if o2c > sigma:
+        # Check for specific DRIVE trigger
+        trigger = DAILY_TRIGGERS.get((asset, weekday, 'drive'), None)
+        if trigger:
+            d_signals.append({
+                'target': trigger['target'],
+                'prob': trigger['prob'],
+                'status': 'ACTIVE',
+                'grade': trigger['grade'],
+                'color': 'red' if 'REVERSION' in trigger['target'] else 'green',
+                'val': f'{day_name} O2C: {o2c*100:+.2f}% (>{sigma*100:.1f}%)',
+                'avg_ret': trigger['avg_ret']
+            })
+        # Always also show general expansion bias
+        d_signals.append({
+            'target': 'WEEKLY BULL EXPANSION',
+            'prob': 82,
+            'status': 'ACTIVE',
+            'grade': 'GOLD+',
+            'color': 'green',
+            'val': f'{day_name} DRIVE: {o2c*100:+.2f}% (broke +1σ)'
+        })
+    elif o2c < -sigma:
+        # Check for specific PANIC trigger
+        trigger = DAILY_TRIGGERS.get((asset, weekday, 'panic'), None)
+        if trigger:
+            d_signals.append({
+                'target': trigger['target'],
+                'prob': trigger['prob'],
+                'status': 'ACTIVE',
+                'grade': trigger['grade'],
+                'color': 'green',
+                'val': f'{day_name} O2C: {o2c*100:+.2f}% (<-{sigma*100:.1f}%)',
+                'avg_ret': trigger['avg_ret']
+            })
+        # Always also show general expansion bias
+        d_signals.append({
+            'target': 'WEEKLY BEAR EXPANSION',
+            'prob': 84,
+            'status': 'ACTIVE',
+            'grade': 'GOLD+',
+            'color': 'red',
+            'val': f'{day_name} PANIC: {o2c*100:+.2f}% (broke -1σ)'
+        })
+    else:
+        d_signals.append({
+            'target': 'INSIDE RANGE',
+            'prob': 50,
+            'status': 'NO SIGNAL',
+            'grade': 'NOISE',
+            'color': 'gray',
+            'val': f'{day_name} O2C: {o2c*100:+.2f}% (within ±1σ)'
+        })
 
     return {'monthly': {'bias': m_bias, 'signals': m_signals}, 'weekly': {'bias': w_bias, 'signals': w_signals}, 'daily': {'signals': d_signals}}
 
