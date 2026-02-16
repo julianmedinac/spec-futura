@@ -1,6 +1,7 @@
 output/
 data/
 *.png
+!public/logo.png
 *.xlsx
 *.pyc
 __pycache__/
