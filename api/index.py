@@ -193,8 +193,7 @@ def calc_layers(asset, df):
             'prob': 50,
             'status': 'NO SIGNAL',
             'grade': 'NOISE',
-            'color': 'gray',
-            'val': f'{day_name} O2C: {o2c*100:+.2f}% (within ±1σ)'
+            'color': 'gray'
         })
 
     return {'monthly': {'bias': m_bias, 'signals': m_signals}, 'weekly': {'bias': w_bias, 'signals': w_signals}, 'daily': {'signals': d_signals}}
