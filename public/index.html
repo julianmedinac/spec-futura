@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPEC FUTURA | LIVE ALPHA</title>
+    <meta name="description" content="Audited Seasonal Intelligence Dashboard - SPEC RESEARCH">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -12,33 +13,34 @@
         rel="stylesheet">
     <style>
         :root {
-            /* FUTURA PALETTE */
             --bg-color: #050505;
             --card-bg: rgba(20, 20, 20, 0.6);
             --card-border: rgba(255, 255, 255, 0.08);
             --text-primary: #ffffff;
             --text-secondary: #888888;
-
             --accent-green: #00ff9d;
             --accent-green-dim: rgba(0, 255, 157, 0.1);
             --accent-green-glow: rgba(0, 255, 157, 0.4);
-
             --accent-red: #ff3366;
             --accent-red-dim: rgba(255, 51, 102, 0.1);
             --accent-red-glow: rgba(255, 51, 102, 0.4);
-
-            --accent-purple: #bb86fc;
-
+            --accent-gold: #ffd700;
+            --accent-gold-dim: rgba(255, 215, 0, 0.1);
             --font-main: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             background-color: var(--bg-color);
             color: var(--text-primary);
             font-family: var(--font-main);
-            margin: 0;
-            padding: 40px;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -48,14 +50,13 @@
             min-height: 100vh;
         }
 
-        /* HEADER */
         header {
             width: 100%;
             max-width: 1400px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             padding-bottom: 20px;
             border-bottom: 1px solid var(--card-border);
         }
@@ -64,9 +65,6 @@
             font-size: 24px;
             font-weight: 800;
             letter-spacing: -1px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
         }
 
         .brand span {
@@ -76,10 +74,10 @@
         .status-pill {
             background: var(--card-bg);
             border: 1px solid var(--card-border);
-            padding: 6px 12px;
+            padding: 6px 14px;
             border-radius: 20px;
             font-family: var(--font-mono);
-            font-size: 12px;
+            font-size: 11px;
             color: var(--accent-green);
             display: flex;
             align-items: center;
@@ -96,11 +94,70 @@
             animation: pulse 2s infinite;
         }
 
+        /* MARKET STATUS BANNER */
+        .market-banner {
+            width: 100%;
+            max-width: 1400px;
+            background: linear-gradient(135deg, rgba(255, 51, 102, 0.08), rgba(255, 51, 102, 0.02));
+            border: 1px solid rgba(255, 51, 102, 0.2);
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .banner-left {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .banner-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .banner-signal {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--accent-red);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .banner-signal .tag {
+            font-size: 10px;
+            background: var(--accent-red-dim);
+            color: var(--accent-red);
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+        }
+
+        .banner-right {
+            text-align: right;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+
+        .banner-right strong {
+            color: var(--text-primary);
+        }
+
         /* GRID */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 24px;
             width: 100%;
             max-width: 1400px;
         }
@@ -110,177 +167,216 @@
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 16px;
-            padding: 30px;
+            padding: 28px;
             backdrop-filter: blur(12px);
-            transition: transform 0.2s ease, border-color 0.2s ease;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.2s ease, border-color 0.3s ease;
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 18px;
         }
 
         .card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.15);
             transform: translateY(-2px);
         }
 
-        /* ASSET HEADER */
         .asset-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
-            padding-bottom: 15px;
+            padding-bottom: 14px;
             border-bottom: 1px solid var(--card-border);
         }
 
         .asset-name {
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 800;
             letter-spacing: -1px;
             line-height: 1;
         }
 
-        .asset-price {
+        .asset-sub {
             font-family: var(--font-mono);
-            font-size: 16px;
+            font-size: 12px;
             color: var(--text-secondary);
-            margin-top: 5px;
+            margin-top: 4px;
         }
 
-        .sigma-metric {
+        .badge-area {
             text-align: right;
         }
 
-        .sigma-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .sigma-value {
+        .bias-badge {
             font-family: var(--font-mono);
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        /* GAUGE */
-        .gauge-container {
-            height: 4px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 2px;
-            position: relative;
-            overflow: hidden;
-            margin-top: -10px;
-            /* Pull closer to header */
-            margin-bottom: 10px;
-        }
-
-        .gauge-bar {
-            height: 100%;
-            position: absolute;
-            transition: width 0.5s ease;
-            box-shadow: 0 0 10px currentColor;
-            /* Glow */
-        }
-
-        .gauge-center {
-            position: absolute;
-            left: 50%;
-            top: 0;
-            bottom: 0;
-            width: 2px;
-            background: #fff;
-            z-index: 2;
-        }
-
-        /* SECTIONS */
-        .section-title {
             font-size: 11px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 6px;
+            display: inline-block;
+        }
+
+        .bias-badge.bear {
+            background: var(--accent-red-dim);
+            color: var(--accent-red);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+        }
+
+        .bias-badge.bull {
+            background: var(--accent-green-dim);
+            color: var(--accent-green);
+            border: 1px solid rgba(0, 255, 157, 0.3);
+        }
+
+        /* SIGNAL ROWS */
+        .section-label {
+            font-size: 10px;
             color: var(--text-secondary);
             text-transform: uppercase;
             letter-spacing: 1.5px;
             font-weight: 600;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
-        .section-title::before {
+        .section-label::before {
             content: '';
-            width: 4px;
-            height: 4px;
+            width: 3px;
+            height: 3px;
             background: var(--text-secondary);
             border-radius: 50%;
         }
 
-        /* SIGNAL BOX */
-        .signal-box {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 2px solid var(--text-secondary);
-            padding: 15px;
-            border-radius: 0 8px 8px 0;
+        .signal-row {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
+            padding: 12px 14px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
         }
 
-        .signal-info {
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
+        .signal-row:hover {
+            background: rgba(255, 255, 255, 0.03);
         }
 
-        .signal-target {
-            font-family: var(--font-main);
-            font-weight: 700;
-            font-size: 14px;
-            letter-spacing: 0.5px;
+        .signal-row.red {
+            border-left-color: var(--accent-red);
+            background: var(--accent-red-dim);
         }
 
-        .signal-status {
-            font-family: var(--font-mono);
-            font-size: 10px;
-            text-transform: uppercase;
-            opacity: 0.7;
+        .signal-row.green {
+            border-left-color: var(--accent-green);
+            background: var(--accent-green-dim);
         }
 
-        .signal-metrics {
-            text-align: right;
+        .signal-row.gold {
+            border-left-color: var(--accent-gold);
+            background: var(--accent-gold-dim);
+        }
+
+        .signal-row.neutral {
+            border-left-color: #555;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .sig-left {
             display: flex;
             flex-direction: column;
             gap: 2px;
         }
 
-        .prob-value {
+        .sig-target {
+            font-weight: 700;
+            font-size: 13px;
+            letter-spacing: 0.3px;
+        }
+
+        .sig-status {
             font-family: var(--font-mono);
-            font-size: 16px;
+            font-size: 9px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+
+        .sig-right {
+            text-align: right;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 3px;
+        }
+
+        .sig-prob {
+            font-family: var(--font-mono);
+            font-size: 15px;
             font-weight: 700;
         }
 
-        .grade-badge {
-            font-size: 9px;
+        .sig-grade {
+            font-size: 8px;
             padding: 2px 6px;
-            border-radius: 4px;
-            background: #222;
-            color: #fff;
-            margin-left: auto;
-            border: 1px solid #333;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-secondary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: var(--font-mono);
+        }
+
+        .sig-prob.red {
+            color: var(--accent-red);
+        }
+
+        .sig-prob.green {
+            color: var(--accent-green);
+        }
+
+        .sig-prob.gold {
+            color: var(--accent-gold);
+        }
+
+        /* PROBABILITY BAR */
+        .prob-bar-container {
+            height: 3px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: 2px;
+            margin-top: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .prob-bar {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.6s ease;
+        }
+
+        .prob-bar.red {
+            background: var(--accent-red);
+            box-shadow: 0 0 6px var(--accent-red-glow);
+        }
+
+        .prob-bar.green {
+            background: var(--accent-green);
+            box-shadow: 0 0 6px var(--accent-green-glow);
+        }
+
+        .prob-bar.gold {
+            background: var(--accent-gold);
         }
 
         /* FOOTER */
         footer {
-            margin-top: 60px;
+            margin-top: 50px;
             color: var(--text-secondary);
             font-family: var(--font-mono);
-            font-size: 11px;
+            font-size: 10px;
             text-align: center;
-            opacity: 0.5;
+            opacity: 0.4;
+            line-height: 1.8;
         }
 
         @keyframes pulse {
@@ -290,8 +386,8 @@
             }
 
             50% {
-                opacity: 0.5;
-                transform: scale(0.8);
+                opacity: 0.4;
+                transform: scale(0.7);
             }
 
             100% {
@@ -300,207 +396,263 @@
             }
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
+        @media (max-width: 500px) {
+            body {
+                padding: 20px 14px;
+            }
 
-        ::-webkit-scrollbar-track {
-            background: var(--bg-color);
-        }
+            .grid {
+                grid-template-columns: 1fr;
+            }
 
-        ::-webkit-scrollbar-thumb {
-            background: #333;
-            border-radius: 3px;
+            .market-banner {
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .banner-right {
+                text-align: left;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 12px;
+                align-items: flex-start;
+            }
         }
     </style>
 </head>
 
 <body>
     <header>
-        <div class="brand">
-            SPEC <span>FUTURA</span>
-        </div>
+        <div class="brand">SPEC <span>FUTURA</span></div>
         <div class="status-pill">
             <div class="live-dot"></div>
-            SYSTEM OPERATIONAL v7.0
+            AUDITED INTELLIGENCE v7.0
         </div>
     </header>
 
-    <div class="grid" id="asset-grid">
-        <!-- Cards injected by JS -->
+    <!-- MARKET ALIGNMENT BANNER -->
+    <div class="market-banner">
+        <div class="banner-left">
+            <div class="banner-title">Current Market Alignment &mdash; February 2026</div>
+            <div class="banner-signal">
+                RISK-OFF ALIGNMENT
+                <span class="tag">BEAR SIGNAL ACTIVE</span>
+            </div>
+        </div>
+        <div class="banner-right">
+            NQ: <strong style="color:var(--accent-red)">BEAR</strong> &nbsp;|&nbsp;
+            ES: <strong style="color:var(--accent-red)">BEAR</strong> &nbsp;|&nbsp;
+            YM: <strong style="color:var(--accent-red)">BEAR</strong><br>
+            GC: <strong style="color:var(--accent-green)">BULL</strong>
+        </div>
     </div>
 
+    <div class="grid" id="asset-grid"></div>
+
     <footer>
-        <div id="last-update">SYNC: --:--</div>
-        <div style="margin-top:8px">AUDITED SEASONAL INTELLIGENCE | SPEC RESEARCH INC.</div>
+        DATA SOURCE: AUDITED_W2_STATS.MD &mdash; VALIDATED HISTORICAL ANALYSIS<br>
+        SPEC RESEARCH INC. &copy; 2026
     </footer>
 
     <script>
-        // --- COLOR & STATE HELPERS ---
-
-        function getColors(colorKey) {
-            if (colorKey === 'RED') return {
-                main: 'var(--accent-red)',
-                bg: 'var(--accent-red-dim)',
-                glow: 'var(--accent-red-glow)'
-            };
-            if (colorKey === 'GREEN') return {
-                main: 'var(--accent-green)',
-                bg: 'var(--accent-green-dim)',
-                glow: 'var(--accent-green-glow)'
-            };
-            return {
-                main: 'var(--text-secondary)',
-                bg: 'rgba(255,255,255,0.03)',
-                glow: 'transparent'
-            };
-        }
-
-        function formatProb(val) {
-            const num = parseFloat(val);
-            return !isNaN(num) ? (num * 100).toFixed(1) + '%' : 'N/A';
-        }
-
-        function mapStatus(rawStatus) {
-            // Rename statuses for clarity
-            if (rawStatus === 'ACTIVE') return 'IN PROGRESS...';
-            if (rawStatus === 'PENDING') return 'WAITING...';
-            if (rawStatus === 'PENDING \u23f3') return 'WAITING...'; // Pending hourglass
-            if (rawStatus.includes('FULFILLED')) return 'COMPLETED \u2705';
-            return rawStatus;
-        }
-
-        async function updateDashboard() {
-            try {
-                // Fetch from Vercel API
-                const response = await fetch('/api/index');
-                const data = await response.json();
-
-                if (document.getElementById('last-update')) {
-                    document.getElementById('last-update').innerText = `SYNC: ${data.timestamp}`;
+        // =============================================
+        // AUDITED DATA (from AUDITED_W2_STATS.md)
+        // This is the SINGLE SOURCE OF TRUTH.
+        // =============================================
+        const AUDITED_DATA = {
+            month: 'FEBRUARY',
+            monthNum: 2,
+            assets: [
+                {
+                    name: 'NQ',
+                    fullName: 'NASDAQ 100 E-mini',
+                    bias: 'BEAR',
+                    signals: [
+                        {
+                            target: 'RED MONTH CLOSE',
+                            prob: 91.7,
+                            samples: 12,
+                            status: 'ACTIVE',
+                            grade: 'DIAMOND',
+                            color: 'red',
+                            insight: 'Strongest bearish signal in the matrix'
+                        },
+                        {
+                            target: 'NEW MONTH LOW',
+                            prob: 50.0,
+                            samples: 12,
+                            status: 'PENDING',
+                            grade: 'NOISE',
+                            color: 'gold',
+                            insight: 'The Bear Trap. Lows hold 50% of the time.'
+                        }
+                    ],
+                    bullContext: [
+                        { target: 'GREEN MONTH (if Bull)', prob: 71.4, samples: 14 },
+                        { target: 'NEW HIGH (if Bull)', prob: 92.9, samples: 14 }
+                    ]
+                },
+                {
+                    name: 'ES',
+                    fullName: 'S&P 500 E-mini',
+                    bias: 'BEAR',
+                    signals: [
+                        {
+                            target: 'RED MONTH CLOSE',
+                            prob: 66.7,
+                            samples: 12,
+                            status: 'ACTIVE',
+                            grade: 'SILVER',
+                            color: 'red',
+                            insight: 'Moderate bearish edge'
+                        },
+                        {
+                            target: 'NEW MONTH LOW',
+                            prob: 50.0,
+                            samples: 12,
+                            status: 'PENDING',
+                            grade: 'NOISE',
+                            color: 'gold',
+                            insight: 'Feb not in ES Bear outlier list'
+                        }
+                    ],
+                    bullContext: [
+                        { target: 'GREEN MONTH (if Bull)', prob: 80.0, samples: 15 },
+                        { target: 'NEW HIGH (if Bull)', prob: 80.0, samples: 15 }
+                    ]
+                },
+                {
+                    name: 'YM',
+                    fullName: 'DOW JONES E-mini',
+                    bias: 'BEAR',
+                    signals: [
+                        {
+                            target: 'RED MONTH CLOSE',
+                            prob: 66.7,
+                            samples: 8,
+                            status: 'ACTIVE',
+                            grade: 'SILVER',
+                            color: 'red',
+                            insight: 'Moderate bearish edge'
+                        },
+                        {
+                            target: 'NEW MONTH LOW',
+                            prob: 62.5,
+                            samples: 8,
+                            status: 'PENDING',
+                            grade: 'BRONZE',
+                            color: 'gold',
+                            insight: 'Slightly better low-break odds than NQ/ES'
+                        }
+                    ],
+                    bullContext: []
+                },
+                {
+                    name: 'GC',
+                    fullName: 'GOLD FUTURES',
+                    bias: 'BULL',
+                    signals: [
+                        {
+                            target: 'GREEN MONTH CLOSE',
+                            prob: 81.2,
+                            samples: 16,
+                            status: 'ACTIVE',
+                            grade: 'GOLD +',
+                            color: 'green',
+                            insight: 'Strong bullish seasonal bias'
+                        },
+                        {
+                            target: 'NEW MONTH HIGH',
+                            prob: 75.0,
+                            samples: 16,
+                            status: 'PENDING',
+                            grade: 'GOLD',
+                            color: 'green',
+                            insight: 'Likely to extend to new highs'
+                        }
+                    ],
+                    bullContext: []
                 }
-                const grid = document.getElementById('asset-grid');
-                grid.innerHTML = '';
+            ]
+        };
 
-                data.assets.forEach(asset => {
-                    const layers = asset.layers;
-                    const daily = layers.daily;
+        // =============================================
+        // RENDER DASHBOARD
+        // =============================================
+        function renderDashboard() {
+            const grid = document.getElementById('asset-grid');
+            grid.innerHTML = '';
 
-                    // Daily Gauge Calculation
-                    const sigmaVal = daily.sigma_level;
-                    const currentO2C = daily.o2c;
-                    const sigmaDist = currentO2C / sigmaVal;
-                    let gaugeWidth = Math.min(Math.abs(sigmaDist) * 50, 50); // Max 50% width (from center)
+            AUDITED_DATA.assets.forEach(asset => {
+                const isBear = asset.bias === 'BEAR';
+                const biasClass = isBear ? 'bear' : 'bull';
 
-                    const dailyColors = getColors(daily.color);
-
-                    // Gauge styling
-                    let gaugeStyle = '';
-                    if (currentO2C > 0) {
-                        gaugeStyle = `left: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
-                    } else {
-                        gaugeStyle = `right: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
-                    }
-
-                    // --- MONTHLY SIGNALS ---
-                    let monthlyHtml = '';
-                    const monthlySignals = layers.monthly_signals;
-
-                    if (Array.isArray(monthlySignals) && monthlySignals.length > 0) {
-                        monthlyHtml = monthlySignals.map(sig => {
-                            const c = getColors(sig.color);
-                            const cleanStatus = mapStatus(sig.status);
-                            // Highlight if completed
-                            const isDone = cleanStatus.includes('COMPLETED');
-                            const borderStyle = isDone ? `border-left: 4px solid ${c.main}` : `border-left: 2px solid ${c.main}`;
-
-                            return `
-                            <div class="signal-box" style="${borderStyle}; background: ${c.bg}">
-                                <div class="signal-info">
-                                    <span class="signal-target" style="color: ${c.main}">${sig.target}</span>
-                                    <span class="signal-status">${cleanStatus}</span>
-                                </div>
-                                <div class="signal-metrics">
-                                    <span class="prob-value" style="color: ${c.main}">${formatProb(sig.prob)}</span>
-                                    ${sig.grade ? `<span class="grade-badge">${sig.grade}</span>` : ''}
-                                </div>
-                            </div>
-                            `;
-                        }).join('');
-                    } else {
-                        monthlyHtml = '<div style="color:var(--text-secondary); font-size:12px; padding:10px; font-style:italic">Scanning for structure...</div>';
-                    }
-
-                    // --- CARD RENDER ---
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <!-- ASSET HEADER -->
-                        <div class="asset-header">
-                            <div>
-                                <div class="asset-name">${asset.asset}</div>
-                                <div class="asset-price">$${asset.price.toLocaleString()}</div>
-                            </div>
-                            <div class="sigma-metric">
-                                <div class="sigma-label">Daily Sigma</div>
-                                <div class="sigma-value" style="color:${Math.abs(sigmaDist) > 1 ? dailyColors.main : 'inherit'}">
-                                    ${sigmaDist.toFixed(2)}σ
-                                </div>
-                            </div>
+                let signalsHtml = asset.signals.map(sig => {
+                    const statusText = sig.status === 'ACTIVE' ? 'IN PROGRESS...' : 'WAITING...';
+                    return `
+                    <div class="signal-row ${sig.color}">
+                        <div class="sig-left">
+                            <span class="sig-target">${sig.target}</span>
+                            <span class="sig-status">${statusText} &bull; ${sig.samples} SAMPLES</span>
                         </div>
-
-                        <!-- GAUGE -->
-                        <div class="gauge-container">
-                            <div class="gauge-center"></div>
-                            <div class="gauge-bar" style="${gaugeStyle}"></div>
+                        <div class="sig-right">
+                            <span class="sig-prob ${sig.color}">${sig.prob.toFixed(1)}%</span>
+                            <span class="sig-grade">${sig.grade}</span>
                         </div>
-
-                        <!-- 1. STRATEGIC (MONTHLY) -->
-                        <div>
-                            <div class="section-title">STRATEGIC LAYER (FEB)</div>
-                            ${monthlyHtml}
-                        </div>
-
-                        <!-- 2. TACTICAL (WEEKLY) -->
-                        <div>
-                            <div class="section-title">TACTICAL LAYER (WEEKLY)</div>
-                            <div class="signal-box" style="border-left-color: ${getColors(layers.weekly.color).main}; opacity: 0.8">
-                                <div class="signal-info">
-                                    <span class="signal-target" style="color: ${getColors(layers.weekly.color).main}">${layers.weekly.status}</span>
-                                    <span class="signal-status">WEEKLY BIAS</span>
-                                </div>
-                                <div class="signal-metrics">
-                                    <span class="prob-value">${formatProb(layers.weekly.prob)}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 3. EXECUTION (DAILY) -->
-                        <div>
-                            <div class="section-title">EXECUTION LAYER (DAILY)</div>
-                            <div class="signal-box" style="border-left-color: ${dailyColors.main}">
-                                <div class="signal-info">
-                                    <span class="signal-target" style="color: ${dailyColors.main}">${daily.status}</span>
-                                    <span class="signal-status">Open-to-Close: ${(daily.o2c * 100).toFixed(2)}%</span>
-                                </div>
-                                <div class="signal-metrics">
-                                    <span class="prob-value">${formatProb(daily.prob)}</span>
-                                    <span class="grade-badge">SIGMA</span>
-                                </div>
-                            </div>
-                        </div>
+                    </div>
+                    <div class="prob-bar-container">
+                        <div class="prob-bar ${sig.color}" style="width: ${sig.prob}%"></div>
+                    </div>
                     `;
-                    grid.appendChild(card);
-                });
+                }).join('');
 
-            } catch (error) {
-                console.error("Dashboard Sync Error:", error);
-            }
+                // Bull context (if available)
+                let contextHtml = '';
+                if (asset.bullContext && asset.bullContext.length > 0) {
+                    contextHtml = `
+                    <div style="margin-top:6px">
+                        <div class="section-label">ALTERNATE SCENARIO (IF BULL)</div>
+                        ${asset.bullContext.map(ctx => `
+                        <div class="signal-row neutral">
+                            <div class="sig-left">
+                                <span class="sig-target" style="color:var(--text-secondary)">${ctx.target}</span>
+                                <span class="sig-status">${ctx.samples} SAMPLES</span>
+                            </div>
+                            <div class="sig-right">
+                                <span class="sig-prob" style="color:var(--text-secondary)">${ctx.prob.toFixed(1)}%</span>
+                            </div>
+                        </div>
+                        `).join('')}
+                    </div>`;
+                }
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="asset-header">
+                        <div>
+                            <div class="asset-name">${asset.name}</div>
+                            <div class="asset-sub">${asset.fullName}</div>
+                        </div>
+                        <div class="badge-area">
+                            <div class="bias-badge ${biasClass}">${asset.bias} SIGNAL</div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="section-label">W2 FRACTAL PREDICTION (${AUDITED_DATA.month})</div>
+                        ${signalsHtml}
+                    </div>
+
+                    ${contextHtml}
+                `;
+                grid.appendChild(card);
+            });
         }
 
-        updateDashboard();
-        setInterval(updateDashboard, 5000); // 5s Refresh
+        renderDashboard();
     </script>
 </body>
 

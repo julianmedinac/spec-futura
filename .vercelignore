@@ -1,0 +1,14 @@
+output/
+data/
+*.png
+*.xlsx
+*.pyc
+__pycache__/
+.git/
+.agent/
+*.md
+!public/
+!api/
+!src/
+!vercel.json
+!requirements.txt
