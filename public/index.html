@@ -162,12 +162,70 @@
             background: rgba(0, 255, 157, 0.1);
             color: var(--green);
             border: 1px solid rgba(0, 255, 157, 0.3);
+            animation: pulse-green 2s ease-in-out infinite;
         }
 
         .bias.bear {
             background: rgba(255, 51, 102, 0.1);
             color: var(--red);
             border: 1px solid rgba(255, 51, 102, 0.3);
+            animation: pulse-red 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse-green {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0px rgba(0, 255, 157, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 8px rgba(0, 255, 157, 0.4);
+            }
+        }
+
+        @keyframes pulse-red {
+
+            0%,
+            100% {
+                box-shadow: 0 0 0px rgba(255, 51, 102, 0);
+            }
+
+            50% {
+                box-shadow: 0 0 8px rgba(255, 51, 102, 0.4);
+            }
+        }
+
+        .alpha-legend {
+            padding: 12px 40px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono';
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--green);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .alpha-legend .dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--green);
+            animation: pulse-dot 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse-dot {
+
+            0%,
+            100% {
+                opacity: 0.4;
+            }
+
+            50% {
+                opacity: 1;
+            }
         }
 
         .signal {
@@ -289,6 +347,11 @@
         <div class="sync" id="timestamp">SYNC: --:--:--</div>
     </div>
 
+    <div class="alpha-legend" id="alpha-legend" style="display:none">
+        <div class="dot"></div>
+        ACTIVE ALPHA
+    </div>
+
     <div class="dashboard" id="dashboard" style="display:none">
         <div class="column m-col" id="col-monthly" style="display:none">
             <div class="col-header">
@@ -344,6 +407,7 @@
                 var dash = document.getElementById('dashboard');
                 dash.style.display = anyActive ? '' : 'none';
                 document.getElementById('empty-state').style.display = anyActive ? 'none' : '';
+                document.getElementById('alpha-legend').style.display = anyActive ? '' : 'none';
 
                 var cols = [hasMonthly, hasWeekly, hasDaily].filter(Boolean).length;
                 dash.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
