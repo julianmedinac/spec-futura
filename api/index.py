@@ -130,60 +130,69 @@ def calc_layers(asset, df):
             w_signals.append({'target': 'NEW LOW', 'prob': gen.get('bear_low', 70), 'status': 'FULFILLED' if curr_lo < lo else 'PENDING', 'grade': 'GOLD', 'color': 'red'})
             w_signals.append({'target': 'RED WEEK', 'prob': gen.get('bear_red', 65), 'status': 'ACTIVE', 'grade': 'SILVER', 'color': 'red'})
 
-    # 3. Daily — Specific Triggers + General Expansion Bias
+    # 3. Daily — Check YESTERDAY's O2C for specific triggers (they predict TODAY)
+    #         + Check TODAY's O2C for general expansion bias
     d_signals = []
-    today = df.iloc[-1]
-    o, c = float(today['Open']), float(today['Close'])
-    o2c = (c - o) / o if o != 0 else 0
     sigma = SIGMA.get(asset, 0.013)
-    weekday = now.weekday()  # 0=Mon ... 4=Fri
-    day_name = DAY_NAMES[weekday] if weekday < 7 else '?'
 
-    if o2c > sigma:
-        # Check for specific DRIVE trigger
-        trigger = DAILY_TRIGGERS.get((asset, weekday, 'drive'), None)
-        if trigger:
-            d_signals.append({
-                'target': trigger['target'],
-                'prob': trigger['prob'],
-                'status': 'ACTIVE',
-                'grade': trigger['grade'],
-                'color': 'red' if 'REVERSION' in trigger['target'] else 'green',
-                'val': f'{day_name} O2C: {o2c*100:+.2f}% (>{sigma*100:.1f}%)',
-                'avg_ret': trigger['avg_ret']
-            })
-        # Always also show general expansion bias
+    # --- YESTERDAY'S TRIGGERS (predict today) ---
+    if len(df) >= 2:
+        yesterday = df.iloc[-2]
+        y_o, y_c = float(yesterday['Open']), float(yesterday['Close'])
+        y_o2c = (y_c - y_o) / y_o if y_o != 0 else 0
+        y_weekday = yesterday.name.weekday()  # 0=Mon ... 4=Fri
+        y_day_name = DAY_NAMES[y_weekday] if y_weekday < 7 else '?'
+
+        if y_o2c > sigma:
+            trigger = DAILY_TRIGGERS.get((asset, y_weekday, 'drive'), None)
+            if trigger:
+                d_signals.append({
+                    'target': trigger['target'],
+                    'prob': trigger['prob'],
+                    'status': 'ACTIVE',
+                    'grade': trigger['grade'],
+                    'color': 'red' if 'REVERSION' in trigger['target'] else 'green',
+                    'val': f'{y_day_name} closed {y_o2c*100:+.2f}% (>{sigma*100:.1f}%)',
+                    'avg_ret': trigger['avg_ret']
+                })
+        elif y_o2c < -sigma:
+            trigger = DAILY_TRIGGERS.get((asset, y_weekday, 'panic'), None)
+            if trigger:
+                d_signals.append({
+                    'target': trigger['target'],
+                    'prob': trigger['prob'],
+                    'status': 'ACTIVE',
+                    'grade': trigger['grade'],
+                    'color': 'green',
+                    'val': f'{y_day_name} closed {y_o2c*100:+.2f}% (<-{sigma*100:.1f}%)',
+                    'avg_ret': trigger['avg_ret']
+                })
+
+    # --- TODAY'S GENERAL EXPANSION BIAS ---
+    today = df.iloc[-1]
+    t_o, t_c = float(today['Open']), float(today['Close'])
+    t_o2c = (t_c - t_o) / t_o if t_o != 0 else 0
+    today_name = DAY_NAMES[now.weekday()] if now.weekday() < 7 else '?'
+
+    if t_o2c > sigma:
         d_signals.append({
             'target': 'WEEKLY BULL EXPANSION',
             'prob': 82,
             'status': 'ACTIVE',
             'grade': 'GOLD+',
             'color': 'green',
-            'val': f'{day_name} DRIVE: {o2c*100:+.2f}% (broke +1σ)'
+            'val': f'{today_name} O2C: {t_o2c*100:+.2f}% (broke +1σ)'
         })
-    elif o2c < -sigma:
-        # Check for specific PANIC trigger
-        trigger = DAILY_TRIGGERS.get((asset, weekday, 'panic'), None)
-        if trigger:
-            d_signals.append({
-                'target': trigger['target'],
-                'prob': trigger['prob'],
-                'status': 'ACTIVE',
-                'grade': trigger['grade'],
-                'color': 'green',
-                'val': f'{day_name} O2C: {o2c*100:+.2f}% (<-{sigma*100:.1f}%)',
-                'avg_ret': trigger['avg_ret']
-            })
-        # Always also show general expansion bias
+    elif t_o2c < -sigma:
         d_signals.append({
             'target': 'WEEKLY BEAR EXPANSION',
             'prob': 84,
             'status': 'ACTIVE',
             'grade': 'GOLD+',
             'color': 'red',
-            'val': f'{day_name} PANIC: {o2c*100:+.2f}% (broke -1σ)'
+            'val': f'{today_name} O2C: {t_o2c*100:+.2f}% (broke -1σ)'
         })
-    # If inside ±1σ, no daily alpha — return empty signals
+    # If neither yesterday triggered nor today broke σ → d_signals stays empty → column hidden
 
     return {'monthly': {'bias': m_bias, 'signals': m_signals}, 'weekly': {'bias': w_bias, 'signals': w_signals}, 'daily': {'signals': d_signals}}
 
