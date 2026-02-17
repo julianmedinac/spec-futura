@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 # Add project root to path
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+sys.path.insert(0, str(Path(__file__).parent.parent))
 from src.engine.alpha_brain import AlphaBrain
 
 def fetch_live_data():
@@ -63,7 +63,7 @@ def fetch_live_data():
 
 def run_monitor_loop():
     """Main loop that generates the live_state.json for the dashboard."""
-    output_path = Path("output/live_data/alpha_state.json")
+    output_path = Path(__file__).parent / "data" / "alpha_state.json"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     print("[*] SPEC RESEARCH v4.0 (Layered Alpha Monitor) Started.")

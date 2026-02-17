@@ -338,7 +338,7 @@
 
     <footer>
         <div id="last-update">SINC: --:--</div>
-        <div style="margin-top:8px">SPEC RESEARCH (R) 2026</div>
+        <div style="margin-top:8px">SPEC RESEARCH ® 2026</div>
     </footer>
 
     <script>
@@ -378,7 +378,7 @@
 
         async function updateDashboard() {
             try {
-                const response = await fetch('output/live_data/alpha_state.json');
+                const response = await fetch('data/alpha_state.json');
                 const data = await response.json();
 
                 document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;
