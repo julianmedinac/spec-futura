@@ -8,51 +8,64 @@ from datetime import datetime, timedelta
 # EVERY number here MUST have a source in the repo
 # ============================================================
 
-# Source: AUDITED_W2_STATS.md (verified line by line)
-# Only months listed in the audit file are included
+# Source: output/charts/strategy/W2/ (complete 12-month matrices)
+# Based on 2000-2026 History | * = >80% Win Rate
 W2_MONTHLY = {
     'NQ': {
-        # BULL: line 12-18 of AUDITED_W2_STATS.md
-        # BEAR: line 23-27
-        1:  {'bull': {'prob_green': 77.8, 'prob_high': 88.9, 'n': 18}},
-        2:  {'bear': {'prob_red': 91.7, 'prob_low': 50.0, 'n': 12}, 'bull': {'prob_green': 71.4, 'prob_high': 92.9, 'n': 14}},
-        3:  {'bear': {'prob_red': 57.1, 'prob_low': 85.7, 'n': 14}, 'bull': {'prob_green': 90.9, 'prob_high': 81.8, 'n': 11}},
-        5:  {'bull': {'prob_green': 91.7, 'prob_high': 91.7, 'n': 12}},
-        6:  {'bear': {'prob_red': 69.2, 'prob_low': 84.6, 'n': 13}, 'bull': {'prob_green': 91.7, 'prob_high': 83.3, 'n': 12}},
-        9:  {'bear': {'prob_red': 84.6, 'prob_low': 84.6, 'n': 13}},
-        10: {'bull': {'prob_green': 75.0, 'prob_high': 93.8, 'n': 16}},
-        11: {'bear': {'prob_red': 60.0, 'prob_low': 90.0, 'n': 10}, 'bull': {'prob_green': 93.8, 'prob_high': 87.5, 'n': 16}},
+        1:  {'bull': {'prob_green': 78, 'prob_high': 89}, 'bear': {'prob_red': 75, 'prob_low': 88}},
+        2:  {'bull': {'prob_green': 67, 'prob_high': 87}, 'bear': {'prob_red': 91, 'prob_low': 55}},
+        3:  {'bull': {'prob_green': 91, 'prob_high': 82}, 'bear': {'prob_red': 57, 'prob_low': 86}},
+        4:  {'bull': {'prob_green': 86, 'prob_high': 71}, 'bear': {'prob_red': 64, 'prob_low': 73}},
+        5:  {'bull': {'prob_green': 92, 'prob_high': 92}, 'bear': {'prob_red': 62, 'prob_low': 62}},
+        6:  {'bull': {'prob_green': 92, 'prob_high': 83}, 'bear': {'prob_red': 69, 'prob_low': 85}},
+        7:  {'bull': {'prob_green': 84, 'prob_high': 89}, 'bear': {'prob_red': 50, 'prob_low': 67}},
+        8:  {'bull': {'prob_green': 71, 'prob_high': 86}, 'bear': {'prob_red': 64, 'prob_low': 64}},
+        9:  {'bull': {'prob_green': 77, 'prob_high': 85}, 'bear': {'prob_red': 85, 'prob_low': 85}},
+        10: {'bull': {'prob_green': 75, 'prob_high': 94}, 'bear': {'prob_red': 60, 'prob_low': 50}},
+        11: {'bull': {'prob_green': 94, 'prob_high': 88}, 'bear': {'prob_red': 60, 'prob_low': 90}},
+        12: {'bull': {'prob_green': 85, 'prob_high': 85}, 'bear': {'prob_red': 77, 'prob_low': 85}},
     },
     'ES': {
-        # BULL: lines 36-41 | BEAR: lines 46-49
-        1:  {'bear': {'prob_red': 70.0, 'prob_low': 90.0, 'n': 10}},
-        2:  {'bull': {'prob_green': 80.0, 'prob_high': 80.0, 'n': 15}},
-        3:  {'bull': {'prob_green': 83.3, 'prob_high': 91.7, 'n': 12}},
-        5:  {'bull': {'prob_green': 84.6, 'prob_high': 84.6, 'n': 13}},
-        6:  {'bear': {'prob_red': 73.3, 'prob_low': 73.3, 'n': 15}},
-        7:  {'bull': {'prob_green': 85.0, 'prob_high': 95.0, 'n': 20}},
-        9:  {'bear': {'prob_red': 83.3, 'prob_low': 83.3, 'n': 12}},
-        11: {'bull': {'prob_green': 100.0, 'prob_high': 86.7, 'n': 15}},
-        12: {'bear': {'prob_red': 80.0, 'prob_low': 80.0, 'n': 10}, 'bull': {'prob_green': 93.8, 'prob_high': 87.5, 'n': 16}},
+        1:  {'bull': {'prob_green': 67, 'prob_high': 83}, 'bear': {'prob_red': 75, 'prob_low': 88}},
+        2:  {'bull': {'prob_green': 80, 'prob_high': 80}, 'bear': {'prob_red': 82, 'prob_low': 55}},
+        3:  {'bull': {'prob_green': 91, 'prob_high': 100}, 'bear': {'prob_red': 64, 'prob_low': 79}},
+        4:  {'bull': {'prob_green': 79, 'prob_high': 79}, 'bear': {'prob_red': 36, 'prob_low': 64}},
+        5:  {'bull': {'prob_green': 92, 'prob_high': 77}, 'bear': {'prob_red': 50, 'prob_low': 67}},
+        6:  {'bull': {'prob_green': 73, 'prob_high': 87}, 'bear': {'prob_red': 70, 'prob_low': 80}},
+        7:  {'bull': {'prob_green': 80, 'prob_high': 90}, 'bear': {'prob_red': 80, 'prob_low': 80}},
+        8:  {'bull': {'prob_green': 73, 'prob_high': 87}, 'bear': {'prob_red': 60, 'prob_low': 70}},
+        9:  {'bull': {'prob_green': 85, 'prob_high': 85}, 'bear': {'prob_red': 85, 'prob_low': 85}},
+        10: {'bull': {'prob_green': 75, 'prob_high': 88}, 'bear': {'prob_red': 60, 'prob_low': 60}},
+        11: {'bull': {'prob_green': 88, 'prob_high': 82}, 'bear': {'prob_red': 56, 'prob_low': 100}},
+        12: {'bull': {'prob_green': 100, 'prob_high': 85}, 'bear': {'prob_red': 54, 'prob_low': 85}},
     },
     'YM': {
-        # BULL: lines 58-61 | BEAR: lines 66-68
-        1:  {'bear': {'prob_red': 70.0, 'prob_low': 90.0, 'n': 10}},
-        5:  {'bull': {'prob_green': 84.6, 'prob_high': 84.6, 'n': 13}},
-        6:  {'bear': {'prob_red': 73.3, 'prob_low': 73.3, 'n': 15}},
-        9:  {'bear': {'prob_red': 83.3, 'prob_low': 83.3, 'n': 12}},
-        10: {'bull': {'prob_green': 82.4, 'prob_high': 94.1, 'n': 17}},
-        11: {'bull': {'prob_green': 100.0, 'prob_high': 86.7, 'n': 15}},
-        12: {'bull': {'prob_green': 93.8, 'prob_high': 87.5, 'n': 16}},
+        1:  {'bull': {'prob_green': 59, 'prob_high': 76}, 'bear': {'prob_red': 70, 'prob_low': 90}},
+        2:  {'bull': {'prob_green': 81, 'prob_high': 75}, 'bear': {'prob_red': 73, 'prob_low': 64}},
+        3:  {'bull': {'prob_green': 83, 'prob_high': 92}, 'bear': {'prob_red': 57, 'prob_low': 57}},
+        4:  {'bull': {'prob_green': 85, 'prob_high': 85}, 'bear': {'prob_red': 38, 'prob_low': 54}},
+        5:  {'bull': {'prob_green': 85, 'prob_high': 85}, 'bear': {'prob_red': 62, 'prob_low': 77}},
+        6:  {'bull': {'prob_green': 64, 'prob_high': 82}, 'bear': {'prob_red': 73, 'prob_low': 73}},
+        7:  {'bull': {'prob_green': 85, 'prob_high': 95}, 'bear': {'prob_red': 33, 'prob_low': 83}},
+        8:  {'bull': {'prob_green': 64, 'prob_high': 86}, 'bear': {'prob_red': 58, 'prob_low': 67}},
+        9:  {'bull': {'prob_green': 71, 'prob_high': 71}, 'bear': {'prob_red': 83, 'prob_low': 83}},
+        10: {'bull': {'prob_green': 82, 'prob_high': 94}, 'bear': {'prob_red': 67, 'prob_low': 67}},
+        11: {'bull': {'prob_green': 100, 'prob_high': 87}, 'bear': {'prob_red': 64, 'prob_low': 100}},
+        12: {'bull': {'prob_green': 94, 'prob_high': 88}, 'bear': {'prob_red': 80, 'prob_low': 80}},
     },
     'GC': {
-        # BULL: lines 77-82 | BEAR: lines 87-89
-        1:  {'bull': {'prob_green': 78.9, 'prob_high': 84.2, 'n': 19}},
-        2:  {'bear': {'prob_red': 80.0, 'prob_low': 90.0, 'n': 10}, 'bull': {'prob_green': 81.2, 'prob_high': 75.0, 'n': 16}},
-        5:  {'bear': {'prob_red': 80.0, 'prob_low': 80.0, 'n': 10}, 'bull': {'prob_green': 80.0, 'prob_high': 66.7, 'n': 15}},
-        8:  {'bear': {'prob_red': 100.0, 'prob_low': 85.7, 'n': 7}, 'bull': {'prob_green': 94.4, 'prob_high': 66.7, 'n': 18}},
-        10: {'bull': {'prob_green': 78.6, 'prob_high': 92.9, 'n': 14}},
-        12: {'bull': {'prob_green': 92.3, 'prob_high': 92.3, 'n': 13}},
+        1:  {'bull': {'prob_green': 79, 'prob_high': 84}, 'bear': {'prob_red': 71, 'prob_low': 71}},
+        2:  {'bull': {'prob_green': 81, 'prob_high': 75}, 'bear': {'prob_red': 80, 'prob_low': 90}},
+        3:  {'bull': {'prob_green': 36, 'prob_high': 71}, 'bear': {'prob_red': 55, 'prob_low': 64}},
+        4:  {'bull': {'prob_green': 74, 'prob_high': 74}, 'bear': {'prob_red': 67, 'prob_low': 83}},
+        5:  {'bull': {'prob_green': 80, 'prob_high': 67}, 'bear': {'prob_red': 80, 'prob_low': 80}},
+        6:  {'bull': {'prob_green': 64, 'prob_high': 73}, 'bear': {'prob_red': 79, 'prob_low': 64}},
+        7:  {'bull': {'prob_green': 67, 'prob_high': 89}, 'bear': {'prob_red': 57, 'prob_low': 86}},
+        8:  {'bull': {'prob_green': 94, 'prob_high': 67}, 'bear': {'prob_red': 100, 'prob_low': 86}},
+        9:  {'bull': {'prob_green': 73, 'prob_high': 73}, 'bear': {'prob_red': 67, 'prob_low': 60}},
+        10: {'bull': {'prob_green': 79, 'prob_high': 93}, 'bear': {'prob_red': 83, 'prob_low': 67}},
+        11: {'bull': {'prob_green': 71, 'prob_high': 79}, 'bear': {'prob_red': 58, 'prob_low': 67}},
+        12: {'bull': {'prob_green': 92, 'prob_high': 92}, 'bear': {'prob_red': 62, 'prob_low': 85}},
     }
 }
 
