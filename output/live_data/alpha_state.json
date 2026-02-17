@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-02-16 20:48:13",
+    "timestamp": "2026-02-16 20:54:21",
     "system_status": "ACTIVE",
     "assets": [
         {
@@ -28,7 +28,7 @@
                 ],
                 "weekly": {
                     "status": "NEUTRAL",
-                    "o2c": -0.004840710374247421,
+                    "o2c": -0.004467572282899182,
                     "prob": 0.5,
                     "color": "GRAY",
                     "grade": "NOISE"
@@ -43,7 +43,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "20:48:13"
+            "last_update": "20:54:21"
         },
         {
             "asset": "ES",
@@ -71,7 +71,7 @@
                 ],
                 "weekly": {
                     "status": "NEUTRAL",
-                    "o2c": -0.0031375410434148123,
+                    "o2c": -0.0028821597956950017,
                     "prob": 0.5,
                     "color": "GRAY",
                     "grade": "NOISE"
@@ -86,7 +86,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "20:48:13"
+            "last_update": "20:54:21"
         },
         {
             "asset": "YM",
@@ -114,7 +114,7 @@
                 ],
                 "weekly": {
                     "status": "NEUTRAL",
-                    "o2c": -0.0014531070253688268,
+                    "o2c": -0.001412742941330804,
                     "prob": 0.5,
                     "color": "GRAY",
                     "grade": "NOISE"
@@ -129,7 +129,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "20:48:13"
+            "last_update": "20:54:21"
         }
     ]
 }

@@ -344,18 +344,15 @@
 
     <div class="header">
         <img src="/logo.png" alt="SPEC RESEARCH" style="height:36px;object-fit:contain;filter:brightness(0) invert(1)">
-        <div class="sync" id="timestamp">SYNC: --:--:--</div>
-    </div>
-
-    <div class="alpha-legend" id="alpha-legend" style="display:none">
-        <div class="dot"></div>
-        ALPHA ACTIVO
+        <div class="alpha-legend" id="alpha-legend" style="display:none; border:none; padding:0">
+            <div class="dot"></div>
+            ALPHA ACTIVO
+        </div>
     </div>
 
     <div class="dashboard" id="dashboard" style="display:none">
         <div class="column m-col" id="col-monthly" style="display:none">
             <div class="col-header">
-                <div class="col-title">Capa Estratégica</div>
                 <div class="col-tag">MENSUAL</div>
             </div>
             <div class="asset-list" id="monthly-list"></div>
@@ -386,6 +383,12 @@
             <strong>Diario</strong> → cuando el O2C rompe ±1σ
         </div>
     </div>
+
+    <footer
+        style="padding: 40px; text-align: center; font-family: 'JetBrains Mono'; font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); background: var(--bg); position: relative; z-index: 10;">
+        <div id="timestamp">SINC: --:--:--</div>
+        <div style="margin-top: 10px; opacity: 0.5;">SPEC RESEARCH | INTELIGENCIA ESTACIONAL</div>
+    </footer>
 
     <script>
         async function fetchDashboard() {
@@ -452,7 +455,8 @@
 
                 var biasHtml = '';
                 if (layer.bias) {
-                    biasHtml = '<div class="bias ' + layer.bias.toLowerCase() + '">' + layer.bias + '</div>';
+                    var biasClass = (layer.bias === 'ALCISTA') ? 'bull' : 'bear';
+                    biasHtml = '<div class="bias ' + biasClass + '">' + layer.bias + '</div>';
                 }
 
                 card.innerHTML = '<div class="card-head"><div>' +

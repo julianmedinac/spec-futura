@@ -191,20 +191,20 @@ def calc_layers(asset, df):
             w2c = float(w1w2['Close'].iloc[-1])
             pos = (w2c - lo) / (hi - lo) if (hi - lo) != 0 else 0.5
             is_bear = pos < 0.5
-            m_bias = "BEAR" if is_bear else "BULL"
+            m_bias = "BAJISTA" if is_bear else "ALCISTA"
             
             curr_lo, curr_hi = float(month_df['Low'].min()), float(month_df['High'].max())
             probs = W2_MONTHLY.get(asset, {}).get(month, None)
             if probs:
                 p_set = probs.get('bear') if is_bear else probs.get('bull')
                 if p_set and is_bear:
-                    m_signals.append({'target': 'CIERRE ROJO', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
+                    m_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
                     s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
-                    m_signals.append({'target': 'NUEVO MÍNIMO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
+                    m_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
                 elif p_set and not is_bear:
-                    m_signals.append({'target': 'CIERRE VERDE', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
+                    m_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
                     s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
-                    m_signals.append({'target': 'NUEVO MÁXIMO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green'})
+                    m_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green'})
                 # If p_set is None → this month/direction has no audited data → m_signals stays empty
 
     # 2. Weekly (D2 Fractal) — Only show after Tuesday close (>= 2 trading days this week)
@@ -217,7 +217,7 @@ def calc_layers(asset, df):
         hi, lo = max(float(d1['High']), float(d2['High'])), min(float(d1['Low']), float(d2['Low']))
         pos = (float(d2['Close']) - lo) / (hi - lo) if (hi - lo) != 0 else 0.5
         is_bull = pos > 0.5
-        w_bias = "BULL" if is_bull else "BEAR"
+        w_bias = "ALCISTA" if is_bull else "BAJISTA"
         curr_lo, curr_hi = float(week_df['Low'].min()), float(week_df['High'].max())
         
         seasonal = WEEKLY_SEASONAL.get(asset, {}).get(month, None)
@@ -225,13 +225,13 @@ def calc_layers(asset, df):
             p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
             if p_set:
                 if is_bull:
-                    w_signals.append({'target': 'CIERRE VERDE', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
+                    w_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
                     s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
-                    w_signals.append({'target': 'NUEVO MÁXIMO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
+                    w_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
                 else:
-                    w_signals.append({'target': 'CIERRE ROJO', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
+                    w_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
                     s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
-                    w_signals.append({'target': 'NUEVO MÍNIMO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
+                    w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
 
     # 3. Weekly Alpha Matrix (1-Sigma Persistence/Reversion)
     # Check if the PREVIOUS WEEK closed beyond alpha thresholds
