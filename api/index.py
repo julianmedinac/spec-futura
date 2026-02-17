@@ -222,8 +222,8 @@ def calc_layers(asset, df):
         if now_utc.weekday() > 1: # Wednesday (2) onwards
             show_d2 = True
         elif now_utc.weekday() == 1: # Tuesday (1)
-            # 16:30 EST is approx 21:30 UTC. 
-            if now_utc.hour > 21 or (now_utc.hour == 21 and now_utc.minute >= 30):
+            # 17:30 EST is 22:30 UTC. 
+            if now_utc.hour > 22 or (now_utc.hour == 22 and now_utc.minute >= 30):
                 show_d2 = True
                 
         if show_d2:
