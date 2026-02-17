@@ -173,31 +173,7 @@ def calc_layers(asset, df):
                     'avg_ret': trigger['avg_ret']
                 })
 
-    # --- TODAY'S GENERAL EXPANSION BIAS ---
-    today = df.iloc[-1]
-    t_o, t_c = float(today['Open']), float(today['Close'])
-    t_o2c = (t_c - t_o) / t_o if t_o != 0 else 0
-    t_weekday = today.name.weekday()  # from the data, not the clock
-    today_name = DAY_NAMES[t_weekday] if t_weekday < 7 else '?'
-
-    if t_o2c > sigma:
-        d_signals.append({
-            'target': 'WEEKLY BULL EXPANSION',
-            'prob': 82,
-            'status': 'ACTIVE',
-            'grade': 'GOLD+',
-            'color': 'green',
-            'val': f'{today_name} O2C: {t_o2c*100:+.2f}% (broke +1σ)'
-        })
-    elif t_o2c < -sigma:
-        d_signals.append({
-            'target': 'WEEKLY BEAR EXPANSION',
-            'prob': 84,
-            'status': 'ACTIVE',
-            'grade': 'GOLD+',
-            'color': 'red',
-            'val': f'{today_name} O2C: {t_o2c*100:+.2f}% (broke -1σ)'
-        })
+    # General expansion bias REMOVED — probabilities were not audited
     # If neither yesterday triggered nor today broke σ → d_signals stays empty → column hidden
 
     return {'monthly': {'bias': m_bias, 'signals': m_signals}, 'weekly': {'bias': w_bias, 'signals': w_signals}, 'daily': {'signals': d_signals}}
