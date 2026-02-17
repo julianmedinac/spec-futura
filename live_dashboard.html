@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPEC FUTURA | LIVE ALPHA</title>
+    <title>SPEC FUTURA | ALPHA EN VIVO</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -323,7 +323,7 @@
         </div>
         <div class="status-pill">
             <div class="live-dot"></div>
-            SYSTEM OPERATIONAL v7.0
+            SISTEMA OPERATIVO v7.0
         </div>
     </header>
 
@@ -332,8 +332,8 @@
     </div>
 
     <footer>
-        <div id="last-update">SYNC: --:--</div>
-        <div style="margin-top:8px">AUDITED SEASONAL INTELLIGENCE | SPEC RESEARCH INC.</div>
+        <div id="last-update">SINC: --:--</div>
+        <div style="margin-top:8px">INTELIGENCIA ESTACIONAL AUDITADA | SPEC RESEARCH INC.</div>
     </footer>
 
     <script>
@@ -363,11 +363,11 @@
         }
 
         function mapStatus(rawStatus) {
-            // Rename statuses for clarity
-            if (rawStatus === 'ACTIVE') return 'IN PROGRESS...';
-            if (rawStatus === 'PENDING') return 'WAITING...';
-            if (rawStatus === 'PENDING \u23f3') return 'WAITING...'; // Pending hourglass
-            if (rawStatus.includes('FULFILLED')) return 'COMPLETED \u2705';
+            // Rename statuses for clarity in Spanish
+            if (rawStatus === 'ACTIVE' || rawStatus === 'ACTIVO') return 'EN PROGRESO...';
+            if (rawStatus === 'PENDING' || rawStatus === 'PENDIENTE') return 'ESPERANDO...';
+            if (rawStatus === 'PENDING \u23f3') return 'ESPERANDO...';
+            if (rawStatus.includes('FULFILLED') || rawStatus.includes('COMPLETADO')) return 'COMPLETADO \u2705';
             return rawStatus;
         }
 
@@ -376,7 +376,7 @@
                 const response = await fetch('output/live_data/alpha_state.json');
                 const data = await response.json();
 
-                document.getElementById('last-update').innerText = `SYNC: ${data.timestamp}`;
+                document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;
                 const grid = document.getElementById('asset-grid');
                 grid.innerHTML = '';
 
@@ -426,7 +426,7 @@
                             `;
                         }).join('');
                     } else {
-                        monthlyHtml = '<div style="color:var(--text-secondary); font-size:12px; padding:10px; font-style:italic">Scanning for structure...</div>';
+                        monthlyHtml = '<div style="color:var(--text-secondary); font-size:12px; padding:10px; font-style:italic">Escaneando estructura...</div>';
                     }
 
                     // --- CARD RENDER ---
@@ -440,7 +440,7 @@
                                 <div class="asset-price">$${asset.price.toLocaleString()}</div>
                             </div>
                             <div class="sigma-metric">
-                                <div class="sigma-label">Daily Sigma</div>
+                                <div class="sigma-label">Sigma Diario</div>
                                 <div class="sigma-value" style="color:${Math.abs(sigmaDist) > 1 ? dailyColors.main : 'inherit'}">
                                     ${sigmaDist.toFixed(2)}σ
                                 </div>
@@ -455,17 +455,17 @@
 
                         <!-- 1. STRATEGIC (MONTHLY) -->
                         <div>
-                            <div class="section-title">STRATEGIC LAYER (FEB)</div>
+                            <div class="section-title">CAPA ESTRATÉGICA (FEB)</div>
                             ${monthlyHtml}
                         </div>
 
                         <!-- 2. TACTICAL (WEEKLY) -->
                         <div>
-                            <div class="section-title">TACTICAL LAYER (WEEKLY)</div>
+                            <div class="section-title">CAPA TÁCTICA (SEMANAL)</div>
                             <div class="signal-box" style="border-left-color: ${getColors(layers.weekly.color).main}; opacity: 0.8">
                                 <div class="signal-info">
                                     <span class="signal-target" style="color: ${getColors(layers.weekly.color).main}">${layers.weekly.status}</span>
-                                    <span class="signal-status">WEEKLY BIAS</span>
+                                    <span class="signal-status">SESGO SEMANAL</span>
                                 </div>
                                 <div class="signal-metrics">
                                     <span class="prob-value">${formatProb(layers.weekly.prob)}</span>
@@ -475,7 +475,7 @@
 
                         <!-- 3. EXECUTION (DAILY) -->
                         <div>
-                            <div class="section-title">EXECUTION LAYER (DAILY)</div>
+                            <div class="section-title">CAPA DE EJECUCIÓN (DIARIO)</div>
                             <div class="signal-box" style="border-left-color: ${dailyColors.main}">
                                 <div class="signal-info">
                                     <span class="signal-target" style="color: ${dailyColors.main}">${daily.status}</span>

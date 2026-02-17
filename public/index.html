@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPEC RESEARCH | Alpha Dashboard</title>
+    <title>SPEC RESEARCH | Dashboard de Alpha</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap"
         rel="stylesheet">
@@ -339,7 +339,7 @@
 
     <div class="loading" id="loader">
         <div class="spinner"></div>
-        <div style="margin-top: 20px; font-family: 'JetBrains Mono'; font-size: 12px;">SCANNING MARKETS...</div>
+        <div style="margin-top: 20px; font-family: 'JetBrains Mono'; font-size: 12px;">ESCANEANDO MERCADOS...</div>
     </div>
 
     <div class="header">
@@ -349,27 +349,27 @@
 
     <div class="alpha-legend" id="alpha-legend" style="display:none">
         <div class="dot"></div>
-        ACTIVE ALPHA
+        ALPHA ACTIVO
     </div>
 
     <div class="dashboard" id="dashboard" style="display:none">
         <div class="column m-col" id="col-monthly" style="display:none">
             <div class="col-header">
-                <div class="col-title">Strategic Layer</div>
+                <div class="col-title">Capa Estratégica</div>
                 <div class="col-tag">MENSUAL</div>
             </div>
             <div class="asset-list" id="monthly-list"></div>
         </div>
         <div class="column w-col" id="col-weekly" style="display:none">
             <div class="col-header">
-                <div class="col-title">Tactical Layer</div>
+                <div class="col-title">Capa Táctica</div>
                 <div class="col-tag">SEMANAL</div>
             </div>
             <div class="asset-list" id="weekly-list"></div>
         </div>
         <div class="column d-col" id="col-daily" style="display:none">
             <div class="col-header">
-                <div class="col-title">Execution Layer</div>
+                <div class="col-title">Capa de Ejecución</div>
                 <div class="col-tag">DIARIO</div>
             </div>
             <div class="asset-list" id="daily-list"></div>
@@ -393,7 +393,7 @@
                 var res = await fetch('/api/index');
                 var json = await res.json();
 
-                document.getElementById('timestamp').innerText = 'SYNC: ' + json.timestamp;
+                document.getElementById('timestamp').innerText = 'SINC: ' + json.timestamp;
 
                 var hasMonthly = renderSection('monthly-list', json.data, 'monthly');
                 var hasWeekly = renderSection('weekly-list', json.data, 'weekly');
@@ -443,7 +443,7 @@
                     html += '<div class="sig-main">' + s.target;
                     if (s.val) html += ' <span style="color:var(--text-dim);font-weight:400">[' + s.val + ']</span>';
                     html += '</div>';
-                    html += '<div class="sig-sub">' + s.status + ' | ' + (s.grade || 'GRADED') + '</div>';
+                    html += '<div class="sig-sub">' + s.status + ' | ' + (s.grade || 'CALIFICADO') + '</div>';
                     html += '</div>';
                     html += '<div class="sig-prob" style="color:var(--' + s.color + ')">' + s.prob + '%</div>';
                     html += '</div>';
