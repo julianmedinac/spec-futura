@@ -482,27 +482,27 @@
                     document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;
                     const grid = document.getElementById('asset-grid');
                     grid.innerHTML = '';
-                    
+
                     if (!data.assets) return;
 
                     data.assets.forEach(asset => {
                         const layers = asset.layers;
                         const daily = layers.daily;
-                        
+
                         // Daily Gauge Calculation
                         const sigmaVal = daily.sigma_level || 0.01;
                         const currentO2C = daily.o2c || 0;
                         const sigmaDist = currentO2C / sigmaVal;
                         let gaugeWidth = Math.min(Math.abs(sigmaDist) * 50, 50); // Max 50% width
-                        
+
                         const dailyColors = getColors(daily.color);
 
                         // Gauge styling
                         let gaugeStyle = '';
                         if (currentO2C > 0) {
-                             gaugeStyle = `left: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
+                            gaugeStyle = `left: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
                         } else {
-                             gaugeStyle = `right: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
+                            gaugeStyle = `right: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
                         }
 
                         // --- MONTHLY SIGNALS ---
@@ -514,7 +514,7 @@
                                 const cleanStatus = mapStatus(sig.status);
                                 const isDone = cleanStatus.includes('COMPLETADO') || cleanStatus.includes('COMPLETED');
                                 const borderStyle = isDone ? `border-left: 4px solid ${c.main}` : `border-left: 2px solid ${c.main}`;
-                                
+
                                 return `<div class="signal-box" style="${borderStyle}; background: ${c.bg}">
                                     <div class="signal-info">
                                         <span class="signal-target" style="color: ${c.main}">${sig.target}</span>
@@ -529,11 +529,11 @@
                         } else {
                             monthlyHtml = '<div style="color:var(--text-secondary); font-size:12px; padding:10px; font-style:italic">Escaneando estructura...</div>';
                         }
-                        
+
                         // --- CARD RENDER ---
                         const card = document.createElement('div');
                         card.className = 'card';
-                        
+
                         card.innerHTML = `
                             <!-- ASSET HEADER -->
                             <div class="asset-header">
@@ -557,6 +557,10 @@
 
                             <!-- 1. STRATEGIC (MONTHLY) -->
                             <div>
+                                <div class="section-title" style="display:flex; justify-content:space-between">
+                                    <span>CAPA ESTRATÉGICA (MENSUAL)</span>
+                                    <div class="d2-btn" onclick="showChart('${asset.asset}', 'w2')">VER GRÁFICO</div>
+                                </div>
                                 ${monthlyHtml}
                             </div>
 
@@ -564,7 +568,7 @@
                             <div>
                                 <div class="section-title" style="display:flex; justify-content:space-between">
                                     <span>CAPA TÁCTICA (SEMANAL)</span>
-                                    <div class="d2-btn" onclick="showChart('${asset.asset}')">VER GRÁFICO</div>
+                                    <div class="d2-btn" onclick="showChart('${asset.asset}', 'd2')">VER GRÁFICO</div>
                                 </div>
                                 <div class="signal-box" style="border-left-color: ${getColors(layers.weekly.color).main}; opacity: 0.8">
                                     <div class="signal-info">
@@ -604,23 +608,32 @@
             setInterval(updateDashboard, 5000); // 5s Refresh
 
             // --- MODAL LOGIC ---
-            function showChart(assetSymbol) {
+            function showChart(assetSymbol, type) {
                 const map = {
                     'NQ': 'NQ',
                     'ES': 'ES',
-                    'YM': 'DJI', // YM maps to Dow Jones (DJI) chart
+                    'YM': 'DJI',
                     'GC': 'GC'
+                };
+
+                // Mappings for W2 are simpler
+                const w2Map = {
+                    'NQ': 'NQ',
+                    'ES': 'ES',
+                    'YM': 'DOW', // YM maps to DOW.png
+                    'GC': 'GOLD' // GC maps to GOLD.png
+                };
+
+                let src = '';
+
+                if (type === 'w2') {
+                    const fileCode = w2Map[assetSymbol] || assetSymbol;
+                    src = `public/charts/w2/${fileCode}.png`;
+                } else {
+                    // Default to D2
+                    const fileCode = map[assetSymbol] || assetSymbol;
+                    src = `public/charts/d2/${fileCode}_weekly_fractal_seasonality_styled.png`;
                 }
-
-                    ;
-                const fileCode = map[assetSymbol] || assetSymbol;
-
-                // Path relative to root (public folder)
-                const src = `public/charts/d2/$ {
-                fileCode
-            }
-
-            _weekly_fractal_seasonality_styled.png`;
 
                 const modal = document.getElementById('chart-modal');
                 const img = document.getElementById('chart-img');
