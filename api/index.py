@@ -180,11 +180,11 @@ def calc_layers(asset, df):
     month = last_date.month
     year = last_date.year
     
-    # 1. Monthly — Only show if W2 signal is LOCKED (day > 13)
+    # 1. Monthly — Only show if W2 signal is LOCKED (day >= 13)
     month_df = df[(df.index.month == month) & (df.index.year == year)]
     m_signals = []
     m_bias = None
-    if day > 13 and len(month_df) >= 5:
+    if day >= 13:
         w1w2 = month_df[month_df.index.day <= 13]
         if not w1w2.empty:
             hi, lo = float(w1w2['High'].max()), float(w1w2['Low'].min())
