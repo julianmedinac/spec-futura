@@ -313,196 +313,327 @@
             background: #333;
             border-radius: 3px;
         }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        /* MODAL & BUTTONS */
+        .d2-btn {
+            font-size: 9px;
+            padding: 2px 8px;
+            border: 1px solid var(--text-secondary);
+            color: var(--text-secondary);
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: auto;
+            text-transform: uppercase;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.05);
+            font-family: var(--font-mono);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .d2-btn:hover {
+            background: var(--text-secondary);
+            color: var(--bg-color);
+            border-color: var(--text-secondary);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal.show {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background: var(--bg-color);
+            padding: 10px;
+            border-radius: 16px;
+            max-width: 90%;
+            max-height: 90vh;
+            border: 1px solid var(--card-border);
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.1);
+            position: relative;
+            animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .close-modal {
+            position: absolute;
+            top: -15px;
+            right: -15px;
+            background: var(--bg-color);
+            border: 1px solid var(--card-border);
+            color: var(--text-primary);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 700;
+            z-index: 10;
+        }
     </style>
 </head>
 
 <body>
     <header>
-        <div class="brand">
-            SPEC <span>FUTURA</span>
-        </div>
+        <div class="brand">SPEC <span>FUTURA</span></div>
         <div class="status-pill">
-            <div class="live-dot"></div>
-            SISTEMA OPERATIVO v7.0
+            <div class="live-dot"></div>SISTEMA OPERATIVO v7.0
         </div>
         <div class="alpha-legend" id="alpha-legend"
             style="display:none; border:none; padding:0; background:transparent">
-            <div class="dot"></div>
-            ALPHA ACTIVO
+            <div class="dot"></div>ALPHA ACTIVO
         </div>
     </header>
-
     <div class="grid" id="asset-grid">
-        <!-- Cards injected by JS -->
+        < !-- Cards injected by JS -->
     </div>
-
     <footer>
         <div id="last-update">SINC: --:--</div>
         <div style="margin-top:8px">SPEC RESEARCH ® 2026</div>
     </footer>
+    < !-- MODAL FOR CHARTS -->
+        <div id="chart-modal" class="modal" onclick="closeChart()">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <div class="close-modal" onclick="closeChart()">X</div><img id="chart-img"
+                    style="max-width:100%; max-height:85vh; border-radius:8px; display:block" src="">
+            </div>
+        </div>
+        <script> // --- COLOR & STATE HELPERS ---
 
-    <script>
-        // --- COLOR & STATE HELPERS ---
+            function getColors(colorKey) {
+                if (colorKey === 'RED') return {
+                    main: 'var(--accent-red)',
+                    bg: 'var(--accent-red-dim)',
+                    glow: 'var(--accent-red-glow)'
+                }
 
-        function getColors(colorKey) {
-            if (colorKey === 'RED') return {
-                main: 'var(--accent-red)',
-                bg: 'var(--accent-red-dim)',
-                glow: 'var(--accent-red-glow)'
-            };
-            if (colorKey === 'GREEN') return {
-                main: 'var(--accent-green)',
-                bg: 'var(--accent-green-dim)',
-                glow: 'var(--accent-green-glow)'
-            };
-            return {
-                main: 'var(--text-secondary)',
-                bg: 'rgba(255,255,255,0.03)',
-                glow: 'transparent'
-            };
-        }
+                    ;
 
-        function formatProb(val) {
-            const num = parseFloat(val);
-            return !isNaN(num) ? (num * 100).toFixed(1) + '%' : 'N/A';
-        }
+                if (colorKey === 'GREEN') return {
+                    main: 'var(--accent-green)',
+                    bg: 'var(--accent-green-dim)',
+                    glow: 'var(--accent-green-glow)'
+                }
 
-        function mapStatus(rawStatus) {
-            // Rename statuses for clarity in Spanish
-            if (rawStatus === 'ACTIVE' || rawStatus === 'ACTIVO') return 'EN PROGRESO...';
-            if (rawStatus === 'PENDING' || rawStatus === 'PENDIENTE') return 'ESPERANDO...';
-            if (rawStatus === 'PENDING \u23f3') return 'ESPERANDO...';
-            if (rawStatus.includes('FULFILLED') || rawStatus.includes('COMPLETADO')) return 'COMPLETADO \u2705';
-            return rawStatus;
-        }
+                    ;
 
-        async function updateDashboard() {
-            try {
-                const response = await fetch('data/alpha_state.json');
-                const data = await response.json();
+                return {
+                    main: 'var(--text-secondary)',
+                    bg: 'rgba(255,255,255,0.03)',
+                    glow: 'transparent'
+                }
 
-                document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;
-                const grid = document.getElementById('asset-grid');
-                grid.innerHTML = '';
-
-                data.assets.forEach(asset => {
-                    const layers = asset.layers;
-                    const daily = layers.daily;
-
-                    // Daily Gauge Calculation
-                    const sigmaVal = daily.sigma_level;
-                    const currentO2C = daily.o2c;
-                    const sigmaDist = currentO2C / sigmaVal;
-                    let gaugeWidth = Math.min(Math.abs(sigmaDist) * 50, 50); // Max 50% width (from center)
-
-                    const dailyColors = getColors(daily.color);
-
-                    // Gauge styling
-                    let gaugeStyle = '';
-                    if (currentO2C > 0) {
-                        gaugeStyle = `left: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
-                    } else {
-                        gaugeStyle = `right: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
-                    }
-
-                    // --- MONTHLY SIGNALS ---
-                    let monthlyHtml = '';
-                    const monthlySignals = layers.monthly_signals;
-
-                    if (Array.isArray(monthlySignals) && monthlySignals.length > 0) {
-                        monthlyHtml = monthlySignals.map(sig => {
-                            const c = getColors(sig.color);
-                            const cleanStatus = mapStatus(sig.status);
-                            // Highlight if completed
-                            const isDone = cleanStatus.includes('COMPLETED');
-                            const borderStyle = isDone ? `border-left: 4px solid ${c.main}` : `border-left: 2px solid ${c.main}`;
-
-                            return `
-                            <div class="signal-box" style="${borderStyle}; background: ${c.bg}">
-                                <div class="signal-info">
-                                    <span class="signal-target" style="color: ${c.main}">${sig.target}</span>
-                                    <span class="signal-status">${cleanStatus}</span>
-                                </div>
-                                <div class="signal-metrics">
-                                    <span class="prob-value" style="color: ${c.main}">${formatProb(sig.prob)}</span>
-                                    ${sig.grade ? `<span class="grade-badge">${sig.grade}</span>` : ''}
-                                </div>
-                            </div>
-                            `;
-                        }).join('');
-                    } else {
-                        monthlyHtml = '<div style="color:var(--text-secondary); font-size:12px; padding:10px; font-style:italic">Escaneando estructura...</div>';
-                    }
-
-                    // --- CARD RENDER ---
-                    const card = document.createElement('div');
-                    card.className = 'card';
-                    card.innerHTML = `
-                        <!-- ASSET HEADER -->
-                        <div class="asset-header">
-                            <div>
-                                <div class="asset-name">${asset.asset}</div>
-                                <div class="asset-price">$${asset.price.toLocaleString()}</div>
-                            </div>
-                            <div class="sigma-metric">
-                                <div class="sigma-label">Sigma Diario</div>
-                                <div class="sigma-value" style="color:${Math.abs(sigmaDist) > 1 ? dailyColors.main : 'inherit'}">
-                                    ${sigmaDist.toFixed(2)}σ
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- GAUGE -->
-                        <div class="gauge-container">
-                            <div class="gauge-center"></div>
-                            <div class="gauge-bar" style="${gaugeStyle}"></div>
-                        </div>
-
-                        <!-- 1. STRATEGIC (MONTHLY) -->
-                        <div>
-                            ${monthlyHtml}
-                        </div>
-
-                        <!-- 2. TACTICAL (WEEKLY) -->
-                        <div>
-                            <div class="section-title">CAPA TÁCTICA (SEMANAL)</div>
-                            <div class="signal-box" style="border-left-color: ${getColors(layers.weekly.color).main}; opacity: 0.8">
-                                <div class="signal-info">
-                                    <span class="signal-target" style="color: ${getColors(layers.weekly.color).main}">${layers.weekly.status}</span>
-                                    <span class="signal-status">SESGO SEMANAL</span>
-                                </div>
-                                <div class="signal-metrics">
-                                    <span class="prob-value">${formatProb(layers.weekly.prob)}</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- 3. EXECUTION (DAILY) -->
-                        <div>
-                            <div class="section-title">CAPA DE EJECUCIÓN (DIARIO)</div>
-                            <div class="signal-box" style="border-left-color: ${dailyColors.main}">
-                                <div class="signal-info">
-                                    <span class="signal-target" style="color: ${dailyColors.main}">${daily.status}</span>
-                                    <span class="signal-status">Open-to-Close: ${(daily.o2c * 100).toFixed(2)}%</span>
-                                </div>
-                                <div class="signal-metrics">
-                                    <span class="prob-value">${formatProb(daily.prob)}</span>
-                                    <span class="grade-badge">SIGMA</span>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    grid.appendChild(card);
-                });
-
-            } catch (error) {
-                console.error("Dashboard Sync Error:", error);
+                    ;
             }
-        }
 
-        updateDashboard();
-        setInterval(updateDashboard, 5000); // 5s Refresh
-    </script>
+            function formatProb(val) {
+                const num = parseFloat(val);
+                return !isNaN(num) ? (num * 100).toFixed(1) + '%' : 'N/A';
+            }
+
+            function mapStatus(rawStatus) {
+                // Rename statuses for clarity in Spanish
+                if (rawStatus === 'ACTIVE' || rawStatus === 'ACTIVO') return 'EN PROGRESO...';
+                if (rawStatus === 'PENDING' || rawStatus === 'PENDIENTE') return 'ESPERANDO...';
+                if (rawStatus === 'PENDING \u23f3') return 'ESPERANDO...';
+                if (rawStatus.includes('FULFILLED') || rawStatus.includes('COMPLETADO')) return 'COMPLETADO \u2705';
+                return rawStatus;
+            }
+
+            async function updateDashboard() {
+                try {
+                    const response = await fetch('data/alpha_state.json');
+                    const data = await response.json();
+
+                    document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;
+                    const grid = document.getElementById('asset-grid');
+                    grid.innerHTML = '';
+                    
+                    if (!data.assets) return;
+
+                    data.assets.forEach(asset => {
+                        const layers = asset.layers;
+                        const daily = layers.daily;
+                        
+                        // Daily Gauge Calculation
+                        const sigmaVal = daily.sigma_level || 0.01;
+                        const currentO2C = daily.o2c || 0;
+                        const sigmaDist = currentO2C / sigmaVal;
+                        let gaugeWidth = Math.min(Math.abs(sigmaDist) * 50, 50); // Max 50% width
+                        
+                        const dailyColors = getColors(daily.color);
+
+                        // Gauge styling
+                        let gaugeStyle = '';
+                        if (currentO2C > 0) {
+                             gaugeStyle = `left: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
+                        } else {
+                             gaugeStyle = `right: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
+                        }
+
+                        // --- MONTHLY SIGNALS ---
+                        let monthlyHtml = '';
+                        const monthlySignals = layers.monthly_signals;
+                        if (Array.isArray(monthlySignals) && monthlySignals.length > 0) {
+                            monthlyHtml = monthlySignals.map(sig => {
+                                const c = getColors(sig.color);
+                                const cleanStatus = mapStatus(sig.status);
+                                const isDone = cleanStatus.includes('COMPLETADO') || cleanStatus.includes('COMPLETED');
+                                const borderStyle = isDone ? `border-left: 4px solid ${c.main}` : `border-left: 2px solid ${c.main}`;
+                                
+                                return `<div class="signal-box" style="${borderStyle}; background: ${c.bg}">
+                                    <div class="signal-info">
+                                        <span class="signal-target" style="color: ${c.main}">${sig.target}</span>
+                                        <span class="signal-status">${cleanStatus}</span>
+                                    </div>
+                                    <div class="signal-metrics">
+                                        <span class="prob-value" style="color: ${c.main}">${formatProb(sig.prob)}</span>
+                                        ${sig.grade ? `<span class="grade-badge">${sig.grade}</span>` : ''}
+                                    </div>
+                                </div>`;
+                            }).join('');
+                        } else {
+                            monthlyHtml = '<div style="color:var(--text-secondary); font-size:12px; padding:10px; font-style:italic">Escaneando estructura...</div>';
+                        }
+                        
+                        // --- CARD RENDER ---
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        
+                        card.innerHTML = `
+                            <!-- ASSET HEADER -->
+                            <div class="asset-header">
+                                <div>
+                                    <div class="asset-name">${asset.asset}</div>
+                                    <div class="asset-price">$${asset.price.toLocaleString()}</div>
+                                </div>
+                                <div class="sigma-metric">
+                                    <div class="sigma-label">Sigma Diario</div>
+                                    <div class="sigma-value" style="color:${Math.abs(sigmaDist) > 1 ? dailyColors.main : 'inherit'}">
+                                        ${sigmaDist.toFixed(2)}σ
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- GAUGE -->
+                            <div class="gauge-container">
+                                <div class="gauge-center"></div>
+                                <div class="gauge-bar" style="${gaugeStyle}"></div>
+                            </div>
+
+                            <!-- 1. STRATEGIC (MONTHLY) -->
+                            <div>
+                                ${monthlyHtml}
+                            </div>
+
+                            <!-- 2. TACTICAL (WEEKLY) -->
+                            <div>
+                                <div class="section-title" style="display:flex; justify-content:space-between">
+                                    <span>CAPA TÁCTICA (SEMANAL)</span>
+                                    <div class="d2-btn" onclick="showChart('${asset.asset}')">VER GRÁFICO</div>
+                                </div>
+                                <div class="signal-box" style="border-left-color: ${getColors(layers.weekly.color).main}; opacity: 0.8">
+                                    <div class="signal-info">
+                                        <span class="signal-target" style="color: ${getColors(layers.weekly.color).main}">${layers.weekly.status}</span>
+                                        <span class="signal-status">SESGO SEMANAL</span>
+                                    </div>
+                                    <div class="signal-metrics">
+                                        <span class="prob-value">${formatProb(layers.weekly.prob)}</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. EXECUTION (DAILY) -->
+                            <div>
+                                <div class="section-title">CAPA DE EJECUCIÓN (DIARIO)</div>
+                                <div class="signal-box" style="border-left-color: ${dailyColors.main}">
+                                    <div class="signal-info">
+                                        <span class="signal-target" style="color: ${dailyColors.main}">${daily.status}</span>
+                                        <span class="signal-status">Open-to-Close: ${(daily.o2c * 100).toFixed(2)}%</span>
+                                    </div>
+                                    <div class="signal-metrics">
+                                        <span class="prob-value">${formatProb(daily.prob)}</span>
+                                        <span class="grade-badge">SIGMA</span>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                        grid.appendChild(card);
+                    });
+
+                } catch (error) {
+                    console.error("Dashboard Sync Error:", error);
+                }
+            }
+
+            updateDashboard();
+            setInterval(updateDashboard, 5000); // 5s Refresh
+
+            // --- MODAL LOGIC ---
+            function showChart(assetSymbol) {
+                const map = {
+                    'NQ': 'NQ',
+                    'ES': 'ES',
+                    'YM': 'DJI', // YM maps to Dow Jones (DJI) chart
+                    'GC': 'GC'
+                }
+
+                    ;
+                const fileCode = map[assetSymbol] || assetSymbol;
+
+                // Path relative to root (public folder)
+                const src = `public/charts/d2/$ {
+                fileCode
+            }
+
+            _weekly_fractal_seasonality_styled.png`;
+
+                const modal = document.getElementById('chart-modal');
+                const img = document.getElementById('chart-img');
+
+                img.src = src;
+                modal.classList.add('show');
+            }
+
+            function closeChart() {
+                document.getElementById('chart-modal').classList.remove('show');
+            }
+
+        </script>
 </body>
 
 </html>
