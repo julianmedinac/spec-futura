@@ -69,34 +69,96 @@ W2_MONTHLY = {
     }
 }
 
-# Source: SKILL_WEEKLY_FRACTAL_STRATEGY.md lines 46-49
-# ONLY bull_high is audited. No bear stats or bull_green available.
-D2_WEEKLY_GENERAL = {
-    'NQ':  {'bull_high': 80.0},
-    'ES':  {'bull_high': 82.4},
-    'YM':  {'bull_high': 77.6},
-    'GC':  {'bull_high': 75.5},
+# Source: output/charts/strategy/D2/ (NQ_weekly_fractal_seasonality_styled.png, etc.)
+# Fully audited 12-month tables for D2 Signal (Tuesday Close vs Mon-Tue Range)
+WEEKLY_SEASONAL = {
+    'NQ': {
+        1:  {'bull': {'prob_high': 86.5, 'prob_green': 75.7}, 'bear': {'prob_low': 78.6, 'prob_red': 83.3}},
+        2:  {'bull': {'prob_high': 85.5, 'prob_green': 76.4}, 'bear': {'prob_low': 78.7, 'prob_red': 63.8}},
+        3:  {'bull': {'prob_high': 79.4, 'prob_green': 77.8}, 'bear': {'prob_low': 72.3, 'prob_red': 72.3}},
+        4:  {'bull': {'prob_high': 85.0, 'prob_green': 70.0}, 'bear': {'prob_low': 64.6, 'prob_red': 68.8}},
+        5:  {'bull': {'prob_high': 78.3, 'prob_green': 75.0}, 'bear': {'prob_low': 78.7, 'prob_red': 66.0}},
+        6:  {'bull': {'prob_high': 85.2, 'prob_green': 59.0}, 'bear': {'prob_low': 81.6, 'prob_red': 69.4}},
+        7:  {'bull': {'prob_high': 81.1, 'prob_green': 64.9}, 'bear': {'prob_low': 68.4, 'prob_red': 60.5}},
+        8:  {'bull': {'prob_high': 83.3, 'prob_green': 75.0}, 'bear': {'prob_low': 74.0, 'prob_red': 68.0}},
+        9:  {'bull': {'prob_high': 72.6, 'prob_green': 71.0}, 'bear': {'prob_low': 69.6, 'prob_red': 65.2}},
+        10: {'bull': {'prob_high': 79.1, 'prob_green': 73.1}, 'bear': {'prob_low': 77.1, 'prob_red': 43.8}},
+        11: {'bull': {'prob_high': 76.7, 'prob_green': 76.7}, 'bear': {'prob_low': 69.2, 'prob_red': 69.2}},
+        12: {'bull': {'prob_high': 68.2, 'prob_green': 72.7}, 'bear': {'prob_low': 67.3, 'prob_red': 73.5}},
+    },
+    'ES': {
+        1:  {'bull': {'prob_high': 87.3, 'prob_green': 69.6}, 'bear': {'prob_low': 78.4, 'prob_red': 78.4}},
+        2:  {'bull': {'prob_high': 76.7, 'prob_green': 68.3}, 'bear': {'prob_low': 78.6, 'prob_red': 52.4}},
+        3:  {'bull': {'prob_high': 75.0, 'prob_green': 75.0}, 'bear': {'prob_low': 70.0, 'prob_red': 66.0}},
+        4:  {'bull': {'prob_high': 89.9, 'prob_green': 71.0}, 'bear': {'prob_low': 74.4, 'prob_red': 61.5}},
+        5:  {'bull': {'prob_high': 76.8, 'prob_green': 69.6}, 'bear': {'prob_low': 74.5, 'prob_red': 70.6}},
+        6:  {'bull': {'prob_high': 77.8, 'prob_green': 66.7}, 'bear': {'prob_low': 85.1, 'prob_red': 74.5}},
+        7:  {'bull': {'prob_high': 89.0, 'prob_green': 74.0}, 'bear': {'prob_low': 76.9, 'prob_red': 59.0}},
+        8:  {'bull': {'prob_high': 81.4, 'prob_green': 74.6}, 'bear': {'prob_low': 72.5, 'prob_red': 56.9}},
+        9:  {'bull': {'prob_high': 80.0, 'prob_green': 71.7}, 'bear': {'prob_low': 79.2, 'prob_red': 70.8}},
+        10: {'bull': {'prob_high': 80.3, 'prob_green': 74.6}, 'bear': {'prob_low': 81.8, 'prob_red': 63.6}},
+        11: {'bull': {'prob_high': 85.7, 'prob_green': 74.6}, 'bear': {'prob_low': 63.3, 'prob_red': 57.1}},
+        12: {'bull': {'prob_high': 84.4, 'prob_green': 81.2}, 'bear': {'prob_low': 74.5, 'prob_red': 72.5}},
+    },
+    'YM': {
+        1:  {'bull': {'prob_high': 87.8, 'prob_green': 75.7}, 'bear': {'prob_low': 82.6, 'prob_red': 76.1}},
+        2:  {'bull': {'prob_high': 73.6, 'prob_green': 65.3}, 'bear': {'prob_low': 71.4, 'prob_red': 60.0}},
+        3:  {'bull': {'prob_high': 82.8, 'prob_green': 79.3}, 'bear': {'prob_low': 75.0, 'prob_red': 64.3}},
+        4:  {'bull': {'prob_high': 76.8, 'prob_green': 68.1}, 'bear': {'prob_low': 69.8, 'prob_red': 53.5}},
+        5:  {'bull': {'prob_high': 64.9, 'prob_green': 64.9}, 'bear': {'prob_low': 76.4, 'prob_red': 70.9}},
+        6:  {'bull': {'prob_high': 73.7, 'prob_green': 64.9}, 'bear': {'prob_low': 84.2, 'prob_red': 75.4}},
+        7:  {'bull': {'prob_high': 80.0, 'prob_green': 72.0}, 'bear': {'prob_low': 75.6, 'prob_red': 51.2}},
+        8:  {'bull': {'prob_high': 74.1, 'prob_green': 74.1}, 'bear': {'prob_low': 75.4, 'prob_red': 57.9}},
+        9:  {'bull': {'prob_high': 78.6, 'prob_green': 64.3}, 'bear': {'prob_low': 66.7, 'prob_red': 70.4}},
+        10: {'bull': {'prob_high': 82.1, 'prob_green': 80.6}, 'bear': {'prob_low': 79.2, 'prob_red': 60.4}},
+        11: {'bull': {'prob_high': 70.3, 'prob_green': 76.6}, 'bear': {'prob_low': 72.9, 'prob_red': 56.2}},
+        12: {'bull': {'prob_high': 83.3, 'prob_green': 77.3}, 'bear': {'prob_low': 73.5, 'prob_red': 67.3}},
+    },
+    'GC': {
+        1:  {'bull': {'prob_high': 78.8, 'prob_green': 77.3}, 'bear': {'prob_low': 69.4, 'prob_red': 55.1}},
+        2:  {'bull': {'prob_high': 77.2, 'prob_green': 77.2}, 'bear': {'prob_low': 68.9, 'prob_red': 73.3}},
+        3:  {'bull': {'prob_high': 76.5, 'prob_green': 74.5}, 'bear': {'prob_low': 69.0, 'prob_red': 65.5}},
+        4:  {'bull': {'prob_high': 68.9, 'prob_green': 60.7}, 'bear': {'prob_low': 55.3, 'prob_red': 57.4}},
+        5:  {'bull': {'prob_high': 84.9, 'prob_green': 79.2}, 'bear': {'prob_low': 70.6, 'prob_red': 66.7}},
+        6:  {'bull': {'prob_high': 79.6, 'prob_green': 69.4}, 'bear': {'prob_low': 77.0, 'prob_red': 68.9}},
+        7:  {'bull': {'prob_high': 70.7, 'prob_green': 72.4}, 'bear': {'prob_low': 75.0, 'prob_red': 61.5}},
+        8:  {'bull': {'prob_high': 78.7, 'prob_green': 75.4}, 'bear': {'prob_low': 68.0, 'prob_red': 54.0}},
+        9:  {'bull': {'prob_high': 65.4, 'prob_green': 69.2}, 'bear': {'prob_low': 67.2, 'prob_red': 60.3}},
+        10: {'bull': {'prob_high': 75.0, 'prob_green': 73.2}, 'bear': {'prob_low': 69.5, 'prob_red': 61.0}},
+        11: {'bull': {'prob_high': 76.3, 'prob_green': 72.9}, 'bear': {'prob_low': 64.2, 'prob_red': 60.4}},
+        12: {'bull': {'prob_high': 74.2, 'prob_green': 75.8}, 'bear': {'prob_low': 69.8, 'prob_red': 66.0}},
+    }
+}
+
+# Source: output/charts/Multi/weekly/alpha_matrix_all_indices_weekly.png
+# Persistence and Reversion edges based on Weekly 1-Sigma moves
+WEEKLY_ALPHA_MATRIX = {
+    'NQ': {
+        'bull_momentum':  {'threshold': 0.0355, 'prob': 61.0, 'target': 'STRONG CONTINUATION', 'grade': 'GOLD+'},
+        'mean_reversion': {'threshold': -0.0273, 'prob': 55.8, 'target': 'MODERATE REBOUND', 'grade': 'MEDIUM'}
+    },
+    'ES': {
+        'bull_momentum':  {'threshold': 0.0298, 'prob': 54.3, 'target': 'CONTINUATION IN W+1', 'grade': 'MEDIUM'},
+        'mean_reversion': {'threshold': -0.0233, 'prob': 65.8, 'target': 'HIGH PROB REBOUND', 'grade': 'GOLD+'}
+    },
+    'YM': {
+        'bull_momentum':  {'threshold': 0.0290, 'prob': 56.2, 'target': 'CONTINUATION IN W+1', 'grade': 'MEDIUM'},
+        'mean_reversion': {'threshold': -0.0241, 'prob': 67.7, 'target': 'CAPITULATION REBOUND', 'grade': 'GOLD+'}
+    }
+}
+
+# --- DAILY SPECIFIC TRIGGERS (Validated T-stats from Daily Alpha Matrix) ---
+# Key: (asset, weekday, type) where weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
+DAILY_TRIGGERS = {
+    ('NQ', 1, 'panic'):  {'target': 'WED REBOUND', 'prob': 55.4, 'grade': 'GOLD (T>2.1)', 'avg_ret': '+0.54%'},
+    ('YM', 4, 'panic'):  {'target': 'MON REBOUND', 'prob': 67.9, 'grade': 'SILVER (T>1.5)', 'avg_ret': '+0.44%'},
+    ('NQ', 3, 'drive'):  {'target': 'FRI REVERSION', 'prob': 57.8, 'grade': 'BRONZE (T>1.4)', 'avg_ret': '-0.27%'},
+    ('NQ', 4, 'drive'):  {'target': 'MON CONTINUATION', 'prob': 64.5, 'grade': 'SILVER', 'avg_ret': '+0.11%'},
+    ('YM', 2, 'panic'):  {'target': 'THU REBOUND', 'prob': 63.3, 'grade': 'BRONZE', 'avg_ret': '-0.12%'},
 }
 
 # Source: DOR output charts (output/charts/*/daily/DOR_O2C_D_*_2020-2025_*.png)
-# Desviacion estandar from each chart's statistics table
 SIGMA = {'NQ': 0.01560, 'ES': 0.01266, 'YM': 0.01219, 'GC': 0.00932}
-
-# --- DAILY SPECIFIC TRIGGERS (Validated T-stats from Daily Alpha Matrix) ---
-# Key: (asset, weekday) where weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
-# Only includes combos with real statistical significance
-DAILY_TRIGGERS = {
-    # NQ Tuesday Panic → Wednesday Rebound | T>2.1 GOLD
-    ('NQ', 1, 'panic'):  {'target': 'WED REBOUND', 'prob': 55.4, 'grade': 'GOLD (T>2.1)', 'avg_ret': '+0.54%'},
-    # YM Friday Panic → Monday Rebound | T>1.5 SILVER
-    ('YM', 4, 'panic'):  {'target': 'MON REBOUND', 'prob': 67.9, 'grade': 'SILVER (T>1.5)', 'avg_ret': '+0.44%'},
-    # NQ Thursday Drive → Friday Reversion | T>1.4 BRONZE
-    ('NQ', 3, 'drive'):  {'target': 'FRI REVERSION', 'prob': 57.8, 'grade': 'BRONZE (T>1.4)', 'avg_ret': '-0.27%'},
-    # NQ Friday Drive → Monday Continuation
-    ('NQ', 4, 'drive'):  {'target': 'MON CONTINUATION', 'prob': 64.5, 'grade': 'SILVER', 'avg_ret': '+0.11%'},
-    # YM Wednesday Panic → Thursday Rebound
-    ('YM', 2, 'panic'):  {'target': 'THU REBOUND', 'prob': 63.3, 'grade': 'BRONZE', 'avg_ret': '-0.12%'},
-}
 
 ASSET_TICKERS = {'NQ': 'NQ=F', 'ES': 'ES=F', 'YM': 'YM=F', 'GC': 'GC=F'}
 ASSET_NAMES = {'NQ': 'NASDAQ 100', 'ES': 'S&P 500', 'YM': 'DOW JONES', 'GC': 'GOLD'}
@@ -143,7 +205,7 @@ def calc_layers(asset, df):
                     m_signals.append({'target': 'NEW HIGH', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green'})
                 # If p_set is None → this month/direction has no audited data → m_signals stays empty
 
-    # 2. Weekly — Only show after Tuesday close (>= 2 trading days this week)
+    # 2. Weekly (D2 Fractal) — Only show after Tuesday close (>= 2 trading days this week)
     current_week = last_date.isocalendar()[1]
     week_df = df[(df.index.isocalendar().week == current_week) & (df.index.isocalendar().year == year)]
     w_signals = []
@@ -155,16 +217,43 @@ def calc_layers(asset, df):
         is_bull = pos > 0.5
         w_bias = "BULL" if is_bull else "BEAR"
         curr_lo, curr_hi = float(week_df['Low'].min()), float(week_df['High'].max())
-        gen = D2_WEEKLY_GENERAL.get(asset, {})
-        if is_bull:
-            # Only bull_high is audited (SKILL_WEEKLY_FRACTAL_STRATEGY.md)
-            w_signals.append({'target': 'NEW HIGH', 'prob': gen.get('bull_high', 75), 'status': 'FULFILLED' if curr_hi > hi else 'PENDING', 'grade': get_grade(gen.get('bull_high', 75)), 'color': 'green'})
-        # BEAR: no audited weekly bear probabilities exist → w_signals stays empty → column hidden
+        
+        seasonal = WEEKLY_SEASONAL.get(asset, {}).get(month, None)
+        if seasonal:
+            p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
+            if p_set:
+                if is_bull:
+                    w_signals.append({'target': 'GREEN CLOSE', 'prob': p_set['prob_green'], 'status': 'ACTIVE', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
+                    s = 'FULFILLED' if curr_hi > hi else 'PENDING'
+                    w_signals.append({'target': 'NEW HIGH', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDING' else 'green'})
+                else:
+                    w_signals.append({'target': 'RED CLOSE', 'prob': p_set['prob_red'], 'status': 'ACTIVE', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
+                    s = 'FULFILLED' if curr_lo < lo else 'PENDING'
+                    w_signals.append({'target': 'NEW LOW', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDING' else 'green'})
 
-    # 3. Daily — Check YESTERDAY's O2C for specific triggers (they predict TODAY)
-    #         + Check TODAY's O2C for general expansion bias
-    #    NOTE: Day references come from the DATA (df index), not the server clock,
-    #          because after 5pm CT the "trading day" shifts but Yahoo data hasn't yet.
+    # 3. Weekly Alpha Matrix (1-Sigma Persistence/Reversion)
+    # Check if the PREVIOUS WEEK closed beyond alpha thresholds
+    previous_week = (last_date - pd.Timedelta(days=7)).isocalendar()[1]
+    prev_week_df = df[(df.index.isocalendar().week == previous_week) & (df.index.isocalendar().year == (last_date - pd.Timedelta(days=7)).year)]
+    
+    alpha_signals = []
+    if not prev_week_df.empty:
+        pw_open = float(prev_week_df['Open'].iloc[0])
+        pw_close = float(prev_week_df['Close'].iloc[-1])
+        pw_ret = (pw_close - pw_open) / pw_open
+        
+        a_matrix = WEEKLY_ALPHA_MATRIX.get(asset)
+        if a_matrix:
+            # Bull Momentum
+            if pw_ret >= a_matrix['bull_momentum']['threshold']:
+                m = a_matrix['bull_momentum']
+                alpha_signals.append({'target': m['target'], 'prob': m['prob'], 'status': 'ACTIVE', 'grade': m['grade'], 'color': 'green'})
+            # Mean Reversion
+            elif pw_ret <= a_matrix['mean_reversion']['threshold']:
+                r = a_matrix['mean_reversion']
+                alpha_signals.append({'target': r['target'], 'prob': r['prob'], 'status': 'ACTIVE', 'grade': r['grade'], 'color': 'green'})
+
+    # 4. Daily — Daily context
     d_signals = []
     sigma = SIGMA.get(asset, 0.013)
 
@@ -204,7 +293,11 @@ def calc_layers(asset, df):
     # General expansion bias REMOVED — probabilities were not audited
     # If neither yesterday triggered nor today broke σ → d_signals stays empty → column hidden
 
-    return {'monthly': {'bias': m_bias, 'signals': m_signals}, 'weekly': {'bias': w_bias, 'signals': w_signals}, 'daily': {'signals': d_signals}}
+    return {
+        'monthly': {'bias': m_bias, 'signals': m_signals},
+        'weekly': {'bias': w_bias, 'signals': w_signals + alpha_signals},
+        'daily': {'signals': d_signals}
+    }
 
 class handler(BaseHTTPRequestHandler):
     def do_GET(self):
