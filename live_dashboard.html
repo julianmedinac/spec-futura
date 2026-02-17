@@ -557,10 +557,6 @@
 
                             <!-- 1. STRATEGIC (MONTHLY) -->
                             <div>
-                                <div class="section-title" style="display:flex; justify-content:space-between">
-                                    <span>CAPA ESTRATÉGICA (MENSUAL)</span>
-                                    <div class="d2-btn" onclick="showChart('${asset.asset}', 'w2')">VER GRÁFICO</div>
-                                </div>
                                 ${monthlyHtml}
                             </div>
 
@@ -568,7 +564,7 @@
                             <div>
                                 <div class="section-title" style="display:flex; justify-content:space-between">
                                     <span>CAPA TÁCTICA (SEMANAL)</span>
-                                    <div class="d2-btn" onclick="showChart('${asset.asset}', 'd2')">VER GRÁFICO</div>
+                                    <div class="d2-btn" onclick="showChart('${asset.asset}')">VER GRÁFICO</div>
                                 </div>
                                 <div class="signal-box" style="border-left-color: ${getColors(layers.weekly.color).main}; opacity: 0.8">
                                     <div class="signal-info">
@@ -608,7 +604,7 @@
             setInterval(updateDashboard, 5000); // 5s Refresh
 
             // --- MODAL LOGIC ---
-            function showChart(assetSymbol, type) {
+            function showChart(assetSymbol) {
                 const map = {
                     'NQ': 'NQ',
                     'ES': 'ES',
@@ -616,24 +612,8 @@
                     'GC': 'GC'
                 };
 
-                // Mappings for W2 are simpler
-                const w2Map = {
-                    'NQ': 'NQ',
-                    'ES': 'ES',
-                    'YM': 'DOW', // YM maps to DOW.png
-                    'GC': 'GOLD' // GC maps to GOLD.png
-                };
-
-                let src = '';
-
-                if (type === 'w2') {
-                    const fileCode = w2Map[assetSymbol] || assetSymbol;
-                    src = `public/charts/w2/${fileCode}.png`;
-                } else {
-                    // Default to D2
-                    const fileCode = map[assetSymbol] || assetSymbol;
-                    src = `public/charts/d2/${fileCode}_weekly_fractal_seasonality_styled.png`;
-                }
+                const fileCode = map[assetSymbol] || assetSymbol;
+                const src = `public/charts/d2/${fileCode}_weekly_fractal_seasonality_styled.png`;
 
                 const modal = document.getElementById('chart-modal');
                 const img = document.getElementById('chart-img');
