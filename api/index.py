@@ -80,15 +80,18 @@ def get_grade(p):
     return 'SILVER'
 
 def calc_layers(asset, df):
-    now = datetime.utcnow()
-    month = now.month
-    year = now.year
+    # Use the LAST DATA BAR's date as reference, not the server clock.
+    # This avoids timezone drift (e.g., 7pm CST = Tues UTC but data is still Mon)
+    last_date = df.index[-1]
+    day = last_date.day
+    month = last_date.month
+    year = last_date.year
     
     # 1. Monthly — Only show if W2 signal is LOCKED (day > 13)
     month_df = df[(df.index.month == month) & (df.index.year == year)]
     m_signals = []
     m_bias = None
-    if now.day > 13 and len(month_df) >= 5:
+    if day > 13 and len(month_df) >= 5:
         w1w2 = month_df[month_df.index.day <= 13]
         if not w1w2.empty:
             hi, lo = float(w1w2['High'].max()), float(w1w2['Low'].min())
@@ -111,7 +114,7 @@ def calc_layers(asset, df):
                     m_signals.append({'target': 'NEW HIGH', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green'})
 
     # 2. Weekly — Only show after Tuesday close (>= 2 trading days this week)
-    current_week = now.isocalendar()[1]
+    current_week = last_date.isocalendar()[1]
     week_df = df[(df.index.isocalendar().week == current_week) & (df.index.isocalendar().year == year)]
     w_signals = []
     w_bias = None
@@ -132,6 +135,8 @@ def calc_layers(asset, df):
 
     # 3. Daily — Check YESTERDAY's O2C for specific triggers (they predict TODAY)
     #         + Check TODAY's O2C for general expansion bias
+    #    NOTE: Day references come from the DATA (df index), not the server clock,
+    #          because after 5pm CT the "trading day" shifts but Yahoo data hasn't yet.
     d_signals = []
     sigma = SIGMA.get(asset, 0.013)
 
@@ -140,7 +145,7 @@ def calc_layers(asset, df):
         yesterday = df.iloc[-2]
         y_o, y_c = float(yesterday['Open']), float(yesterday['Close'])
         y_o2c = (y_c - y_o) / y_o if y_o != 0 else 0
-        y_weekday = yesterday.name.weekday()  # 0=Mon ... 4=Fri
+        y_weekday = yesterday.name.weekday()  # from the data, not the clock
         y_day_name = DAY_NAMES[y_weekday] if y_weekday < 7 else '?'
 
         if y_o2c > sigma:
@@ -172,7 +177,8 @@ def calc_layers(asset, df):
     today = df.iloc[-1]
     t_o, t_c = float(today['Open']), float(today['Close'])
     t_o2c = (t_c - t_o) / t_o if t_o != 0 else 0
-    today_name = DAY_NAMES[now.weekday()] if now.weekday() < 7 else '?'
+    t_weekday = today.name.weekday()  # from the data, not the clock
+    today_name = DAY_NAMES[t_weekday] if t_weekday < 7 else '?'
 
     if t_o2c > sigma:
         d_signals.append({
