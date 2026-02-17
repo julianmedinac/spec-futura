@@ -207,51 +207,45 @@ def calc_layers(asset, df):
                     m_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green'})
                 # If p_set is None → this month/direction has no audited data → m_signals stays empty
 
-    # 2. Weekly (D2 Fractal) — Only show AFTER Tuesday close is confirmed (i.e., it is Wednesday or later)
+    # 2. Weekly (D2 Fractal) — Only show AFTER Tuesday close (Tuesday 16:30 EST / 21:30 UTC)
     current_week = last_date.isocalendar()[1]
     week_df = df[(df.index.isocalendar().week == current_week) & (df.index.isocalendar().year == year)]
     w_signals = []
     w_bias = None
     
-    # week_df has daily bars. To ensure D2 is closed, we need to be on day 3 (Wednesday) or later
-    # OR we must be sure the Tuesday bar is final (e.g. check time). 
-    # Safest simple check: Only show if we have > 2 bars (Wed+) OR if we are explicit about Tuesday close.
-    # Current logic: len(week_df) >= 2 means Tuesday bar EXISTS. But it might be live.
-    # New logic: Check if the last bar's date is NOT today (if live), or ensure we are past Tuesday.
-    # For now, strict rule: Only show D2 Bias starting Wednesday (index 2) or if week_df has > 2 bars.
-    # Actually, simpler: D2 signal valid ONLY when week_df has 3+ bars (Wed Open) OR if we implement time check.
-    # But user asked "HASTA que cierre la vela diaria".
-    # Since we use daily bars in 'df', 'df' usually has YESTERDAY's close if running early in the day, 
-    # or TODAY's close if running late.
-    # Let's use a robust check: Signal active if we have >= 2 COMPLETED bars.
-    # Using the weekday of the last available bar:
-    
-    last_bar_weekday = last_date.weekday() # 0=Mon, 1=Tue, 2=Wed...
-    
-    # If last bar is Tuesday (1), we don't know if it is closed or live without time check.
-    # But this script runs on 'history(60d)'. If run during hours, 'Close' is live price.
-    # So we should only trust D2 signal if last_bar_weekday >= 2 (Wednesday or later).
-    
-    if len(week_df) >= 2 and last_bar_weekday >= 2:
-        d1, d2 = week_df.iloc[0], week_df.iloc[1]
-        hi, lo = max(float(d1['High']), float(d2['High'])), min(float(d1['Low']), float(d2['Low']))
-        pos = (float(d2['Close']) - lo) / (hi - lo) if (hi - lo) != 0 else 0.5
-        is_bull = pos > 0.5
-        w_bias = "ALCISTA" if is_bull else "BAJISTA"
-        curr_lo, curr_hi = float(week_df['Low'].min()), float(week_df['High'].max())
+    if len(week_df) >= 2:
+        # Determine if we are past the signal activation time
+        # Logic: Show if it's Wednesday or later, OR if it's Tuesday after 21:30 UTC
+        now_utc = datetime.utcnow()
+        show_d2 = False
         
-        seasonal = WEEKLY_SEASONAL.get(asset, {}).get(month, None)
-        if seasonal:
-            p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
-            if p_set:
-                if is_bull:
-                    w_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
-                    s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
-                    w_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
-                else:
-                    w_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
-                    s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
-                    w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
+        if now_utc.weekday() > 1: # Wednesday (2) onwards
+            show_d2 = True
+        elif now_utc.weekday() == 1: # Tuesday (1)
+            # 16:30 EST is approx 21:30 UTC. 
+            if now_utc.hour > 21 or (now_utc.hour == 21 and now_utc.minute >= 30):
+                show_d2 = True
+                
+        if show_d2:
+            d1, d2 = week_df.iloc[0], week_df.iloc[1]
+            hi, lo = max(float(d1['High']), float(d2['High'])), min(float(d1['Low']), float(d2['Low']))
+            pos = (float(d2['Close']) - lo) / (hi - lo) if (hi - lo) != 0 else 0.5
+            is_bull = pos > 0.5
+            w_bias = "ALCISTA" if is_bull else "BAJISTA"
+            curr_lo, curr_hi = float(week_df['Low'].min()), float(week_df['High'].max())
+            
+            seasonal = WEEKLY_SEASONAL.get(asset, {}).get(month, None)
+            if seasonal:
+                p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
+                if p_set:
+                    if is_bull:
+                        w_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
+                        s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
+                        w_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
+                    else:
+                        w_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
+                        s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
+                        w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
 
     # 3. Weekly Alpha Matrix (1-Sigma Persistence/Reversion)
     # Check if the PREVIOUS WEEK closed beyond alpha thresholds
