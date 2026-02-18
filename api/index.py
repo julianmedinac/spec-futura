@@ -215,15 +215,15 @@ def calc_layers(asset, df):
     
     if len(week_df) >= 2:
         # Determine if we are past the signal activation time
-        # Logic: Show if it's Wednesday or later, OR if it's Tuesday after 21:30 UTC
+        # Logic: Show if it's Wednesday or later, OR if it's Tuesday after 18:00 EST (23:00 UTC)
         now_utc = datetime.utcnow()
         show_d2 = False
-        
+
         if now_utc.weekday() > 1: # Wednesday (2) onwards
             show_d2 = True
         elif now_utc.weekday() == 1: # Tuesday (1)
-            # 17:30 EST is 22:30 UTC. 
-            if now_utc.hour > 22 or (now_utc.hour == 22 and now_utc.minute >= 30):
+            # 18:00 EST = 23:00 UTC
+            if now_utc.hour >= 23:
                 show_d2 = True
                 
         if show_d2:
