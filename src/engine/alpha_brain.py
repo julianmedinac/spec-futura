@@ -224,35 +224,36 @@ class AlphaBrain:
                 
         if show_d2:
             try:
-                if len(week_df) >= 2:
-                    d1, d2 = week_df.iloc[0], week_df.iloc[1]
-                    hi, lo = max(float(d1['High']), float(d2['High'])), min(float(d1['Low']), float(d2['Low']))
-                else: 
-                     return {'status': 'NEUTRAL', 'prob': 0.0, 'color': 'GRAY', 'grade': 'NOISE'}
-
-            
-                rng = hi - lo
-                if rng > 0:
-                    pos = (float(d2['Close']) - lo) / rng
-                    is_bull = pos > 0.5
+                # If it's Tuesday after close or later, we use whatever data we have for the week (even if it's just 1 bar due to holiday)
+                if not week_df.empty:
+                    hi = float(week_df['High'].max())
+                    lo = float(week_df['Low'].min())
+                    curr_close = float(week_df['Close'].iloc[-1])
                     
-                    seasonal = WEEKLY_SEASONAL.get(asset_key, {}).get(current_month, None)
-                    if seasonal:
-                        p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
-                        if p_set:
-                            # Return the primary bias (Close Color)
-                            target = 'CIERRE ALCISTA' if is_bull else 'CIERRE BAJISTA'
-                            prob = p_set['prob_green'] if is_bull else p_set['prob_red']
-                            color = 'GREEN' if is_bull else 'RED'
-                            
-                            return {
-                                'status': target,
-                                'prob': prob / 100.0 if prob > 1 else prob,
-                                'color': color, 
-                                'grade': cls.get_grade(prob)
-                            }
+                    rng = hi - lo
+                    if rng > 0:
+                        pos = (curr_close - lo) / rng
+                        is_bull = pos > 0.5
+                        
+                        seasonal = WEEKLY_SEASONAL.get(asset_key, {}).get(current_month, None)
+                        if seasonal:
+                            p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
+                            if p_set:
+                                target = 'CIERRE ALCISTA' if is_bull else 'CIERRE BAJISTA'
+                                prob = p_set['prob_green'] if is_bull else p_set['prob_red']
+                                color = 'GREEN' if is_bull else 'RED'
+                                
+                                return {
+                                    'status': target,
+                                    'prob': prob / 100.0 if prob > 1 else prob,
+                                    'color': color, 
+                                    'grade': cls.get_grade(prob)
+                                }
+                
+                # Fallback if no specific D2 signal yet
+                return {'status': 'NEUTRAL', 'prob': 0.50, 'color': 'GRAY', 'grade': 'NOISE'}
             except Exception as e:
-                return {'status': 'DEMO ERROR', 'prob': 0.0, 'color': 'GRAY'}
+                return {'status': 'ERROR', 'prob': 0.0, 'color': 'GRAY'}
 
         # --- PRIORITY 2: ALPHA MATRIX (Momentum/Reversion from Prev Week) ---
         # Check if the PREVIOUS WEEK closed beyond alpha thresholds
