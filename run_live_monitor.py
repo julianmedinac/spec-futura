@@ -63,7 +63,7 @@ def fetch_live_data():
 
 def run_monitor_loop():
     """Main loop that generates the live_state.json for the dashboard."""
-    output_path = Path(__file__).parent / "public" / "data" / "alpha_state.json"
+    output_path = Path(__file__).parent / "public" / "alpha_state.json"
     output_path.parent.mkdir(parents=True, exist_ok=True)
     
     print("[*] SPEC RESEARCH v4.0 (Layered Alpha Monitor) Started.")

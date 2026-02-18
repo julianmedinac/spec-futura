@@ -476,7 +476,7 @@
 
         async function updateDashboard() {
             try {
-                const response = await fetch('data/alpha_state.json');
+                const response = await fetch('alpha_state.json');
                 const data = await response.json();
 
                 document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;

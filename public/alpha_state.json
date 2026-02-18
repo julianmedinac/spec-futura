@@ -1,10 +1,10 @@
 {
-    "timestamp": "2026-02-17 20:08:10",
+    "timestamp": "2026-02-17 20:11:01",
     "system_status": "ACTIVE",
     "assets": [
         {
             "asset": "NQ",
-            "price": 24743.25,
+            "price": 24745.5,
             "layers": {
                 "monthly_signals": [
                     {
@@ -34,7 +34,7 @@
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.004853038225290624,
+                    "o2c": 0.004944413422001117,
                     "sigma_level": 0.0135,
                     "prob": 0.0,
                     "target": "None",
@@ -42,11 +42,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "20:08:10"
+            "last_update": "20:11:01"
         },
         {
             "asset": "ES",
-            "price": 6856.5,
+            "price": 6858.5,
             "layers": {
                 "monthly_signals": [
                     {
@@ -69,14 +69,14 @@
                     }
                 ],
                 "weekly": {
-                    "status": "CIERRE BAJISTA",
-                    "prob": 0.524,
-                    "color": "RED",
+                    "status": "CIERRE ALCISTA",
+                    "prob": 0.6829999999999999,
+                    "color": "GREEN",
                     "grade": "SILVER"
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.005425617713908645,
+                    "o2c": 0.005718894347092896,
                     "sigma_level": 0.0109,
                     "prob": 0.0,
                     "target": "None",
@@ -84,11 +84,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "20:08:10"
+            "last_update": "20:11:01"
         },
         {
             "asset": "YM",
-            "price": 49585.0,
+            "price": 49597.0,
             "layers": {
                 "monthly_signals": [
                     {
@@ -111,14 +111,14 @@
                     }
                 ],
                 "weekly": {
-                    "status": "CIERRE BAJISTA",
-                    "prob": 0.6,
-                    "color": "RED",
+                    "status": "CIERRE ALCISTA",
+                    "prob": 0.653,
+                    "color": "GREEN",
                     "grade": "SILVER"
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.0031966334189815282,
+                    "o2c": 0.003439415703967467,
                     "sigma_level": 0.0106,
                     "prob": 0.0,
                     "target": "None",
@@ -126,7 +126,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "20:08:10"
+            "last_update": "20:11:01"
         }
     ]
 }
