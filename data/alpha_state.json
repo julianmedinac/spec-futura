@@ -1,10 +1,10 @@
 {
-    "timestamp": "2026-02-17 19:00:01",
+    "timestamp": "2026-02-17 19:18:29",
     "system_status": "ACTIVE",
     "assets": [
         {
             "asset": "NQ",
-            "price": 24729.0,
+            "price": 24718.75,
             "layers": {
                 "monthly_signals": [
                     {
@@ -35,7 +35,7 @@
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.004274328646124169,
+                    "o2c": 0.003858063861109701,
                     "sigma_level": 0.0135,
                     "prob": 0.0,
                     "target": "None",
@@ -43,11 +43,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:00:01"
+            "last_update": "19:18:29"
         },
         {
             "asset": "ES",
-            "price": 6852.75,
+            "price": 6851.25,
             "layers": {
                 "monthly_signals": [
                     {
@@ -78,7 +78,7 @@
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.004875724026688174,
+                    "o2c": 0.0046557665517999855,
                     "sigma_level": 0.0109,
                     "prob": 0.0,
                     "target": "None",
@@ -86,11 +86,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:00:01"
+            "last_update": "19:18:29"
         },
         {
             "asset": "YM",
-            "price": 49559.0,
+            "price": 49563.0,
             "layers": {
                 "monthly_signals": [
                     {
@@ -121,7 +121,7 @@
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.0026706051348453276,
+                    "o2c": 0.0027515325631739737,
                     "sigma_level": 0.0106,
                     "prob": 0.0,
                     "target": "None",
@@ -129,7 +129,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:00:01"
+            "last_update": "19:18:29"
         }
     ]
 }

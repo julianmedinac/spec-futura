@@ -215,7 +215,7 @@ class AlphaBrain:
         now_utc = datetime.utcnow()
         show_d2 = False
         
-        if True: # FORCE DEMO
+        if now_utc.weekday() > 1: # Wednesday (2) onwards
             show_d2 = True
         elif now_utc.weekday() == 1: # Tuesday (1)
             # 17:30 EST is 22:30 UTC. 
