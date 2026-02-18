@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-02-17 19:20:32",
+    "timestamp": "2026-02-17 19:23:36",
     "system_status": "ACTIVE",
     "assets": [
         {
@@ -43,11 +43,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:20:32"
+            "last_update": "19:23:36"
         },
         {
             "asset": "ES",
-            "price": 6850.5,
+            "price": 6850.75,
             "layers": {
                 "monthly_signals": [
                     {
@@ -78,7 +78,7 @@
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.004545787814355891,
+                    "o2c": 0.004582447393503923,
                     "sigma_level": 0.0109,
                     "prob": 0.0,
                     "target": "None",
@@ -86,11 +86,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:20:32"
+            "last_update": "19:23:36"
         },
         {
             "asset": "YM",
-            "price": 49562.0,
+            "price": 49565.0,
             "layers": {
                 "monthly_signals": [
                     {
@@ -121,7 +121,7 @@
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.002731300706091812,
+                    "o2c": 0.002791996277338297,
                     "sigma_level": 0.0106,
                     "prob": 0.0,
                     "target": "None",
@@ -129,7 +129,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:20:32"
+            "last_update": "19:23:36"
         }
     ]
 }
