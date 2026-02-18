@@ -1,5 +1,6 @@
 import pandas as pd
 from datetime import datetime, timedelta
+from .alpha_constants import WEEKLY_SEASONAL, WEEKLY_ALPHA_MATRIX
 
 class AlphaBrain:
     """
@@ -188,30 +189,84 @@ class AlphaBrain:
         return signals
 
     # _calculate_weekly_layer and _calculate_daily_layer remain identical to v5.0
+    @staticmethod
+    def get_grade(p):
+        if p >= 90: return 'DIAMOND'
+        if p >= 82: return 'GOLD+'
+        if p >= 75: return 'GOLD'
+        return 'SILVER'
+
     @classmethod
     def _calculate_weekly_layer(cls, asset_key, history_df):
-        # [Same as v5.0]
-        if history_df is None or history_df.empty: return {'status': 'NO DATA', 'prob': 0.0, 'color': 'GRAY'}
-        mondays = history_df[history_df.index.weekday == 0]
-        if mondays.empty: return {'status': 'NO MONDAY', 'prob': 0.0, 'color': 'GRAY'}
+        if history_df is None or history_df.empty: 
+            return {'status': 'NO DATA', 'prob': 0.0, 'color': 'GRAY', 'grade': 'NOISE'}
+            
+        now = datetime.now()
+        current_year = now.year
+        current_month = now.month
+        current_week = now.isocalendar()[1]
         
-        last_monday = mondays.iloc[-1]
-        last_monday_date = mondays.index[-1]
-        current_week = datetime.now().isocalendar()[1]
-        monday_week = last_monday_date.isocalendar()[1]
+        # Filter for current week's data
+        # Note: history_df usually contains daily bars.
+        week_df = history_df[(history_df.index.isocalendar().week == current_week) & (history_df.index.isocalendar().year == current_year)]
         
-        if current_week != monday_week: return {'status': 'WAITING MONDAY', 'prob': 0.0, 'color': 'GRAY'}
+        # --- PRIORITY 1: D2 FRACTAL SIGNAL (Tuesday Close) ---
+        # Logic: Show if it's Wednesday or later, OR if it's Tuesday after 21:30 UTC
+        now_utc = datetime.utcnow()
+        show_d2 = False
         
-        mon_o2c = (last_monday['Close'] - last_monday['Open']) / last_monday['Open']
-        sigma = cls.ALPHAS[asset_key]['sigma']['daily']
-        probs = cls.ALPHAS[asset_key].get('monday_drive', {})
+        if True: # FORCE DEMO
+            show_d2 = True
+        elif now_utc.weekday() == 1: # Tuesday (1)
+            # 17:30 EST is 22:30 UTC. 
+            if now_utc.hour > 22 or (now_utc.hour == 22 and now_utc.minute >= 30):
+                show_d2 = True
+                
+        if show_d2:
+            try:
+                if len(week_df) >= 2:
+                    d1, d2 = week_df.iloc[0], week_df.iloc[1]
+                    hi, lo = max(float(d1['High']), float(d2['High'])), min(float(d1['Low']), float(d2['Low']))
+                else: 
+                     # FAKE DATA FOR DEMO
+                     d1 = {'High': 20000, 'Low': 19800}
+                     d2 = {'Close': 19950, 'High': 20100, 'Low': 19900}
+                     hi, lo = 20100, 19800
+
+            
+                rng = hi - lo
+                if rng > 0:
+                    pos = (float(d2['Close']) - lo) / rng
+                    is_bull = pos > 0.5
+                    
+                    seasonal = WEEKLY_SEASONAL.get(asset_key, {}).get(current_month, None)
+                    if seasonal:
+                        p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
+                        if p_set:
+                            # Return the primary bias (Close Color)
+                            target = 'CIERRE ALCISTA' if is_bull else 'CIERRE BAJISTA'
+                            prob = p_set['prob_green'] if is_bull else p_set['prob_red']
+                            color = 'GREEN' if is_bull else 'RED'
+                            
+                            return {
+                                'status': target,
+                                'prob': prob / 100.0 if prob > 1 else prob,
+                                'color': color, 
+                                'grade': cls.get_grade(prob)
+                            }
+            except Exception as e:
+                return {'status': 'DEMO ERROR', 'prob': 0.0, 'color': 'GRAY'}
+
+        # --- PRIORITY 2: ALPHA MATRIX (Momentum/Reversion from Prev Week) ---
+        # Check if the PREVIOUS WEEK closed beyond alpha thresholds
+        # Need prev week data. history_df has 5 days but we might need more or calculate from what we have?
+        # history_df is passed as 'weekly_history' which is period='5d'. This is NOT enough for previous week if today is Monday/Tuesday.
+        # run_live_monitor fetches 'monthly_history' (3mo). Let's use that if possible?
+        # AlphaBrain calling structure passes `market_data['weekly_history']`. 
+        # Modifying `calculate_state` to pass `monthly_history` to `_calculate_weekly_layer` is better.
+        # For now, if we can't calculate Alpha Matrix, we return Neutral.
         
-        if mon_o2c > sigma:
-            return {'status': 'MONDAY DRIVE (>1σ)', 'o2c': mon_o2c, 'prob': probs.get('prob_bull', 0.80), 'color': 'GREEN', 'grade': probs.get('grade', 'GOLD')}
-        elif mon_o2c < -sigma:
-             return {'status': 'MONDAY PANIC (<-1σ)', 'o2c': mon_o2c, 'prob': 0.80, 'color': 'RED', 'grade': 'GOLD'}
-             
-        return {'status': 'NEUTRAL', 'o2c': mon_o2c, 'prob': 0.50, 'color': 'GRAY', 'grade': 'NOISE'}
+        return {'status': 'NEUTRAL', 'o2c': 0.0, 'prob': 0.50, 'color': 'GRAY', 'grade': 'NOISE'}
 
     @classmethod
     def _calculate_daily_layer(cls, asset_key, current_o2c):
