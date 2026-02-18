@@ -269,47 +269,6 @@
             transition: width 1s ease;
         }
 
-        .info-tip {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            border: 1px solid var(--text-dim);
-            color: var(--text-dim);
-            font-size: 9px;
-            font-style: italic;
-            font-family: serif;
-            cursor: help;
-            position: relative;
-            vertical-align: middle;
-            margin-left: 5px;
-            flex-shrink: 0;
-        }
-
-        .info-tip:hover::after {
-            content: attr(data-tip);
-            position: absolute;
-            bottom: calc(100% + 6px);
-            right: -8px;
-            background: #181825;
-            border: 1px solid var(--border);
-            color: var(--text);
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 11px;
-            font-style: normal;
-            font-weight: 400;
-            font-family: 'Inter', sans-serif;
-            width: max-content;
-            max-width: 240px;
-            z-index: 200;
-            pointer-events: none;
-            line-height: 1.4;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-        }
-
         .loading {
             position: fixed;
             top: 0;
@@ -565,7 +524,6 @@
                     var s = layer.signals[j];
                     html += '<div class="signal"><div>';
                     html += '<div class="sig-main">' + s.target;
-                    if (s.tip) html += ' <span class="info-tip" data-tip="' + s.tip + '">i</span>';
                     if (s.val) html += ' <span style="color:var(--text-dim);font-weight:400">[' + s.val + ']</span>';
                     html += '</div>';
                     html += '<div class="sig-sub">' + s.status + '</div>';

@@ -207,8 +207,7 @@ def calc_layers(asset, df):
             'prob': direction_prob,
             'status': 'ACTIVO',
             'grade': get_grade(direction_prob),
-            'color': 'green' if is_bullish else 'red',
-            'tip': f'Tendencia estacional del mes (2000-2026). Hit rate: {hit_rate}%'
+            'color': 'green' if is_bullish else 'red'
         })
 
     # 1. Monthly W2 — Only show if W2 signal is LOCKED (day >= 13)
@@ -226,13 +225,13 @@ def calc_layers(asset, df):
             if probs:
                 p_set = probs.get('bear') if is_bear else probs.get('bull')
                 if p_set and is_bear:
-                    m_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red', 'tip': 'W2 cerro en mitad inferior del rango quincenal'})
+                    m_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
                     s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
-                    m_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green', 'tip': 'Prob. de romper el minimo de las primeras 2 semanas'})
+                    m_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
                 elif p_set and not is_bear:
-                    m_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green', 'tip': 'W2 cerro en mitad superior del rango quincenal'})
+                    m_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
                     s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
-                    m_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green', 'tip': 'Prob. de romper el maximo de las primeras 2 semanas'})
+                    m_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green'})
                 # If p_set is None → this month/direction has no audited data → m_signals stays empty
 
     # 2. Weekly (D2 Fractal) — Only show AFTER Tuesday close (Tuesday 16:30 EST / 21:30 UTC)
@@ -268,13 +267,13 @@ def calc_layers(asset, df):
                 p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
                 if p_set:
                     if is_bull:
-                        w_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green', 'tip': 'Cierre del martes en mitad superior del rango Lun-Mar'})
+                        w_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
                         s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
-                        w_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green', 'tip': 'Prob. de romper el maximo del rango Lun-Mar'})
+                        w_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
                     else:
-                        w_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red', 'tip': 'Cierre del martes en mitad inferior del rango Lun-Mar'})
+                        w_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
                         s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
-                        w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green', 'tip': 'Prob. de romper el minimo del rango Lun-Mar'})
+                        w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
 
     # 3. Weekly Alpha Matrix (1-Sigma Persistence/Reversion)
     # Check if the PREVIOUS WEEK closed beyond alpha thresholds
@@ -292,11 +291,11 @@ def calc_layers(asset, df):
             # Bull Momentum
             if pw_ret >= a_matrix['bull_momentum']['threshold']:
                 m = a_matrix['bull_momentum']
-                alpha_signals.append({'target': m['target'], 'prob': m['prob'], 'status': 'ACTIVO', 'grade': m['grade'], 'color': 'green', 'tip': f'Semana previa cerro {pw_ret*100:+.1f}% (momentum alcista)'})
+                alpha_signals.append({'target': m['target'], 'prob': m['prob'], 'status': 'ACTIVO', 'grade': m['grade'], 'color': 'green'})
             # Mean Reversion
             elif pw_ret <= a_matrix['mean_reversion']['threshold']:
                 r = a_matrix['mean_reversion']
-                alpha_signals.append({'target': r['target'], 'prob': r['prob'], 'status': 'ACTIVO', 'grade': r['grade'], 'color': 'green', 'tip': f'Semana previa cerro {pw_ret*100:+.1f}% (rebote esperado)'})
+                alpha_signals.append({'target': r['target'], 'prob': r['prob'], 'status': 'ACTIVO', 'grade': r['grade'], 'color': 'green'})
 
     # 4. Daily — Daily context
     d_signals = []
@@ -321,8 +320,7 @@ def calc_layers(asset, df):
                     'grade': trigger['grade'],
                     'color': 'red' if 'REVERSIÓN' in trigger['target'] else 'green',
                     'val': f'{y_day_name} cerró {y_o2c*100:+.2f}% (>{s_upper*100:.1f}%)',
-                    'avg_ret': trigger['avg_ret'],
-                    'tip': f'Retorno esperado D+1: {trigger["avg_ret"]}'
+                    'avg_ret': trigger['avg_ret']
                 })
         elif y_o2c < s_lower:
             trigger = DAILY_TRIGGERS.get((asset, y_weekday, 'panic'), None)
@@ -334,8 +332,7 @@ def calc_layers(asset, df):
                     'grade': trigger['grade'],
                     'color': 'green',
                     'val': f'{y_day_name} cerró {y_o2c*100:+.2f}% (<{s_lower*100:.1f}%)',
-                    'avg_ret': trigger['avg_ret'],
-                    'tip': f'Retorno esperado D+1: {trigger["avg_ret"]}'
+                    'avg_ret': trigger['avg_ret']
                 })
 
     # General expansion bias REMOVED — probabilities were not audited
