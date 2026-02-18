@@ -1,10 +1,10 @@
 {
-    "timestamp": "2026-02-17 19:01:51",
+    "timestamp": "2026-02-17 19:15:18",
     "system_status": "ACTIVE",
     "assets": [
         {
             "asset": "NQ",
-            "price": 24717.0,
+            "price": 24717.5,
             "layers": {
                 "monthly_signals": [
                     {
@@ -27,13 +27,14 @@
                     }
                 ],
                 "weekly": {
-                    "status": "NO MONDAY",
-                    "prob": 0.0,
-                    "color": "GRAY"
+                    "status": "CIERRE BAJISTA",
+                    "prob": 0.638,
+                    "color": "RED",
+                    "grade": "SILVER"
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.0037869942636682063,
+                    "o2c": 0.003807299862937205,
                     "sigma_level": 0.0135,
                     "prob": 0.0,
                     "target": "None",
@@ -41,11 +42,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:01:51"
+            "last_update": "19:15:18"
         },
         {
             "asset": "ES",
-            "price": 6850.75,
+            "price": 6851.0,
             "layers": {
                 "monthly_signals": [
                     {
@@ -68,13 +69,14 @@
                     }
                 ],
                 "weekly": {
-                    "status": "NO MONDAY",
-                    "prob": 0.0,
-                    "color": "GRAY"
+                    "status": "CIERRE BAJISTA",
+                    "prob": 0.524,
+                    "color": "RED",
+                    "grade": "SILVER"
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.004582447393503923,
+                    "o2c": 0.004619106972651954,
                     "sigma_level": 0.0109,
                     "prob": 0.0,
                     "target": "None",
@@ -82,11 +84,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:01:51"
+            "last_update": "19:15:18"
         },
         {
             "asset": "YM",
-            "price": 49554.0,
+            "price": 49556.0,
             "layers": {
                 "monthly_signals": [
                     {
@@ -109,13 +111,14 @@
                     }
                 ],
                 "weekly": {
-                    "status": "NO MONDAY",
-                    "prob": 0.0,
-                    "color": "GRAY"
+                    "status": "CIERRE BAJISTA",
+                    "prob": 0.6,
+                    "color": "RED",
+                    "grade": "SILVER"
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.0025694458494345197,
+                    "o2c": 0.0026099095635988426,
                     "sigma_level": 0.0106,
                     "prob": 0.0,
                     "target": "None",
@@ -123,7 +126,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:01:51"
+            "last_update": "19:15:18"
         }
     ]
 }
