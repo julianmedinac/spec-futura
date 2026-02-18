@@ -228,10 +228,7 @@ class AlphaBrain:
                     d1, d2 = week_df.iloc[0], week_df.iloc[1]
                     hi, lo = max(float(d1['High']), float(d2['High'])), min(float(d1['Low']), float(d2['Low']))
                 else: 
-                     # FAKE DATA FOR DEMO
-                     d1 = {'High': 20000, 'Low': 19800}
-                     d2 = {'Close': 19950, 'High': 20100, 'Low': 19900}
-                     hi, lo = 20100, 19800
+                     return {'status': 'NEUTRAL', 'prob': 0.0, 'color': 'GRAY', 'grade': 'NOISE'}
 
             
                 rng = hi - lo
