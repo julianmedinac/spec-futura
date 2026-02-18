@@ -1,5 +1,5 @@
 {
-    "timestamp": "2026-02-17 19:20:32",
+    "timestamp": "2026-02-17 19:20:27",
     "system_status": "ACTIVE",
     "assets": [
         {
@@ -27,11 +27,10 @@
                     }
                 ],
                 "weekly": {
-                    "status": "NEUTRAL",
-                    "o2c": 0.0,
-                    "prob": 0.5,
-                    "color": "GRAY",
-                    "grade": "NOISE"
+                    "status": "CIERRE BAJISTA",
+                    "prob": 0.638,
+                    "color": "RED",
+                    "grade": "SILVER"
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
@@ -43,11 +42,11 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:20:32"
+            "last_update": "19:20:27"
         },
         {
             "asset": "ES",
-            "price": 6850.5,
+            "price": 6850.75,
             "layers": {
                 "monthly_signals": [
                     {
@@ -70,15 +69,14 @@
                     }
                 ],
                 "weekly": {
-                    "status": "NEUTRAL",
-                    "o2c": 0.0,
-                    "prob": 0.5,
-                    "color": "GRAY",
-                    "grade": "NOISE"
+                    "status": "CIERRE BAJISTA",
+                    "prob": 0.524,
+                    "color": "RED",
+                    "grade": "SILVER"
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
-                    "o2c": 0.004545787814355891,
+                    "o2c": 0.004582447393503923,
                     "sigma_level": 0.0109,
                     "prob": 0.0,
                     "target": "None",
@@ -86,7 +84,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:20:32"
+            "last_update": "19:20:27"
         },
         {
             "asset": "YM",
@@ -113,11 +111,10 @@
                     }
                 ],
                 "weekly": {
-                    "status": "NEUTRAL",
-                    "o2c": 0.0,
-                    "prob": 0.5,
-                    "color": "GRAY",
-                    "grade": "NOISE"
+                    "status": "CIERRE BAJISTA",
+                    "prob": 0.6,
+                    "color": "RED",
+                    "grade": "SILVER"
                 },
                 "daily": {
                     "status": "INSIDE NOISE",
@@ -129,7 +126,7 @@
                     "grade": "NOISE"
                 }
             },
-            "last_update": "19:20:32"
+            "last_update": "19:20:27"
         }
     ]
 }
