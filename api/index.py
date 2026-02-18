@@ -213,7 +213,8 @@ def calc_layers(asset, df):
     w_signals = []
     w_bias = None
     
-    if len(week_df) >= 2:
+    if len(week_df) >= 2 and week_df.iloc[0].name.weekday() == 0 and week_df.iloc[1].name.weekday() == 1:
+        # D2 requires Mon (d1) + Tue (d2) data. Skip holiday weeks with missing days.
         # Determine if we are past the signal activation time
         # Logic: Show if it's Wednesday or later, OR if it's Tuesday after 18:00 EST (23:00 UTC)
         now_utc = datetime.utcnow()
@@ -225,7 +226,7 @@ def calc_layers(asset, df):
             # 18:00 EST = 23:00 UTC
             if now_utc.hour >= 23:
                 show_d2 = True
-                
+
         if show_d2:
             d1, d2 = week_df.iloc[0], week_df.iloc[1]
             hi, lo = max(float(d1['High']), float(d2['High'])), min(float(d1['Low']), float(d2['Low']))
