@@ -476,7 +476,7 @@
 
         async function updateDashboard() {
             try {
-                const response = await fetch('/data/alpha_state.json');
+                const response = await fetch('data/alpha_state.json');
                 const data = await response.json();
 
                 document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;
@@ -490,12 +490,12 @@
                     const daily = layers.daily;
 
                     // Daily Gauge Calculation
-                    const sigmaVal = daily.sigma_level || 0.01;
-                    const currentO2C = daily.o2c || 0;
+                    const sigmaVal = (daily && daily.sigma_level) || 0.01;
+                    const currentO2C = (daily && daily.o2c) || 0;
                     const sigmaDist = currentO2C / sigmaVal;
                     let gaugeWidth = Math.min(Math.abs(sigmaDist) * 50, 50); // Max 50% width
 
-                    const dailyColors = getColors(daily.color);
+                    const dailyColors = getColors(daily ? daily.color : 'GRAY');
 
                     // Gauge styling
                     let gaugeStyle = '';
@@ -534,12 +534,16 @@
                     const card = document.createElement('div');
                     card.className = 'card';
 
+                    const weeklyColor = (layers.weekly && layers.weekly.color) || 'GRAY';
+                    const weeklyStatus = (layers.weekly && layers.weekly.status) || 'NEUTRAL';
+                    const weeklyProb = (layers.weekly && layers.weekly.prob) || 0.5;
+
                     card.innerHTML = `
                             <!-- ASSET HEADER -->
                             <div class="asset-header">
                                 <div>
                                     <div class="asset-name">${asset.asset}</div>
-                                    <div class="asset-price">$${asset.price.toLocaleString()}</div>
+                                    <div class="asset-price">$${(asset.price || 0).toLocaleString()}</div>
                                 </div>
                                 <div class="sigma-metric">
                                     <div class="sigma-label">Sigma Diario</div>
@@ -566,13 +570,13 @@
                                     <span>CAPA TÁCTICA (SEMANAL)</span>
                                     <div class="d2-btn" onclick="showChart('${asset.asset}')">VER GRÁFICO</div>
                                 </div>
-                                <div class="signal-box" style="border-left-color: ${getColors(layers.weekly.color).main}; opacity: 0.8">
+                                <div class="signal-box" style="border-left-color: ${getColors(weeklyColor).main}; opacity: 0.8">
                                     <div class="signal-info">
-                                        <span class="signal-target" style="color: ${getColors(layers.weekly.color).main}">${layers.weekly.status}</span>
+                                        <span class="signal-target" style="color: ${getColors(weeklyColor).main}">${weeklyStatus}</span>
                                         <span class="signal-status">SESGO SEMANAL</span>
                                     </div>
                                     <div class="signal-metrics">
-                                        <span class="prob-value">${formatProb(layers.weekly.prob)}</span>
+                                        <span class="prob-value">${formatProb(weeklyProb)}</span>
                                     </div>
                                 </div>
                             </div>
@@ -582,11 +586,11 @@
                                 <div class="section-title">CAPA DE EJECUCIÓN (DIARIO)</div>
                                 <div class="signal-box" style="border-left-color: ${dailyColors.main}">
                                     <div class="signal-info">
-                                        <span class="signal-target" style="color: ${dailyColors.main}">${daily.status}</span>
-                                        <span class="signal-status">Open-to-Close: ${(daily.o2c * 100).toFixed(2)}%</span>
+                                        <span class="signal-target" style="color: ${dailyColors.main}">${daily ? daily.status : 'NO DATA'}</span>
+                                        <span class="signal-status">Open-to-Close: ${daily ? (daily.o2c * 100).toFixed(2) : 0}%</span>
                                     </div>
                                     <div class="signal-metrics">
-                                        <span class="prob-value">${formatProb(daily.prob)}</span>
+                                        <span class="prob-value">${formatProb(daily ? daily.prob : 0)}</span>
                                         <span class="grade-badge">SIGMA</span>
                                     </div>
                                 </div>
@@ -613,7 +617,7 @@
             };
 
             const fileCode = map[assetSymbol] || assetSymbol;
-            const src = `public/charts/d2/${fileCode}_weekly_fractal_seasonality_styled.png`;
+            const src = `charts/d2/${fileCode}_weekly_fractal_seasonality_styled.png`;
 
             const modal = document.getElementById('chart-modal');
             const img = document.getElementById('chart-img');
