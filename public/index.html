@@ -419,103 +419,103 @@
         </div>
     </header>
     <div class="grid" id="asset-grid">
-        < !-- Cards injected by JS -->
+        <!-- Cards injected by JS -->
     </div>
     <footer>
         <div id="last-update">SINC: --:--</div>
         <div style="margin-top:8px">SPEC RESEARCH ® 2026</div>
     </footer>
-    < !-- MODAL FOR CHARTS -->
-        <div id="chart-modal" class="modal" onclick="closeChart()">
-            <div class="modal-content" onclick="event.stopPropagation()">
-                <div class="close-modal" onclick="closeChart()">X</div><img id="chart-img"
-                    style="max-width:100%; max-height:85vh; border-radius:8px; display:block" src="">
-            </div>
+    <!-- MODAL FOR CHARTS -->
+    <div id="chart-modal" class="modal" onclick="closeChart()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="close-modal" onclick="closeChart()">X</div><img id="chart-img"
+                style="max-width:100%; max-height:85vh; border-radius:8px; display:block" src="">
         </div>
-        <script> // --- COLOR & STATE HELPERS ---
+    </div>
+    <script> // --- COLOR & STATE HELPERS ---
 
-            function getColors(colorKey) {
-                if (colorKey === 'RED') return {
-                    main: 'var(--accent-red)',
-                    bg: 'var(--accent-red-dim)',
-                    glow: 'var(--accent-red-glow)'
-                }
-
-                    ;
-
-                if (colorKey === 'GREEN') return {
-                    main: 'var(--accent-green)',
-                    bg: 'var(--accent-green-dim)',
-                    glow: 'var(--accent-green-glow)'
-                }
-
-                    ;
-
-                return {
-                    main: 'var(--text-secondary)',
-                    bg: 'rgba(255,255,255,0.03)',
-                    glow: 'transparent'
-                }
-
-                    ;
+        function getColors(colorKey) {
+            if (colorKey === 'RED') return {
+                main: 'var(--accent-red)',
+                bg: 'var(--accent-red-dim)',
+                glow: 'var(--accent-red-glow)'
             }
 
-            function formatProb(val) {
-                const num = parseFloat(val);
-                return !isNaN(num) ? (num * 100).toFixed(1) + '%' : 'N/A';
+                ;
+
+            if (colorKey === 'GREEN') return {
+                main: 'var(--accent-green)',
+                bg: 'var(--accent-green-dim)',
+                glow: 'var(--accent-green-glow)'
             }
 
-            function mapStatus(rawStatus) {
-                // Rename statuses for clarity in Spanish
-                if (rawStatus === 'ACTIVE' || rawStatus === 'ACTIVO') return 'EN PROGRESO...';
-                if (rawStatus === 'PENDING' || rawStatus === 'PENDIENTE') return 'ESPERANDO...';
-                if (rawStatus === 'PENDING \u23f3') return 'ESPERANDO...';
-                if (rawStatus.includes('FULFILLED') || rawStatus.includes('COMPLETADO')) return 'COMPLETADO \u2705';
-                return rawStatus;
+                ;
+
+            return {
+                main: 'var(--text-secondary)',
+                bg: 'rgba(255,255,255,0.03)',
+                glow: 'transparent'
             }
 
-            async function updateDashboard() {
-                try {
-                    const response = await fetch('data/alpha_state.json');
-                    const data = await response.json();
+                ;
+        }
 
-                    document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;
-                    const grid = document.getElementById('asset-grid');
-                    grid.innerHTML = '';
+        function formatProb(val) {
+            const num = parseFloat(val);
+            return !isNaN(num) ? (num * 100).toFixed(1) + '%' : 'N/A';
+        }
 
-                    if (!data.assets) return;
+        function mapStatus(rawStatus) {
+            // Rename statuses for clarity in Spanish
+            if (rawStatus === 'ACTIVE' || rawStatus === 'ACTIVO') return 'EN PROGRESO...';
+            if (rawStatus === 'PENDING' || rawStatus === 'PENDIENTE') return 'ESPERANDO...';
+            if (rawStatus === 'PENDING \u23f3') return 'ESPERANDO...';
+            if (rawStatus.includes('FULFILLED') || rawStatus.includes('COMPLETADO')) return 'COMPLETADO \u2705';
+            return rawStatus;
+        }
 
-                    data.assets.forEach(asset => {
-                        const layers = asset.layers;
-                        const daily = layers.daily;
+        async function updateDashboard() {
+            try {
+                const response = await fetch('/data/alpha_state.json');
+                const data = await response.json();
 
-                        // Daily Gauge Calculation
-                        const sigmaVal = daily.sigma_level || 0.01;
-                        const currentO2C = daily.o2c || 0;
-                        const sigmaDist = currentO2C / sigmaVal;
-                        let gaugeWidth = Math.min(Math.abs(sigmaDist) * 50, 50); // Max 50% width
+                document.getElementById('last-update').innerText = `SINC: ${data.timestamp}`;
+                const grid = document.getElementById('asset-grid');
+                grid.innerHTML = '';
 
-                        const dailyColors = getColors(daily.color);
+                if (!data.assets) return;
 
-                        // Gauge styling
-                        let gaugeStyle = '';
-                        if (currentO2C > 0) {
-                            gaugeStyle = `left: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
-                        } else {
-                            gaugeStyle = `right: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
-                        }
+                data.assets.forEach(asset => {
+                    const layers = asset.layers;
+                    const daily = layers.daily;
 
-                        // --- MONTHLY SIGNALS ---
-                        let monthlyHtml = '';
-                        const monthlySignals = layers.monthly_signals;
-                        if (Array.isArray(monthlySignals) && monthlySignals.length > 0) {
-                            monthlyHtml = monthlySignals.map(sig => {
-                                const c = getColors(sig.color);
-                                const cleanStatus = mapStatus(sig.status);
-                                const isDone = cleanStatus.includes('COMPLETADO') || cleanStatus.includes('COMPLETED');
-                                const borderStyle = isDone ? `border-left: 4px solid ${c.main}` : `border-left: 2px solid ${c.main}`;
+                    // Daily Gauge Calculation
+                    const sigmaVal = daily.sigma_level || 0.01;
+                    const currentO2C = daily.o2c || 0;
+                    const sigmaDist = currentO2C / sigmaVal;
+                    let gaugeWidth = Math.min(Math.abs(sigmaDist) * 50, 50); // Max 50% width
 
-                                return `<div class="signal-box" style="${borderStyle}; background: ${c.bg}">
+                    const dailyColors = getColors(daily.color);
+
+                    // Gauge styling
+                    let gaugeStyle = '';
+                    if (currentO2C > 0) {
+                        gaugeStyle = `left: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
+                    } else {
+                        gaugeStyle = `right: 50%; width: ${gaugeWidth}%; background-color: ${dailyColors.main}; box-shadow: 0 0 10px ${dailyColors.glow}`;
+                    }
+
+                    // --- MONTHLY SIGNALS ---
+                    let monthlyHtml = '';
+                    const monthlySignals = layers.monthly_signals;
+                    if (Array.isArray(monthlySignals) && monthlySignals.length > 0) {
+                        monthlyHtml = monthlySignals.map(sig => {
+                            const c = getColors(sig.color);
+                            const cleanStatus = mapStatus(sig.status);
+                            const isDone = cleanStatus.includes('COMPLETADO') || cleanStatus.includes('COMPLETED');
+                            const borderStyle = isDone ? `border-left: 4px solid ${c.main}` : `border-left: 2px solid ${c.main}`;
+
+                            return `<div class="signal-box" style="${borderStyle}; background: ${c.bg}">
                                     <div class="signal-info">
                                         <span class="signal-target" style="color: ${c.main}">${sig.target}</span>
                                         <span class="signal-status">${cleanStatus}</span>
@@ -525,16 +525,16 @@
                                         ${sig.grade ? `<span class="grade-badge">${sig.grade}</span>` : ''}
                                     </div>
                                 </div>`;
-                            }).join('');
-                        } else {
-                            monthlyHtml = '<div style="color:var(--text-secondary); font-size:12px; padding:10px; font-style:italic">Escaneando estructura...</div>';
-                        }
+                        }).join('');
+                    } else {
+                        monthlyHtml = '<div style="color:var(--text-secondary); font-size:12px; padding:10px; font-style:italic">Escaneando estructura...</div>';
+                    }
 
-                        // --- CARD RENDER ---
-                        const card = document.createElement('div');
-                        card.className = 'card';
+                    // --- CARD RENDER ---
+                    const card = document.createElement('div');
+                    card.className = 'card';
 
-                        card.innerHTML = `
+                    card.innerHTML = `
                             <!-- ASSET HEADER -->
                             <div class="asset-header">
                                 <div>
@@ -592,41 +592,41 @@
                                 </div>
                             </div>
                         `;
-                        grid.appendChild(card);
-                    });
+                    grid.appendChild(card);
+                });
 
-                } catch (error) {
-                    console.error("Dashboard Sync Error:", error);
-                }
+            } catch (error) {
+                console.error("Dashboard Sync Error:", error);
             }
+        }
 
-            updateDashboard();
-            setInterval(updateDashboard, 5000); // 5s Refresh
+        updateDashboard();
+        setInterval(updateDashboard, 5000); // 5s Refresh
 
-            // --- MODAL LOGIC ---
-            function showChart(assetSymbol) {
-                const map = {
-                    'NQ': 'NQ',
-                    'ES': 'ES',
-                    'YM': 'DJI',
-                    'GC': 'GC'
-                };
+        // --- MODAL LOGIC ---
+        function showChart(assetSymbol) {
+            const map = {
+                'NQ': 'NQ',
+                'ES': 'ES',
+                'YM': 'DJI',
+                'GC': 'GC'
+            };
 
-                const fileCode = map[assetSymbol] || assetSymbol;
-                const src = `public/charts/d2/${fileCode}_weekly_fractal_seasonality_styled.png`;
+            const fileCode = map[assetSymbol] || assetSymbol;
+            const src = `public/charts/d2/${fileCode}_weekly_fractal_seasonality_styled.png`;
 
-                const modal = document.getElementById('chart-modal');
-                const img = document.getElementById('chart-img');
+            const modal = document.getElementById('chart-modal');
+            const img = document.getElementById('chart-img');
 
-                img.src = src;
-                modal.classList.add('show');
-            }
+            img.src = src;
+            modal.classList.add('show');
+        }
 
-            function closeChart() {
-                document.getElementById('chart-modal').classList.remove('show');
-            }
+        function closeChart() {
+            document.getElementById('chart-modal').classList.remove('show');
+        }
 
-        </script>
+    </script>
 </body>
 
 </html>
