@@ -159,6 +159,15 @@ DAILY_TRIGGERS = {
     ('YM', 2, 'panic'):  {'target': 'REBOTE JUEVES', 'prob': 63.3, 'grade': 'BRONZE', 'avg_ret': '-0.12%'},
 }
 
+# Source: output/charts/seasonality/{ASSET}/monthly/{ASSET}_monthly_seasonality.png
+# Probability of GREEN (positive) close per month — SeasonalityCalculator.hit_rate (2000-2026)
+MONTHLY_BIAS = {
+    'NQ': {1: 61.5, 2: 38.5, 3: 64.0, 4: 64.0, 5: 64.0, 6: 60.0, 7: 76.0, 8: 56.0, 9: 48.0, 10: 61.5, 11: 73.1, 12: 53.8},
+    'ES': {1: 53.8, 2: 46.2, 3: 60.0, 4: 72.0, 5: 76.0, 6: 56.0, 7: 72.0, 8: 64.0, 9: 52.0, 10: 61.5, 11: 73.1, 12: 73.1},
+    'YM': {1: 54.2, 2: 62.5, 3: 65.2, 4: 73.9, 5: 62.5, 6: 50.0, 7: 70.8, 8: 62.5, 9: 50.0, 10: 58.3, 11: 79.2, 12: 62.5},
+    'GC': {1: 65.4, 2: 53.8, 3: 48.0, 4: 64.0, 5: 52.0, 6: 44.0, 7: 56.0, 8: 72.0, 9: 50.0, 10: 50.0, 11: 57.7, 12: 65.4},
+}
+
 # Source: DOR output charts (output/charts/*/daily/DOR_O2C_D_*_2020-2025_*.png)
 SIGMA = {'NQ': 0.01560, 'ES': 0.01266, 'YM': 0.01219, 'GC': 0.00932}
 
@@ -180,10 +189,25 @@ def calc_layers(asset, df):
     month = last_date.month
     year = last_date.year
     
-    # 1. Monthly — Only show if W2 signal is LOCKED (day >= 13)
+    # 0. Monthly Bias (Seasonal) — Always shown from day 1
     month_df = df[(df.index.month == month) & (df.index.year == year)]
     m_signals = []
     m_bias = None
+
+    hit_rate = MONTHLY_BIAS.get(asset, {}).get(month, None)
+    if hit_rate is not None and hit_rate != 50.0:
+        is_bullish = hit_rate > 50
+        direction_prob = round(hit_rate, 1) if is_bullish else round(100 - hit_rate, 1)
+        m_bias = "ALCISTA" if is_bullish else "BAJISTA"
+        m_signals.append({
+            'target': 'SESGO ALCISTA' if is_bullish else 'SESGO BAJISTA',
+            'prob': direction_prob,
+            'status': 'ACTIVO',
+            'grade': get_grade(direction_prob),
+            'color': 'green' if is_bullish else 'red'
+        })
+
+    # 1. Monthly W2 — Only show if W2 signal is LOCKED (day >= 13)
     if day >= 13:
         w1w2 = month_df[month_df.index.day <= 13]
         if not w1w2.empty:
