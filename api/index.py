@@ -152,6 +152,20 @@ WEEKLY_ALPHA_MATRIX = {
 # --- DAILY SPECIFIC TRIGGERS (Validated T-stats from Daily Alpha Matrix) ---
 # Key: (asset, weekday, type) where weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
 # Probabilities re-computed with DOR 2020-2025 asymmetric sigma thresholds on 2015-2025 data
+# --- WEEKLY BIAS & INERTIA (Daily σ Breach → Weekly Close Direction) ---
+# Source: output/charts/Multi/daily/weekly_bias_inertia_matrix.png
+# Analisis 2015-2025 | All T-Stats > 3.5, all GOLD/SILVER grade
+# Key: (asset, weekday, type) where weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
+WEEKLY_BIAS_TRIGGERS = {
+    ('NQ', 0, 'drive'):  {'direction': 'BULL', 'prob': 82.3, 'avg_ret': '+2.82%', 't_stat': 6.53, 'grade': 'GOLD+'},
+    ('NQ', 4, 'panic'):  {'direction': 'BEAR', 'prob': 84.5, 'avg_ret': '-2.44%', 't_stat': 7.40, 'grade': 'GOLD+'},
+    ('ES', 0, 'drive'):  {'direction': 'BULL', 'prob': 86.5, 'avg_ret': '+2.65%', 't_stat': 7.30, 'grade': 'GOLD+'},
+    ('ES', 4, 'panic'):  {'direction': 'BEAR', 'prob': 91.8, 'avg_ret': '-2.16%', 't_stat': 5.97, 'grade': 'GOLD+'},
+    ('NQ', 3, 'panic'):  {'direction': 'BEAR', 'prob': 78.5, 'avg_ret': '-2.12%', 't_stat': 6.26, 'grade': 'GOLD'},
+    ('YM', 2, 'panic'):  {'direction': 'BEAR', 'prob': 75.5, 'avg_ret': '-1.93%', 't_stat': 4.58, 'grade': 'GOLD'},
+    ('ES', 1, 'drive'):  {'direction': 'BULL', 'prob': 75.5, 'avg_ret': '+1.75%', 't_stat': 3.65, 'grade': 'SILVER'},
+}
+
 DAILY_TRIGGERS = {
     ('NQ', 1, 'panic'):  {'target': 'REBOTE MIÉRCOLES', 'prob': 54.9, 'grade': 'SILVER (T=1.93)', 'avg_ret': '+0.59%'},
     ('YM', 4, 'panic'):  {'target': 'REBOTE LUNES', 'prob': 72.3, 'grade': 'SILVER (T=1.66)', 'avg_ret': '+0.55%'},
@@ -297,10 +311,46 @@ def calc_layers(asset, df):
                 r = a_matrix['mean_reversion']
                 alpha_signals.append({'target': r['target'], 'prob': r['prob'], 'status': 'ACTIVO', 'grade': r['grade'], 'color': 'green'})
 
-    # 4. Daily — Daily context
-    d_signals = []
+    # 3b. Weekly Bias & Inertia (Daily σ Breach → Weekly Close Direction)
+    # Scan this week's completed bars for σ breaches that predict weekly close
     s_upper = SIGMA_UPPER.get(asset, 0.013)
     s_lower = SIGMA_LOWER.get(asset, -0.013)
+    bias_candidates = []
+
+    for idx in range(len(week_df)):
+        bar = week_df.iloc[idx]
+        bar_o, bar_c = float(bar['Open']), float(bar['Close'])
+        bar_o2c = (bar_c - bar_o) / bar_o if bar_o != 0 else 0
+        bar_weekday = bar.name.weekday()
+        bar_day_name = DAY_NAMES[bar_weekday] if bar_weekday < 7 else '?'
+
+        if bar_o2c > s_upper:
+            trigger = WEEKLY_BIAS_TRIGGERS.get((asset, bar_weekday, 'drive'))
+            if trigger:
+                bias_candidates.append({**trigger, 'day_name': bar_day_name, 'o2c': bar_o2c})
+        elif bar_o2c < s_lower:
+            trigger = WEEKLY_BIAS_TRIGGERS.get((asset, bar_weekday, 'panic'))
+            if trigger:
+                bias_candidates.append({**trigger, 'day_name': bar_day_name, 'o2c': bar_o2c})
+
+    bias_signals = []
+    if bias_candidates:
+        best = max(bias_candidates, key=lambda x: x['prob'])
+        is_bull = best['direction'] == 'BULL'
+        bias_signals.append({
+            'target': f'SESGO SEMANAL {"ALCISTA" if is_bull else "BAJISTA"}',
+            'prob': best['prob'],
+            'status': 'ACTIVO',
+            'grade': best['grade'],
+            'color': 'green' if is_bull else 'red',
+            'val': f'{best["day_name"]} cerró {best["o2c"]*100:+.2f}% → Avg {best["avg_ret"]}/sem'
+        })
+        # Set weekly bias if D2 hasn't set it yet
+        if w_bias is None:
+            w_bias = "ALCISTA" if is_bull else "BAJISTA"
+
+    # 4. Daily — Daily context
+    d_signals = []
 
     # --- YESTERDAY'S TRIGGERS (predict today) ---
     if len(df) >= 2:
@@ -340,7 +390,7 @@ def calc_layers(asset, df):
 
     return {
         'monthly': {'bias': m_bias, 'signals': m_signals},
-        'weekly': {'bias': w_bias, 'signals': w_signals + alpha_signals},
+        'weekly': {'bias': w_bias, 'signals': w_signals + alpha_signals + bias_signals},
         'daily': {'signals': d_signals}
     }
 
