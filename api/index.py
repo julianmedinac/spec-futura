@@ -133,19 +133,17 @@ WEEKLY_SEASONAL = {
 }
 
 # Source: output/charts/Multi/weekly/alpha_matrix_all_indices_weekly.png
-# Persistence and Reversion edges based on Weekly 1-Sigma moves
+# Only Mean Reversion kept — Bull Momentum removed (T < 1, not significant)
+# Probabilities re-computed on 2015-2025 data, audited 18/02/2026
 WEEKLY_ALPHA_MATRIX = {
     'NQ': {
-        'bull_momentum':  {'threshold': 0.0355, 'prob': 61.0, 'target': 'CONTINUACIÓN FUERTE', 'grade': 'GOLD+'},
-        'mean_reversion': {'threshold': -0.0273, 'prob': 55.8, 'target': 'REBOTE MODERADO', 'grade': 'MEDIUM'}
+        'mean_reversion': {'threshold': -0.0273, 'prob': 57.5, 'target': 'REBOTE MODERADO', 'grade': 'SILVER (T=2.19)'}
     },
     'ES': {
-        'bull_momentum':  {'threshold': 0.0298, 'prob': 54.3, 'target': 'CONTINUACIÓN EN W+1', 'grade': 'MEDIUM'},
-        'mean_reversion': {'threshold': -0.0233, 'prob': 65.8, 'target': 'REBOTE ALTA PROB', 'grade': 'GOLD+'}
+        'mean_reversion': {'threshold': -0.0233, 'prob': 66.7, 'target': 'REBOTE ALTA PROB', 'grade': 'GOLD (T=3.13)'}
     },
     'YM': {
-        'bull_momentum':  {'threshold': 0.0290, 'prob': 56.2, 'target': 'CONTINUACIÓN EN W+1', 'grade': 'MEDIUM'},
-        'mean_reversion': {'threshold': -0.0241, 'prob': 67.7, 'target': 'REBOTE POR CAPITULACIÓN', 'grade': 'GOLD+'}
+        'mean_reversion': {'threshold': -0.0241, 'prob': 71.4, 'target': 'REBOTE POR CAPITULACIÓN', 'grade': 'GOLD (T=2.65)'}
     }
 }
 
@@ -289,27 +287,21 @@ def calc_layers(asset, df):
                         s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
                         w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
 
-    # 3. Weekly Alpha Matrix (1-Sigma Persistence/Reversion)
-    # Check if the PREVIOUS WEEK closed beyond alpha thresholds
+    # 3. Weekly Alpha Matrix (Mean Reversion only — Bull Momentum removed, T < 1)
+    # Check if the PREVIOUS WEEK closed beyond mean reversion threshold
     previous_week = (last_date - pd.Timedelta(days=7)).isocalendar()[1]
     prev_week_df = df[(df.index.isocalendar().week == previous_week) & (df.index.isocalendar().year == (last_date - pd.Timedelta(days=7)).year)]
-    
+
     alpha_signals = []
     if not prev_week_df.empty:
         pw_open = float(prev_week_df['Open'].iloc[0])
         pw_close = float(prev_week_df['Close'].iloc[-1])
         pw_ret = (pw_close - pw_open) / pw_open
-        
+
         a_matrix = WEEKLY_ALPHA_MATRIX.get(asset)
-        if a_matrix:
-            # Bull Momentum
-            if pw_ret >= a_matrix['bull_momentum']['threshold']:
-                m = a_matrix['bull_momentum']
-                alpha_signals.append({'target': m['target'], 'prob': m['prob'], 'status': 'ACTIVO', 'grade': m['grade'], 'color': 'green'})
-            # Mean Reversion
-            elif pw_ret <= a_matrix['mean_reversion']['threshold']:
-                r = a_matrix['mean_reversion']
-                alpha_signals.append({'target': r['target'], 'prob': r['prob'], 'status': 'ACTIVO', 'grade': r['grade'], 'color': 'green'})
+        if a_matrix and pw_ret <= a_matrix['mean_reversion']['threshold']:
+            r = a_matrix['mean_reversion']
+            alpha_signals.append({'target': r['target'], 'prob': r['prob'], 'status': 'ACTIVO', 'grade': r['grade'], 'color': 'green'})
 
     # 3b. Weekly Bias & Inertia (Daily σ Breach → Weekly Close Direction)
     # Scan this week's completed bars for σ breaches that predict weekly close
