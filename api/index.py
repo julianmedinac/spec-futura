@@ -154,16 +154,16 @@ WEEKLY_ALPHA_MATRIX = {
 # Probabilities re-computed with DOR 2020-2025 asymmetric sigma thresholds on 2015-2025 data
 # --- WEEKLY BIAS & INERTIA (Daily σ Breach → Weekly Close Direction) ---
 # Source: output/charts/Multi/daily/weekly_bias_inertia_matrix.png
-# Analisis 2015-2025 | All T-Stats > 3.5, all GOLD/SILVER grade
+# Re-computed with DOR 2020-2025 asymmetric σ on 2015-2025 data
 # Key: (asset, weekday, type) where weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
 WEEKLY_BIAS_TRIGGERS = {
-    ('NQ', 0, 'drive'):  {'direction': 'BULL', 'prob': 82.3, 'avg_ret': '+2.82%', 't_stat': 6.53, 'grade': 'GOLD+'},
-    ('NQ', 4, 'panic'):  {'direction': 'BEAR', 'prob': 84.5, 'avg_ret': '-2.44%', 't_stat': 7.40, 'grade': 'GOLD+'},
-    ('ES', 0, 'drive'):  {'direction': 'BULL', 'prob': 86.5, 'avg_ret': '+2.65%', 't_stat': 7.30, 'grade': 'GOLD+'},
-    ('ES', 4, 'panic'):  {'direction': 'BEAR', 'prob': 91.8, 'avg_ret': '-2.16%', 't_stat': 5.97, 'grade': 'GOLD+'},
-    ('NQ', 3, 'panic'):  {'direction': 'BEAR', 'prob': 78.5, 'avg_ret': '-2.12%', 't_stat': 6.26, 'grade': 'GOLD'},
-    ('YM', 2, 'panic'):  {'direction': 'BEAR', 'prob': 75.5, 'avg_ret': '-1.93%', 't_stat': 4.58, 'grade': 'GOLD'},
-    ('ES', 1, 'drive'):  {'direction': 'BULL', 'prob': 75.5, 'avg_ret': '+1.75%', 't_stat': 3.65, 'grade': 'SILVER'},
+    ('NQ', 0, 'drive'):  {'direction': 'BULL', 'prob': 86.4, 'avg_ret': '+3.52%', 't_stat': 7.15, 'grade': 'GOLD+'},
+    ('NQ', 4, 'panic'):  {'direction': 'BEAR', 'prob': 86.4, 'avg_ret': '-2.64%', 't_stat': 7.02, 'grade': 'GOLD+'},
+    ('ES', 0, 'drive'):  {'direction': 'BULL', 'prob': 87.5, 'avg_ret': '+2.76%', 't_stat': 6.68, 'grade': 'GOLD+'},
+    ('ES', 4, 'panic'):  {'direction': 'BEAR', 'prob': 92.3, 'avg_ret': '-2.25%', 't_stat': 5.38, 'grade': 'GOLD+'},
+    ('NQ', 3, 'panic'):  {'direction': 'BEAR', 'prob': 79.7, 'avg_ret': '-2.32%', 't_stat': 6.15, 'grade': 'GOLD+'},
+    ('YM', 2, 'panic'):  {'direction': 'BEAR', 'prob': 76.3, 'avg_ret': '-2.13%', 't_stat': 4.46, 'grade': 'GOLD'},
+    ('ES', 1, 'drive'):  {'direction': 'BULL', 'prob': 76.2, 'avg_ret': '+2.05%', 't_stat': 3.47, 'grade': 'SILVER'},
 }
 
 DAILY_TRIGGERS = {
