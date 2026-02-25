@@ -431,7 +431,6 @@
         </div>
         <div class="column w-col" id="col-weekly" style="display:none">
             <div class="col-header">
-                <div class="col-title">Capa Tactiva</div>
                 <div class="col-tag">SEMANAL</div>
             </div>
             <div class="asset-list" id="weekly-list"></div>
@@ -539,14 +538,8 @@
                     biasHtml = '<div class="bias ' + biasClass + '">' + layer.bias + '</div>';
                 }
 
-                // Add D2 chart button for weekly layer
-                var chartBtn = '';
-                if (layerKey === 'weekly') {
-                    chartBtn = '<span class="d2-btn" onclick="showChart(\'' + asset.asset + '\')">VER D2</span>';
-                }
-
                 card.innerHTML = '<div class="card-head"><div>' +
-                    '<div class="asset-symbol">' + asset.asset + chartBtn + '</div>' +
+                    '<div class="asset-symbol">' + asset.asset + '</div>' +
                     '<div class="asset-price">$' + asset.price.toLocaleString() + '</div>' +
                     '</div><div style="text-align:right">' + biasHtml + '</div></div>' + html;
 
