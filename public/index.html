@@ -1074,10 +1074,21 @@
                 if (any) {
                     var tabsContainer = document.getElementById('dashboard');
                     var activeBtn = tabsContainer.querySelector('.tabs-trigger[data-state="active"]');
-                    if (!activeBtn || activeBtn.style.display === 'none') {
-                        if (hasM) switchTab('btn-monthly');
-                        else if (hasW) switchTab('btn-weekly');
-                        else if (hasD) switchTab('btn-daily');
+                    var targetId = null;
+
+                    if (activeBtn && activeBtn.style.display !== 'none') {
+                        targetId = activeBtn.id;
+                    } else {
+                        if (hasM) targetId = 'btn-monthly';
+                        else if (hasW) targetId = 'btn-weekly';
+                        else if (hasD) targetId = 'btn-daily';
+                    }
+
+                    if (targetId) {
+                        // Small delay ensures layout metrics (offsetWidth/offsetLeft) are valid after display:none -> flex
+                        setTimeout(function () {
+                            switchTab(targetId);
+                        }, 50);
                     }
                 }
 
