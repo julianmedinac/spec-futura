@@ -27,6 +27,7 @@ class AlphaBrain:
             },
             'monday_drive': {'prob_bull': 0.823, 'grade': 'GOLD +'},
             'tuesday_reversion': {'trigger': 'PANIC (<-1σ)', 'target': 'WEDNESDAY REBOUND', 'prob': 0.554, 'grade': 'GOLD (T>2.1)'},
+            'wednesday_drive': {'trigger': 'DRIVE (>1σ)', 'target': 'GREEN WEEK CLOSE', 'prob': 0.695, 'grade': 'GOLD+'},
             'thursday_reversion': {'trigger': 'DRIVE (>1σ)', 'target': 'FRIDAY REVERSION', 'prob': 0.578, 'grade': 'BRONZE'}
         },
         'ES': {
@@ -43,7 +44,8 @@ class AlphaBrain:
                     'bull': {'prob_green': 0.800, 'prob_high': 0.800}
                 }
             },
-            'monday_drive': {'prob_bull': 0.865, 'grade': 'GOLD +'}
+            'monday_drive': {'prob_bull': 0.865, 'grade': 'GOLD +'},
+            'wednesday_drive': {'trigger': 'DRIVE (>1σ)', 'target': 'GREEN WEEK CLOSE', 'prob': 0.721, 'grade': 'GOLD+'},
         },
         'YM': {
             'sigma': {'daily': 0.0106, 'weekly': 0.0231},
@@ -233,13 +235,25 @@ class AlphaBrain:
                     rng = hi - lo
                     if rng > 0:
                         pos = (curr_close - lo) / rng
+                        if pos > 0.75:
+                            tier_key = 'bull_75'
+                            target = 'FUERTE ALCISTA'
+                        elif pos > 0.50:
+                            tier_key = 'bull_50'
+                            target = 'CIERRE ALCISTA'
+                        elif pos < 0.25:
+                            tier_key = 'bear_25'
+                            target = 'FUERTE BAJISTA'
+                        else:
+                            tier_key = 'bear_50'
+                            target = 'CIERRE BAJISTA'
+                            
                         is_bull = pos > 0.5
                         
                         seasonal = WEEKLY_SEASONAL.get(asset_key, {}).get(current_month, None)
                         if seasonal:
-                            p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
+                            p_set = seasonal.get(tier_key)
                             if p_set:
-                                target = 'CIERRE ALCISTA' if is_bull else 'CIERRE BAJISTA'
                                 prob = p_set['prob_green'] if is_bull else p_set['prob_red']
                                 color = 'GREEN' if is_bull else 'RED'
                                 
@@ -279,7 +293,21 @@ class AlphaBrain:
         grade = 'NOISE'
         
         if current_o2c > daily_sigma:
-            if today_weekday == 3 and asset_key == 'NQ':
+            if today_weekday == 2:  # Wednesday
+                stats = cls.ALPHAS[asset_key].get('wednesday_drive')
+                if stats:
+                    status = f"WED DRIVE {stats['trigger']}"
+                    color = 'GREEN'
+                    prob = stats['prob']
+                    target = stats['target']
+                    grade = stats['grade']
+                else:
+                    status = 'BULL EXPANSION (>1σ)'
+                    color = 'GREEN'
+                    prob = 0.82
+                    target = 'WEEKLY BULL EXPANSION'
+                    grade = 'GOLD +'
+            elif today_weekday == 3 and asset_key == 'NQ':
                  stats = cls.ALPHAS['NQ'].get('thursday_reversion')
                  status = f"THU REVERSION {stats['trigger']}"
                  color = 'RED'

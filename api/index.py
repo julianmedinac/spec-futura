@@ -75,62 +75,64 @@ W2_MONTHLY = {
 # Fully audited 12-month tables for D2 Signal (Tuesday Close vs Mon-Tue Range)
 WEEKLY_SEASONAL = {
     'NQ': {
-        1:  {'bull': {'prob_high': 86.5, 'prob_green': 75.7}, 'bear': {'prob_low': 78.6, 'prob_red': 83.3}},
-        2:  {'bull': {'prob_high': 85.5, 'prob_green': 76.4}, 'bear': {'prob_low': 78.7, 'prob_red': 63.8}},
-        3:  {'bull': {'prob_high': 79.4, 'prob_green': 77.8}, 'bear': {'prob_low': 72.3, 'prob_red': 72.3}},
-        4:  {'bull': {'prob_high': 85.0, 'prob_green': 70.0}, 'bear': {'prob_low': 64.6, 'prob_red': 68.8}},
-        5:  {'bull': {'prob_high': 78.3, 'prob_green': 75.0}, 'bear': {'prob_low': 78.7, 'prob_red': 66.0}},
-        6:  {'bull': {'prob_high': 85.2, 'prob_green': 59.0}, 'bear': {'prob_low': 81.6, 'prob_red': 69.4}},
-        7:  {'bull': {'prob_high': 81.1, 'prob_green': 64.9}, 'bear': {'prob_low': 68.4, 'prob_red': 60.5}},
-        8:  {'bull': {'prob_high': 83.3, 'prob_green': 75.0}, 'bear': {'prob_low': 74.0, 'prob_red': 68.0}},
-        9:  {'bull': {'prob_high': 72.6, 'prob_green': 71.0}, 'bear': {'prob_low': 69.6, 'prob_red': 65.2}},
-        10: {'bull': {'prob_high': 79.1, 'prob_green': 73.1}, 'bear': {'prob_low': 77.1, 'prob_red': 43.8}},
-        11: {'bull': {'prob_high': 76.7, 'prob_green': 76.7}, 'bear': {'prob_low': 69.2, 'prob_red': 69.2}},
-        12: {'bull': {'prob_high': 68.2, 'prob_green': 72.7}, 'bear': {'prob_low': 67.3, 'prob_red': 73.5}},
+        1:  {'bull_50': {'prob_high': 86.5, 'prob_green': 75.7}, 'bear_50': {'prob_low': 78.0, 'prob_red': 85.4}, 'bull_75': {'prob_high': 89.7, 'prob_green': 79.5}, 'bear_25': {'prob_low': 83.3, 'prob_red': 88.9}},
+        2:  {'bull_50': {'prob_high': 86.0, 'prob_green': 73.7}, 'bear_50': {'prob_low': 78.3, 'prob_red': 63.0}, 'bull_75': {'prob_high': 97.1, 'prob_green': 82.9}, 'bear_25': {'prob_low': 85.7, 'prob_red': 67.9}},
+        3:  {'bull_50': {'prob_high': 79.7, 'prob_green': 76.6}, 'bear_50': {'prob_low': 73.9, 'prob_red': 71.7}, 'bull_75': {'prob_high': 90.2, 'prob_green': 85.4}, 'bear_25': {'prob_low': 84.6, 'prob_red': 69.2}},
+        4:  {'bull_50': {'prob_high': 85.0, 'prob_green': 70.0}, 'bear_50': {'prob_low': 64.6, 'prob_red': 68.8}, 'bull_75': {'prob_high': 97.6, 'prob_green': 78.0}, 'bear_25': {'prob_low': 67.9, 'prob_red': 78.6}},
+        5:  {'bull_50': {'prob_high': 78.3, 'prob_green': 75.0}, 'bear_50': {'prob_low': 78.7, 'prob_red': 66.0}, 'bull_75': {'prob_high': 86.1, 'prob_green': 72.2}, 'bear_25': {'prob_low': 85.7, 'prob_red': 66.7}},
+        6:  {'bull_50': {'prob_high': 85.2, 'prob_green': 59.0}, 'bear_50': {'prob_low': 81.6, 'prob_red': 69.4}, 'bull_75': {'prob_high': 84.1, 'prob_green': 63.6}, 'bear_25': {'prob_low': 90.5, 'prob_red': 71.4}},
+        7:  {'bull_50': {'prob_high': 81.1, 'prob_green': 64.9}, 'bear_50': {'prob_low': 68.4, 'prob_red': 60.5}, 'bull_75': {'prob_high': 91.1, 'prob_green': 73.3}, 'bear_25': {'prob_low': 82.4, 'prob_red': 58.8}},
+        8:  {'bull_50': {'prob_high': 83.3, 'prob_green': 75.0}, 'bear_50': {'prob_low': 74.0, 'prob_red': 68.0}, 'bull_75': {'prob_high': 87.1, 'prob_green': 83.9}, 'bear_25': {'prob_low': 71.4, 'prob_red': 71.4}},
+        9:  {'bull_50': {'prob_high': 72.6, 'prob_green': 71.0}, 'bear_50': {'prob_low': 69.6, 'prob_red': 65.2}, 'bull_75': {'prob_high': 88.9, 'prob_green': 83.3}, 'bear_25': {'prob_low': 84.0, 'prob_red': 76.0}},
+        10:  {'bull_50': {'prob_high': 79.1, 'prob_green': 73.1}, 'bear_50': {'prob_low': 77.1, 'prob_red': 43.8}, 'bull_75': {'prob_high': 86.8, 'prob_green': 76.3}, 'bear_25': {'prob_low': 90.9, 'prob_red': 57.6}},
+        11:  {'bull_50': {'prob_high': 76.7, 'prob_green': 76.7}, 'bear_50': {'prob_low': 68.4, 'prob_red': 68.4}, 'bull_75': {'prob_high': 84.4, 'prob_green': 82.2}, 'bear_25': {'prob_low': 61.9, 'prob_red': 66.7}},
+        12:  {'bull_50': {'prob_high': 68.2, 'prob_green': 72.7}, 'bear_50': {'prob_low': 67.3, 'prob_red': 73.5}, 'bull_75': {'prob_high': 78.0, 'prob_green': 82.9}, 'bear_25': {'prob_low': 68.0, 'prob_red': 80.0}},
     },
     'ES': {
-        1:  {'bull': {'prob_high': 87.3, 'prob_green': 69.6}, 'bear': {'prob_low': 78.4, 'prob_red': 78.4}},
-        2:  {'bull': {'prob_high': 76.7, 'prob_green': 68.3}, 'bear': {'prob_low': 78.6, 'prob_red': 52.4}},
-        3:  {'bull': {'prob_high': 75.0, 'prob_green': 75.0}, 'bear': {'prob_low': 70.0, 'prob_red': 66.0}},
-        4:  {'bull': {'prob_high': 89.9, 'prob_green': 71.0}, 'bear': {'prob_low': 74.4, 'prob_red': 61.5}},
-        5:  {'bull': {'prob_high': 76.8, 'prob_green': 69.6}, 'bear': {'prob_low': 74.5, 'prob_red': 70.6}},
-        6:  {'bull': {'prob_high': 77.8, 'prob_green': 66.7}, 'bear': {'prob_low': 85.1, 'prob_red': 74.5}},
-        7:  {'bull': {'prob_high': 89.0, 'prob_green': 74.0}, 'bear': {'prob_low': 76.9, 'prob_red': 59.0}},
-        8:  {'bull': {'prob_high': 81.4, 'prob_green': 74.6}, 'bear': {'prob_low': 72.5, 'prob_red': 56.9}},
-        9:  {'bull': {'prob_high': 80.0, 'prob_green': 71.7}, 'bear': {'prob_low': 79.2, 'prob_red': 70.8}},
-        10: {'bull': {'prob_high': 80.3, 'prob_green': 74.6}, 'bear': {'prob_low': 81.8, 'prob_red': 63.6}},
-        11: {'bull': {'prob_high': 85.7, 'prob_green': 74.6}, 'bear': {'prob_low': 63.3, 'prob_red': 57.1}},
-        12: {'bull': {'prob_high': 84.4, 'prob_green': 81.2}, 'bear': {'prob_low': 74.5, 'prob_red': 72.5}},
+        1:  {'bull_50': {'prob_high': 87.3, 'prob_green': 69.6}, 'bear_50': {'prob_low': 78.4, 'prob_red': 78.4}, 'bull_75': {'prob_high': 97.5, 'prob_green': 82.5}, 'bear_25': {'prob_low': 93.3, 'prob_red': 100.0}},
+        2:  {'bull_50': {'prob_high': 77.4, 'prob_green': 67.7}, 'bear_50': {'prob_low': 81.0, 'prob_red': 54.8}, 'bull_75': {'prob_high': 84.6, 'prob_green': 76.9}, 'bear_25': {'prob_low': 91.3, 'prob_red': 65.2}},
+        3:  {'bull_50': {'prob_high': 73.8, 'prob_green': 73.8}, 'bear_50': {'prob_low': 70.0, 'prob_red': 66.0}, 'bull_75': {'prob_high': 85.7, 'prob_green': 85.7}, 'bear_25': {'prob_low': 80.0, 'prob_red': 76.7}},
+        4:  {'bull_50': {'prob_high': 89.9, 'prob_green': 71.0}, 'bear_50': {'prob_low': 74.4, 'prob_red': 61.5}, 'bull_75': {'prob_high': 93.3, 'prob_green': 80.0}, 'bear_25': {'prob_low': 72.0, 'prob_red': 56.0}},
+        5:  {'bull_50': {'prob_high': 76.8, 'prob_green': 69.6}, 'bear_50': {'prob_low': 74.5, 'prob_red': 70.6}, 'bull_75': {'prob_high': 83.9, 'prob_green': 71.0}, 'bear_25': {'prob_low': 78.6, 'prob_red': 67.9}},
+        6:  {'bull_50': {'prob_high': 77.8, 'prob_green': 66.7}, 'bear_50': {'prob_low': 85.1, 'prob_red': 74.5}, 'bull_75': {'prob_high': 82.1, 'prob_green': 79.5}, 'bear_25': {'prob_low': 87.0, 'prob_red': 82.6}},
+        7:  {'bull_50': {'prob_high': 89.0, 'prob_green': 74.0}, 'bear_50': {'prob_low': 76.9, 'prob_red': 59.0}, 'bull_75': {'prob_high': 93.0, 'prob_green': 69.8}, 'bear_25': {'prob_low': 85.7, 'prob_red': 52.4}},
+        8:  {'bull_50': {'prob_high': 81.4, 'prob_green': 74.6}, 'bear_50': {'prob_low': 72.0, 'prob_red': 56.0}, 'bull_75': {'prob_high': 83.9, 'prob_green': 83.9}, 'bear_25': {'prob_low': 80.8, 'prob_red': 65.4}},
+        9:  {'bull_50': {'prob_high': 80.0, 'prob_green': 71.7}, 'bear_50': {'prob_low': 79.2, 'prob_red': 70.8}, 'bull_75': {'prob_high': 91.2, 'prob_green': 79.4}, 'bear_25': {'prob_low': 87.0, 'prob_red': 82.6}},
+        10:  {'bull_50': {'prob_high': 80.3, 'prob_green': 74.6}, 'bear_50': {'prob_low': 81.8, 'prob_red': 63.6}, 'bull_75': {'prob_high': 88.6, 'prob_green': 85.7}, 'bear_25': {'prob_low': 92.3, 'prob_red': 73.1}},
+        11:  {'bull_50': {'prob_high': 85.7, 'prob_green': 74.6}, 'bear_50': {'prob_low': 62.5, 'prob_red': 58.3}, 'bull_75': {'prob_high': 90.9, 'prob_green': 84.1}, 'bear_25': {'prob_low': 66.7, 'prob_red': 66.7}},
+        12:  {'bull_50': {'prob_high': 84.4, 'prob_green': 81.2}, 'bear_50': {'prob_low': 74.5, 'prob_red': 72.5}, 'bull_75': {'prob_high': 91.1, 'prob_green': 88.9}, 'bear_25': {'prob_low': 73.5, 'prob_red': 79.4}},
     },
     'YM': {
-        1:  {'bull': {'prob_high': 87.8, 'prob_green': 75.7}, 'bear': {'prob_low': 82.6, 'prob_red': 76.1}},
-        2:  {'bull': {'prob_high': 73.6, 'prob_green': 65.3}, 'bear': {'prob_low': 71.4, 'prob_red': 60.0}},
-        3:  {'bull': {'prob_high': 82.8, 'prob_green': 79.3}, 'bear': {'prob_low': 75.0, 'prob_red': 64.3}},
-        4:  {'bull': {'prob_high': 76.8, 'prob_green': 68.1}, 'bear': {'prob_low': 69.8, 'prob_red': 53.5}},
-        5:  {'bull': {'prob_high': 64.9, 'prob_green': 64.9}, 'bear': {'prob_low': 76.4, 'prob_red': 70.9}},
-        6:  {'bull': {'prob_high': 73.7, 'prob_green': 64.9}, 'bear': {'prob_low': 84.2, 'prob_red': 75.4}},
-        7:  {'bull': {'prob_high': 80.0, 'prob_green': 72.0}, 'bear': {'prob_low': 75.6, 'prob_red': 51.2}},
-        8:  {'bull': {'prob_high': 74.1, 'prob_green': 74.1}, 'bear': {'prob_low': 75.4, 'prob_red': 57.9}},
-        9:  {'bull': {'prob_high': 78.6, 'prob_green': 64.3}, 'bear': {'prob_low': 66.7, 'prob_red': 70.4}},
-        10: {'bull': {'prob_high': 82.1, 'prob_green': 80.6}, 'bear': {'prob_low': 79.2, 'prob_red': 60.4}},
-        11: {'bull': {'prob_high': 70.3, 'prob_green': 76.6}, 'bear': {'prob_low': 72.9, 'prob_red': 56.2}},
-        12: {'bull': {'prob_high': 83.3, 'prob_green': 77.3}, 'bear': {'prob_low': 73.5, 'prob_red': 67.3}},
+        1:  {'bull_50': {'prob_high': 87.8, 'prob_green': 75.7}, 'bear_50': {'prob_low': 82.6, 'prob_red': 76.1}, 'bull_75': {'prob_high': 89.6, 'prob_green': 77.1}, 'bear_25': {'prob_low': 87.0, 'prob_red': 82.6}},
+        2:  {'bull_50': {'prob_high': 72.6, 'prob_green': 64.4}, 'bear_50': {'prob_low': 72.2, 'prob_red': 61.1}, 'bull_75': {'prob_high': 83.3, 'prob_green': 66.7}, 'bear_25': {'prob_low': 85.7, 'prob_red': 66.7}},
+        3:  {'bull_50': {'prob_high': 81.4, 'prob_green': 78.0}, 'bear_50': {'prob_low': 75.0, 'prob_red': 64.3}, 'bull_75': {'prob_high': 86.8, 'prob_green': 89.5}, 'bear_25': {'prob_low': 76.5, 'prob_red': 70.6}},
+        4:  {'bull_50': {'prob_high': 76.8, 'prob_green': 68.1}, 'bear_50': {'prob_low': 69.8, 'prob_red': 53.5}, 'bull_75': {'prob_high': 82.6, 'prob_green': 73.9}, 'bear_25': {'prob_low': 84.0, 'prob_red': 56.0}},
+        5:  {'bull_50': {'prob_high': 64.9, 'prob_green': 64.9}, 'bear_50': {'prob_low': 76.4, 'prob_red': 70.9}, 'bull_75': {'prob_high': 72.4, 'prob_green': 72.4}, 'bear_25': {'prob_low': 78.1, 'prob_red': 75.0}},
+        6:  {'bull_50': {'prob_high': 73.7, 'prob_green': 64.9}, 'bear_50': {'prob_low': 84.2, 'prob_red': 75.4}, 'bull_75': {'prob_high': 76.3, 'prob_green': 73.7}, 'bear_25': {'prob_low': 93.8, 'prob_red': 81.2}},
+        7:  {'bull_50': {'prob_high': 80.0, 'prob_green': 72.0}, 'bear_50': {'prob_low': 75.6, 'prob_red': 51.2}, 'bull_75': {'prob_high': 87.8, 'prob_green': 81.6}, 'bear_25': {'prob_low': 85.2, 'prob_red': 59.3}},
+        8:  {'bull_50': {'prob_high': 74.1, 'prob_green': 74.1}, 'bear_50': {'prob_low': 75.4, 'prob_red': 57.9}, 'bull_75': {'prob_high': 78.8, 'prob_green': 78.8}, 'bear_25': {'prob_low': 87.5, 'prob_red': 75.0}},
+        9:  {'bull_50': {'prob_high': 78.6, 'prob_green': 64.3}, 'bear_50': {'prob_low': 66.7, 'prob_red': 70.4}, 'bull_75': {'prob_high': 100.0, 'prob_green': 82.4}, 'bear_25': {'prob_low': 88.5, 'prob_red': 88.5}},
+        10:  {'bull_50': {'prob_high': 82.1, 'prob_green': 80.6}, 'bear_50': {'prob_low': 79.2, 'prob_red': 60.4}, 'bull_75': {'prob_high': 92.5, 'prob_green': 90.0}, 'bear_25': {'prob_low': 87.1, 'prob_red': 71.0}},
+        11:  {'bull_50': {'prob_high': 70.3, 'prob_green': 76.6}, 'bear_50': {'prob_low': 72.9, 'prob_red': 56.2}, 'bull_75': {'prob_high': 73.7, 'prob_green': 86.8}, 'bear_25': {'prob_low': 69.6, 'prob_red': 69.6}},
+        12:  {'bull_50': {'prob_high': 83.3, 'prob_green': 77.3}, 'bear_50': {'prob_low': 73.5, 'prob_red': 67.3}, 'bull_75': {'prob_high': 83.3, 'prob_green': 83.3}, 'bear_25': {'prob_low': 76.5, 'prob_red': 73.5}},
     },
     'GC': {
-        1:  {'bull': {'prob_high': 78.8, 'prob_green': 77.3}, 'bear': {'prob_low': 69.4, 'prob_red': 55.1}},
-        2:  {'bull': {'prob_high': 77.2, 'prob_green': 77.2}, 'bear': {'prob_low': 68.9, 'prob_red': 73.3}},
-        3:  {'bull': {'prob_high': 76.5, 'prob_green': 74.5}, 'bear': {'prob_low': 69.0, 'prob_red': 65.5}},
-        4:  {'bull': {'prob_high': 68.9, 'prob_green': 60.7}, 'bear': {'prob_low': 55.3, 'prob_red': 57.4}},
-        5:  {'bull': {'prob_high': 84.9, 'prob_green': 79.2}, 'bear': {'prob_low': 70.6, 'prob_red': 66.7}},
-        6:  {'bull': {'prob_high': 79.6, 'prob_green': 69.4}, 'bear': {'prob_low': 77.0, 'prob_red': 68.9}},
-        7:  {'bull': {'prob_high': 70.7, 'prob_green': 72.4}, 'bear': {'prob_low': 75.0, 'prob_red': 61.5}},
-        8:  {'bull': {'prob_high': 78.7, 'prob_green': 75.4}, 'bear': {'prob_low': 68.0, 'prob_red': 54.0}},
-        9:  {'bull': {'prob_high': 65.4, 'prob_green': 69.2}, 'bear': {'prob_low': 67.2, 'prob_red': 60.3}},
-        10: {'bull': {'prob_high': 75.0, 'prob_green': 73.2}, 'bear': {'prob_low': 69.5, 'prob_red': 61.0}},
-        11: {'bull': {'prob_high': 76.3, 'prob_green': 72.9}, 'bear': {'prob_low': 64.2, 'prob_red': 60.4}},
-        12: {'bull': {'prob_high': 74.2, 'prob_green': 75.8}, 'bear': {'prob_low': 69.8, 'prob_red': 66.0}},
-    }
+        1:  {'bull_50': {'prob_high': 78.8, 'prob_green': 77.3}, 'bear_50': {'prob_low': 69.4, 'prob_red': 55.1}, 'bull_75': {'prob_high': 81.6, 'prob_green': 79.6}, 'bear_25': {'prob_low': 70.6, 'prob_red': 64.7}},
+        2:  {'bull_50': {'prob_high': 77.6, 'prob_green': 77.6}, 'bear_50': {'prob_low': 69.6, 'prob_red': 71.7}, 'bull_75': {'prob_high': 81.0, 'prob_green': 76.2}, 'bear_25': {'prob_low': 80.8, 'prob_red': 88.5}},
+        3:  {'bull_50': {'prob_high': 76.5, 'prob_green': 74.5}, 'bear_50': {'prob_low': 67.8, 'prob_red': 66.1}, 'bull_75': {'prob_high': 85.0, 'prob_green': 82.5}, 'bear_25': {'prob_low': 69.6, 'prob_red': 67.4}},
+        4:  {'bull_50': {'prob_high': 68.9, 'prob_green': 60.7}, 'bear_50': {'prob_low': 56.5, 'prob_red': 58.7}, 'bull_75': {'prob_high': 71.0, 'prob_green': 64.5}, 'bear_25': {'prob_low': 69.6, 'prob_red': 69.6}},
+        5:  {'bull_50': {'prob_high': 84.9, 'prob_green': 79.2}, 'bear_50': {'prob_low': 70.6, 'prob_red': 66.7}, 'bull_75': {'prob_high': 83.8, 'prob_green': 78.4}, 'bear_25': {'prob_low': 65.8, 'prob_red': 65.8}},
+        6:  {'bull_50': {'prob_high': 79.6, 'prob_green': 69.4}, 'bear_50': {'prob_low': 77.0, 'prob_red': 68.9}, 'bull_75': {'prob_high': 84.0, 'prob_green': 68.0}, 'bear_25': {'prob_low': 84.4, 'prob_red': 78.1}},
+        7:  {'bull_50': {'prob_high': 70.7, 'prob_green': 72.4}, 'bear_50': {'prob_low': 75.0, 'prob_red': 61.5}, 'bull_75': {'prob_high': 76.3, 'prob_green': 78.9}, 'bear_25': {'prob_low': 72.2, 'prob_red': 72.2}},
+        8:  {'bull_50': {'prob_high': 78.7, 'prob_green': 75.4}, 'bear_50': {'prob_low': 68.0, 'prob_red': 54.0}, 'bull_75': {'prob_high': 76.9, 'prob_green': 76.9}, 'bear_25': {'prob_low': 75.0, 'prob_red': 50.0}},
+        9:  {'bull_50': {'prob_high': 65.4, 'prob_green': 69.2}, 'bear_50': {'prob_low': 67.2, 'prob_red': 60.3}, 'bull_75': {'prob_high': 70.0, 'prob_green': 75.0}, 'bear_25': {'prob_low': 62.8, 'prob_red': 62.8}},
+        10:  {'bull_50': {'prob_high': 75.0, 'prob_green': 73.2}, 'bear_50': {'prob_low': 69.5, 'prob_red': 61.0}, 'bull_75': {'prob_high': 75.6, 'prob_green': 85.4}, 'bear_25': {'prob_low': 77.5, 'prob_red': 72.5}},
+        11:  {'bull_50': {'prob_high': 76.3, 'prob_green': 72.9}, 'bear_50': {'prob_low': 64.2, 'prob_red': 60.4}, 'bull_75': {'prob_high': 80.0, 'prob_green': 77.5}, 'bear_25': {'prob_low': 70.7, 'prob_red': 70.7}},
+        12:  {'bull_50': {'prob_high': 74.2, 'prob_green': 75.8}, 'bear_50': {'prob_low': 71.2, 'prob_red': 67.3}, 'bull_75': {'prob_high': 71.4, 'prob_green': 80.0}, 'bear_25': {'prob_low': 66.7, 'prob_red': 66.7}},
+    },
 }
+
+
 
 # Source: output/charts/Multi/weekly/alpha_matrix_all_indices_weekly.png
 # Only Mean Reversion kept — Bull Momentum removed (T < 1, not significant)
@@ -147,29 +149,19 @@ WEEKLY_ALPHA_MATRIX = {
     }
 }
 
-# --- DAILY SPECIFIC TRIGGERS (Validated T-stats from Daily Alpha Matrix) ---
-# Key: (asset, weekday, type) where weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
-# Probabilities re-computed with DOR 2020-2025 asymmetric sigma thresholds on 2015-2025 data
 # --- WEEKLY BIAS & INERTIA (Daily σ Breach → Weekly Close Direction) ---
 # Source: output/charts/Multi/daily/weekly_bias_inertia_matrix.png
-# Re-computed with DOR 2020-2025 asymmetric σ on 2015-2025 data
+# AUDITED 2026-03-04: All values verified against chart (Periodo 2005-2025, AUDITED 15/02/2026)
 # Key: (asset, weekday, type) where weekday: 0=Mon 1=Tue 2=Wed 3=Thu 4=Fri
 WEEKLY_BIAS_TRIGGERS = {
-    ('NQ', 0, 'drive'):  {'direction': 'BULL', 'prob': 86.4, 'avg_ret': '+3.52%', 't_stat': 7.15, 'grade': 'GOLD+'},
-    ('NQ', 4, 'panic'):  {'direction': 'BEAR', 'prob': 86.4, 'avg_ret': '-2.64%', 't_stat': 7.02, 'grade': 'GOLD+'},
-    ('ES', 0, 'drive'):  {'direction': 'BULL', 'prob': 87.5, 'avg_ret': '+2.76%', 't_stat': 6.68, 'grade': 'GOLD+'},
-    ('ES', 4, 'panic'):  {'direction': 'BEAR', 'prob': 92.3, 'avg_ret': '-2.25%', 't_stat': 5.38, 'grade': 'GOLD+'},
-    ('NQ', 3, 'panic'):  {'direction': 'BEAR', 'prob': 79.7, 'avg_ret': '-2.32%', 't_stat': 6.15, 'grade': 'GOLD+'},
-    ('YM', 2, 'panic'):  {'direction': 'BEAR', 'prob': 76.3, 'avg_ret': '-2.13%', 't_stat': 4.46, 'grade': 'GOLD'},
-    ('ES', 1, 'drive'):  {'direction': 'BULL', 'prob': 76.2, 'avg_ret': '+2.05%', 't_stat': 3.47, 'grade': 'SILVER'},
-}
-
-DAILY_TRIGGERS = {
-    ('NQ', 1, 'panic'):  {'target': 'REBOTE MIÉRCOLES', 'prob': 54.9, 'grade': 'SILVER (T=1.93)', 'avg_ret': '+0.59%'},
-    ('YM', 4, 'panic'):  {'target': 'REBOTE LUNES', 'prob': 72.3, 'grade': 'SILVER (T=1.66)', 'avg_ret': '+0.55%'},
-    ('NQ', 3, 'drive'):  {'target': 'REVERSIÓN VIERNES', 'prob': 55.8, 'grade': 'NOISE (T=1.14)', 'avg_ret': '-0.25%'},
-    ('NQ', 4, 'drive'):  {'target': 'CONTINUACIÓN LUNES', 'prob': 63.6, 'grade': 'NOISE (T=0.16)', 'avg_ret': '+0.05%'},
-    ('YM', 2, 'panic'):  {'target': 'REBOTE JUEVES', 'prob': 68.4, 'grade': 'NOISE (T=0.09)', 'avg_ret': '+0.03%'},
+    ('NQ', 0, 'drive'):  {'direction': 'BULL', 'prob': 82.3, 'avg_ret': '+2.82%', 't_stat': 6.53, 'grade': 'GOLD+'},
+    ('NQ', 4, 'panic'):  {'direction': 'BEAR', 'prob': 84.5, 'avg_ret': '-2.44%', 't_stat': 7.40, 'grade': 'GOLD+'},
+    ('ES', 0, 'drive'):  {'direction': 'BULL', 'prob': 86.5, 'avg_ret': '+2.65%', 't_stat': 7.30, 'grade': 'GOLD+'},
+    ('ES', 4, 'panic'):  {'direction': 'BEAR', 'prob': 91.8, 'avg_ret': '-2.16%', 't_stat': 5.97, 'grade': 'GOLD+'},
+    ('NQ', 3, 'panic'):  {'direction': 'BEAR', 'prob': 78.5, 'avg_ret': '-2.12%', 't_stat': 6.26, 'grade': 'GOLD'},
+    ('YM', 2, 'panic'):  {'direction': 'BEAR', 'prob': 75.5, 'avg_ret': '-1.93%', 't_stat': 4.58, 'grade': 'GOLD'},
+    ('ES', 1, 'drive'):  {'direction': 'BULL', 'prob': 75.5, 'avg_ret': '+1.75%', 't_stat': 3.65, 'grade': 'SILVER'},
+    # NQ/ES Wed Drive omitted — D2 signal already establishes weekly bias by Wednesday
 }
 
 # Source: output/charts/seasonality/{ASSET}/monthly/{ASSET}_monthly_seasonality.png
@@ -185,6 +177,16 @@ MONTHLY_BIAS = {
 # Asymmetric thresholds: mean + std (drive) / mean - std (panic)
 SIGMA_UPPER = {'NQ': 0.01634, 'ES': 0.01324, 'YM': 0.01259, 'GC': 0.00968}
 SIGMA_LOWER = {'NQ': -0.01486, 'ES': -0.01207, 'YM': -0.01180, 'GC': -0.00896}
+
+# --- D+1 DAILY ALPHA MATRIX (Daily σ Breach → Next-Day Direction) ---
+# Source: output/charts/Multi/daily/daily_alpha_matrix_weekdays.png
+# AUDITED 2026-03-04: Only edges with T ≥ 1.3 included (NOISE excluded)
+# Key: (asset, weekday, type) → {signal, prob, avg_ret_d1, t_stat, grade}
+DAILY_ALPHA_TRIGGERS = {
+    ('NQ', 1, 'panic'):  {'signal': 'REBOUND (Miércoles)', 'prob': 55.4, 'avg_ret_d1': '+0.543%', 't_stat': 2.1, 'grade': 'GOLD (T>2.1)'},
+    ('YM', 4, 'panic'):  {'signal': 'REBOUND (Lunes)',     'prob': 67.9, 'avg_ret_d1': '+0.444%', 't_stat': 1.5, 'grade': 'SILVER (T>1.5)'},
+    ('NQ', 3, 'drive'):  {'signal': 'REVERSION (Viernes)', 'prob': 57.8, 'avg_ret_d1': '-0.271%', 't_stat': 1.4, 'grade': 'BRONZE (T>1.3)'},
+}
 
 ASSET_TICKERS = {'NQ': 'NQ=F', 'ES': 'ES=F', 'YM': 'YM=F', 'GC': 'GC=F'}
 ASSET_NAMES = {'NQ': 'NASDAQ 100', 'ES': 'S&P 500', 'YM': 'DOW JONES', 'GC': 'ORO'}
@@ -272,18 +274,32 @@ def calc_layers(asset, df):
             pos = (float(d2['Close']) - lo) / (hi - lo) if (hi - lo) != 0 else 0.5
             is_bull = pos > 0.5
             w_bias = "ALCISTA" if is_bull else "BAJISTA"
+            
+            if pos > 0.75:
+                tier_key = 'bull_75'
+                target_close = 'FUERTE ALCISTA'
+            elif pos > 0.50:
+                tier_key = 'bull_50'
+                target_close = 'CIERRE ALCISTA'
+            elif pos < 0.25:
+                tier_key = 'bear_25'
+                target_close = 'FUERTE BAJISTA'
+            else:
+                tier_key = 'bear_50'
+                target_close = 'CIERRE BAJISTA'
+
             curr_lo, curr_hi = float(week_df['Low'].min()), float(week_df['High'].max())
             
             seasonal = WEEKLY_SEASONAL.get(asset, {}).get(month, None)
             if seasonal:
-                p_set = seasonal.get('bull') if is_bull else seasonal.get('bear')
+                p_set = seasonal.get(tier_key)
                 if p_set:
                     if is_bull:
-                        w_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
+                        w_signals.append({'target': target_close, 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
                         s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
                         w_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
                     else:
-                        w_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
+                        w_signals.append({'target': target_close, 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
                         s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
                         w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
 
@@ -341,44 +357,42 @@ def calc_layers(asset, df):
         if w_bias is None:
             w_bias = "ALCISTA" if is_bull else "BAJISTA"
 
-    # 4. Daily — Daily context
+    # 4. Daily Layer — D+1 Alpha (Yesterday's σ breach → TODAY's prediction)
+    # Check the PREVIOUS bar for sigma breach — the signal appears on the prediction day
     d_signals = []
-
-    # --- YESTERDAY'S TRIGGERS (predict today) ---
     if len(df) >= 2:
-        yesterday = df.iloc[-2]
-        y_o, y_c = float(yesterday['Open']), float(yesterday['Close'])
-        y_o2c = (y_c - y_o) / y_o if y_o != 0 else 0
-        y_weekday = yesterday.name.weekday()  # from the data, not the clock
-        y_day_name = DAY_NAMES[y_weekday] if y_weekday < 7 else '?'
+        prev_bar = df.iloc[-2]
+        prev_o = float(prev_bar['Open'])
+        prev_c = float(prev_bar['Close'])
+        prev_o2c = (prev_c - prev_o) / prev_o if prev_o != 0 else 0
+        prev_weekday = prev_bar.name.weekday()
+        prev_day_name = DAY_NAMES[prev_weekday] if prev_weekday < 7 else '?'
 
-        if y_o2c > s_upper:
-            trigger = DAILY_TRIGGERS.get((asset, y_weekday, 'drive'), None)
-            if trigger:
-                d_signals.append({
-                    'target': trigger['target'],
-                    'prob': trigger['prob'],
-                    'status': 'ACTIVO',
-                    'grade': trigger['grade'],
-                    'color': 'red' if 'REVERSIÓN' in trigger['target'] else 'green',
-                    'val': f'{y_day_name} cerró {y_o2c*100:+.2f}% (>{s_upper*100:.1f}%)',
-                    'avg_ret': trigger['avg_ret']
-                })
-        elif y_o2c < s_lower:
-            trigger = DAILY_TRIGGERS.get((asset, y_weekday, 'panic'), None)
-            if trigger:
-                d_signals.append({
-                    'target': trigger['target'],
-                    'prob': trigger['prob'],
-                    'status': 'ACTIVO',
-                    'grade': trigger['grade'],
-                    'color': 'green',
-                    'val': f'{y_day_name} cerró {y_o2c*100:+.2f}% (<{s_lower*100:.1f}%)',
-                    'avg_ret': trigger['avg_ret']
-                })
+        s_upper_d = SIGMA_UPPER.get(asset, 0.013)
+        s_lower_d = SIGMA_LOWER.get(asset, -0.013)
 
-    # General expansion bias REMOVED — probabilities were not audited
-    # If neither yesterday triggered nor today broke σ → d_signals stays empty → column hidden
+        if prev_o2c > s_upper_d:
+            d1_trigger = DAILY_ALPHA_TRIGGERS.get((asset, prev_weekday, 'drive'))
+            if d1_trigger:
+                d_signals.append({
+                    'target': d1_trigger['signal'],
+                    'prob': d1_trigger['prob'],
+                    'status': 'ACTIVO',
+                    'grade': d1_trigger['grade'],
+                    'color': 'red' if 'REVERSION' in d1_trigger['signal'] else 'green',
+                    'val': f'{prev_day_name} cerró {prev_o2c*100:+.2f}% (DRIVE) → Avg D+1 {d1_trigger["avg_ret_d1"]}'
+                })
+        elif prev_o2c < s_lower_d:
+            d1_trigger = DAILY_ALPHA_TRIGGERS.get((asset, prev_weekday, 'panic'))
+            if d1_trigger:
+                d_signals.append({
+                    'target': d1_trigger['signal'],
+                    'prob': d1_trigger['prob'],
+                    'status': 'ACTIVO',
+                    'grade': d1_trigger['grade'],
+                    'color': 'green' if 'REBOUND' in d1_trigger['signal'] else 'red',
+                    'val': f'{prev_day_name} cerró {prev_o2c*100:+.2f}% (PANIC) → Avg D+1 {d1_trigger["avg_ret_d1"]}'
+                })
 
     return {
         'monthly': {'bias': m_bias, 'signals': m_signals},
