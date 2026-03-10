@@ -973,6 +973,11 @@
                     }).then(function (apiRes) {
                         if (apiRes.status === 401 || apiRes.status === 403) {
                             log("EXPIRADO - REINGRESA");
+                            if (typeof supabase !== 'undefined' && supabase.auth) {
+                                supabase.auth.signOut().catch(function () { });
+                            }
+                            localStorage.clear();
+                            sessionStorage.clear();
                             window.location.href = '/login.html';
                             return;
                         }
@@ -1146,8 +1151,18 @@
             if (logoutBtn) {
                 logoutBtn.onclick = function () {
                     if (typeof supabase !== 'undefined' && supabase.auth) {
-                        supabase.auth.signOut().then(function () { window.location.href = '/login.html'; });
+                        supabase.auth.signOut().then(function () {
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            window.location.href = '/login.html';
+                        }).catch(function (err) {
+                            localStorage.clear();
+                            sessionStorage.clear();
+                            window.location.href = '/login.html';
+                        });
                     } else {
+                        localStorage.clear();
+                        sessionStorage.clear();
                         window.location.href = '/login.html';
                     }
                 };
