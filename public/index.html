@@ -281,6 +281,153 @@
             border-bottom: 1px solid var(--border);
         }
 
+        /* USER PROFILE DROPDOWN CSS */
+        .user-profile-container {
+            position: relative;
+        }
+
+        .user-profile-trigger {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid transparent;
+            padding: 4px 8px 4px 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .user-profile-trigger:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .user-profile-trigger img {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .profile-initials {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: var(--text-dim);
+            color: var(--bg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 700;
+            font-family: 'JetBrains Mono';
+        }
+
+        .profile-name {
+            font-size: 13px;
+            font-weight: 500;
+            padding-left: 4px;
+        }
+
+        .user-profile-trigger .chevron {
+            color: var(--text-dim);
+            transition: transform 0.2s;
+        }
+
+        .user-profile-container.open .chevron {
+            transform: rotate(180deg);
+        }
+
+        .dropdown-menu {
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            width: 240px;
+            background: rgba(20, 20, 30, 0.95);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 4px;
+            display: none;
+            flex-direction: column;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            animation: dropdownFade 0.2s ease;
+            transform-origin: top right;
+            z-index: 1000;
+        }
+
+        .user-profile-container.open .dropdown-menu {
+            display: flex;
+        }
+
+        @keyframes dropdownFade {
+            from {
+                opacity: 0;
+                transform: scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .dropdown-header {
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .dropdown-name {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dropdown-email {
+            font-size: 12px;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono';
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .dropdown-separator {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            margin: 4px 0;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            width: 100%;
+            padding: 8px 12px;
+            background: transparent;
+            border: none;
+            color: var(--red);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            font-size: 13px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.1s ease;
+            text-align: left;
+        }
+
+        .dropdown-item:hover {
+            background: rgba(255, 51, 102, 0.1);
+        }
+
         .alpha-legend .dot {
             width: 6px;
             height: 6px;
@@ -635,11 +782,26 @@
     <div class="header">
         <img src="/logo.png" alt="SPEC RESEARCH" style="height:36px;object-fit:contain;filter:brightness(0) invert(1)">
         <div style="display: flex; align-items: center; gap: 20px;">
-            <!-- alpha-legend relocated -->
-            <button id="logout-btn"
-                style="display:none; background:transparent; border:1px solid var(--border); color:var(--text-dim); padding:6px 12px; border-radius:4px; font-family:'JetBrains Mono'; font-size:10px; cursor:pointer;"
-                onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.4)'"
-                onmouseout="this.style.color='var(--text-dim)'; this.style.borderColor='var(--border)'">LOGOUT</button>
+            <div class="user-profile-container" id="user-profile-container" style="display:none;">
+                <button class="user-profile-trigger" id="profile-trigger">
+                    <img id="profile-avatar" src="" alt="Avatar" style="display:none;" />
+                    <span id="profile-initials" class="profile-initials" style="display:none;"></span>
+                </button>
+                <div class="dropdown-menu" id="profile-dropdown">
+                    <div class="dropdown-header">
+                        <div id="dropdown-name" class="dropdown-name">Usuario</div>
+                        <div id="dropdown-email" class="dropdown-email">correo@ejemplo.com</div>
+                    </div>
+                    <div class="dropdown-separator"></div>
+                    <button class="dropdown-item" id="logout-btn">
+                        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M13.5 7.5L10.5 10.75M13.5 7.5L10.5 4.5M13.5 7.5L4 7.5M8 13.5H1.5V1.5H8"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        Cerrar sesión
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -781,8 +943,27 @@
                     }
 
                     if (session.user && session.user.user_metadata) {
-                        var fn = session.user.user_metadata.full_name || session.user.user_metadata.name;
+                        var fn = session.user.user_metadata.full_name || session.user.user_metadata.name || "Usuario";
+                        var email = session.user.email || "correo@ejemplo.com";
+                        var avatar = session.user.user_metadata.avatar_url || session.user.user_metadata.picture;
+
                         if (fn) window.globalUserName = escapeHTML(fn.split(' ')[0]);
+
+                        // Populate Profile Menu
+                        document.getElementById('user-profile-container').style.display = 'block';
+                        document.getElementById('profile-name-short').innerText = window.globalUserName;
+                        document.getElementById('dropdown-name').innerText = escapeHTML(fn);
+                        document.getElementById('dropdown-email').innerText = escapeHTML(email);
+
+                        var avatarEl = document.getElementById('profile-avatar');
+                        var initialsEl = document.getElementById('profile-initials');
+                        if (avatar) {
+                            avatarEl.src = avatar;
+                            avatarEl.style.display = 'block';
+                        } else {
+                            initialsEl.innerText = window.globalUserName.substring(0, 2).toUpperCase();
+                            initialsEl.style.display = 'flex';
+                        }
                     }
                     if (typeof window.updateMarketSessions === 'function') window.updateMarketSessions();
 
@@ -947,13 +1128,31 @@
                 return found;
             }
 
-            document.getElementById('logout-btn').onclick = function () {
-                if (typeof supabase !== 'undefined' && supabase.auth) {
-                    supabase.auth.signOut().then(function () { window.location.href = '/login.html'; });
-                } else {
-                    window.location.href = '/login.html';
+            var profileBtn = document.getElementById('profile-trigger');
+            if (profileBtn) {
+                profileBtn.onclick = function (e) {
+                    e.stopPropagation();
+                    document.getElementById('user-profile-container').classList.toggle('open');
+                };
+            }
+
+            document.addEventListener('click', function (e) {
+                var container = document.getElementById('user-profile-container');
+                if (container && container.classList.contains('open') && !container.contains(e.target)) {
+                    container.classList.remove('open');
                 }
-            };
+            });
+
+            var logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.onclick = function () {
+                    if (typeof supabase !== 'undefined' && supabase.auth) {
+                        supabase.auth.signOut().then(function () { window.location.href = '/login.html'; });
+                    } else {
+                        window.location.href = '/login.html';
+                    }
+                };
+            }
 
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', bootstrap);
