@@ -30,24 +30,6 @@
             --prob-bg: rgba(255, 255, 255, 0.05);
         }
 
-        [data-theme="light"] {
-            --bg: #f8fafc;
-            --clay: rgba(255, 255, 255, 0.8);
-            --surface: #ffffff;
-            --surface-hover: #f1f5f9;
-            --dropdown-bg: #ffffff;
-            --border: rgba(0, 0, 0, 0.06);
-            --green: #059669;
-            --red: #e11d48;
-            --gold: #d97706;
-            --text: #0f172a;
-            --text-dim: #64748b;
-            --shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-            --dropdown-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            --signal-bg: #f8fafc;
-            --prob-bg: #e2e8f0;
-        }
-
         * {
             margin: 0;
             padding: 0;
@@ -463,47 +445,6 @@
             background: rgba(255, 51, 102, 0.1);
         }
 
-        /* SHADCN SWITCH CSS */
-        .switch-container {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .switch {
-            width: 36px;
-            height: 20px;
-            background-color: var(--text-dim);
-            border-radius: 9999px;
-            position: relative;
-            cursor: pointer;
-            border: none;
-            transition: background-color 0.2s;
-            padding: 2px;
-            display: inline-flex;
-            flex-shrink: 0;
-            align-items: center;
-        }
-
-        .switch[data-state="checked"] {
-            background-color: var(--text);
-        }
-
-        .switch-thumb {
-            pointer-events: none;
-            display: block;
-            width: 16px;
-            height: 16px;
-            background-color: var(--bg);
-            border-radius: 50%;
-            transition: transform 0.2s;
-            transform: translateX(0);
-        }
-
-        .switch[data-state="checked"] .switch-thumb {
-            transform: translateX(16px);
-        }
-
         .alpha-legend .dot {
             width: 6px;
             height: 6px;
@@ -869,25 +810,6 @@
                         <div id="dropdown-email" class="dropdown-email">correo@ejemplo.com</div>
                     </div>
                     <div class="dropdown-separator"></div>
-                    <div class="dropdown-item switch-container" id="theme-toggle-btn">
-                        <div
-                            style="display:flex; align-items:center; gap:8px; font-family:'JetBrains Mono'; font-size:11px;">
-                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
-                                xmlns="http://www.w3.org/2000/svg">
-                                <path
-                                    d="M7.5 12C9.98528 12 12 9.98528 12 7.5C12 5.01472 9.98528 3 7.5 3C5.01472 3 3 5.01472 3 7.5C3 9.98528 5.01472 12 7.5 12Z"
-                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                                <path
-                                    d="M7.5 1V2M7.5 13V14M1 7.5H2M13 7.5H14M2.8995 2.89951L3.6066 3.6066M11.3934 11.3934L12.1005 12.1005M2.89947 12.1005L3.60657 11.3934M11.3934 3.60657L12.1005 2.89947"
-                                    stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" />
-                            </svg>
-                            LIGHT MODE
-                        </div>
-                        <button class="switch" id="theme-switch" data-state="unchecked">
-                            <span class="switch-thumb"></span>
-                        </button>
-                    </div>
-                    <div class="dropdown-separator"></div>
                     <button class="dropdown-item danger" id="logout-btn">
                         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13.5 7.5L10.5 10.75M13.5 7.5L10.5 4.5M13.5 7.5L4 7.5M8 13.5H1.5V1.5H8"
@@ -1241,32 +1163,6 @@
                     container.classList.remove('open');
                 }
             });
-
-            // Theme Toggle Logic
-            var themeBtn = document.getElementById('theme-toggle-btn');
-            var themeSwitch = document.getElementById('theme-switch');
-
-            function applyTheme(isLight) {
-                if (isLight) {
-                    document.documentElement.setAttribute('data-theme', 'light');
-                    if (themeSwitch) themeSwitch.setAttribute('data-state', 'checked');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    document.documentElement.removeAttribute('data-theme');
-                    if (themeSwitch) themeSwitch.setAttribute('data-state', 'unchecked');
-                    localStorage.setItem('theme', 'dark');
-                }
-            }
-
-            if (themeBtn && themeSwitch) {
-                themeBtn.onclick = function (e) {
-                    e.stopPropagation();
-                    var currentState = themeSwitch.getAttribute('data-state');
-                    applyTheme(currentState !== 'checked');
-                };
-            }
-
-            if (localStorage.getItem('theme') === 'light') applyTheme(true);
 
             var logoutBtn = document.getElementById('logout-btn');
             if (logoutBtn) {
