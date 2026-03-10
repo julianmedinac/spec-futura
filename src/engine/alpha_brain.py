@@ -1,6 +1,17 @@
 import pandas as pd
 from datetime import datetime, timedelta
-from .alpha_constants import WEEKLY_SEASONAL, WEEKLY_ALPHA_MATRIX
+from src.engine.alpha_constants import (
+    WEEKLY_SEASONAL,
+    MONTHLY_BIAS,
+    WEEKLY_ALPHA_MATRIX,
+    W2_MONTHLY,
+    DAILY_ALPHA_TRIGGERS,
+    WEEKLY_BIAS_TRIGGERS,
+    SIGMA_UPPER,
+    SIGMA_LOWER,
+    WEEKLY_SEASONAL_D3,
+)
+
 
 class AlphaBrain:
     """
@@ -212,47 +223,62 @@ class AlphaBrain:
         # Note: history_df usually contains daily bars.
         week_df = history_df[(history_df.index.isocalendar().week == current_week) & (history_df.index.isocalendar().year == current_year)]
         
-        # --- PRIORITY 1: D2 FRACTAL SIGNAL (Tuesday Close) ---
-        # Logic: Show if it's Wednesday or later, OR if it's Tuesday after 21:30 UTC
+        # --- PRIORITY 1: D2/D3 FRACTAL SIGNAL ---
+        # D2: Tue 18:00 EST (23:00 UTC) up to Wed 16:30 EST (21:30 UTC)
+        # D3: Wed 16:30 EST (21:30 UTC) onwards
         now_utc = datetime.utcnow()
-        show_d2 = False
+        show_d2, show_d3 = False, False
         
-        if now_utc.weekday() > 1: # Wednesday (2) onwards
-            show_d2 = True
+        if now_utc.weekday() > 2: # Thu, Fri, Sat, Sun
+            show_d3 = True
+        elif now_utc.weekday() == 2: # Wednesday (2)
+            if now_utc.hour > 21 or (now_utc.hour == 21 and now_utc.minute >= 30):
+                show_d3 = True
+            else:
+                show_d2 = True
         elif now_utc.weekday() == 1: # Tuesday (1)
-            # 17:30 EST is 22:30 UTC. 
-            if now_utc.hour > 22 or (now_utc.hour == 22 and now_utc.minute >= 30):
+            if now_utc.hour >= 23:
                 show_d2 = True
                 
-        if show_d2:
+        if show_d2 or show_d3:
             try:
-                # If it's Tuesday after close or later, we use whatever data we have for the week (even if it's just 1 bar due to holiday)
                 if not week_df.empty:
-                    hi = float(week_df['High'].max())
-                    lo = float(week_df['Low'].min())
-                    curr_close = float(week_df['Close'].iloc[-1])
+                    if show_d3 and len(week_df) >= 3:
+                        # D3 Logic
+                        prefix_target = ""
+                        dataset = WEEKLY_SEASONAL_D3.get(asset_key, {}).get(current_month, None)
+                        d_end = 3
+                    else:
+                        # D2 Logic
+                        prefix_target = ""
+                        dataset = WEEKLY_SEASONAL.get(asset_key, {}).get(current_month, None)
+                        d_end = 2
+                        
+                    base_df = week_df.iloc[:d_end]
+                    hi = float(base_df['High'].max())
+                    lo = float(base_df['Low'].min())
+                    curr_close = float(base_df['Close'].iloc[-1])
                     
                     rng = hi - lo
                     if rng > 0:
                         pos = (curr_close - lo) / rng
                         if pos > 0.75:
                             tier_key = 'bull_75'
-                            target = 'FUERTE ALCISTA'
+                            target = prefix_target + 'FUERTE ALCISTA'
                         elif pos > 0.50:
                             tier_key = 'bull_50'
-                            target = 'CIERRE ALCISTA'
+                            target = prefix_target + 'CIERRE ALCISTA'
                         elif pos < 0.25:
                             tier_key = 'bear_25'
-                            target = 'FUERTE BAJISTA'
+                            target = prefix_target + 'FUERTE BAJISTA'
                         else:
                             tier_key = 'bear_50'
-                            target = 'CIERRE BAJISTA'
+                            target = prefix_target + 'CIERRE BAJISTA'
                             
                         is_bull = pos > 0.5
                         
-                        seasonal = WEEKLY_SEASONAL.get(asset_key, {}).get(current_month, None)
-                        if seasonal:
-                            p_set = seasonal.get(tier_key)
+                        if dataset:
+                            p_set = dataset.get(tier_key)
                             if p_set:
                                 prob = p_set['prob_green'] if is_bull else p_set['prob_red']
                                 color = 'GREEN' if is_bull else 'RED'

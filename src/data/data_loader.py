@@ -1,6 +1,8 @@
 """
 Data Loader Module
 Handles downloading and caching of financial data from Yahoo Finance.
+Supports both standard daily bars and CME futures session reconstruction
+(18:00-17:00 ET), which matches TradingView's daily candles for NQ/ES/YM.
 """
 
 import pandas as pd
@@ -9,6 +11,7 @@ from datetime import datetime, timedelta
 from typing import Optional, Union
 import logging
 from pathlib import Path
+import pytz
 
 import sys
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -133,7 +136,129 @@ class DataLoader:
         df = df.sort_index()
         
         return df
-    
+
+    def download_cme_session(
+        self,
+        asset_key: str,
+        start_date: Optional[Union[str, datetime]] = None,
+        end_date: Optional[Union[str, datetime]] = None,
+        years_back: int = 5
+    ) -> pd.DataFrame:
+        """
+        Download daily data using CME futures session boundaries (18:00-17:00 ET),
+        reconstructed from 1-hour bars. This matches TradingView's daily candles
+        for NQ, ES, YM and other CME futures.
+
+        Args:
+            asset_key: Key of the asset in ASSETS config (e.g., 'NQ')
+            start_date: Start date string (YYYY-MM-DD)
+            end_date: End date string (YYYY-MM-DD)
+            years_back: Years of history if start_date not specified
+
+        Returns:
+            DataFrame with OHLCV data resampled to CME session boundaries.
+            Index is the trade date (the date when the session ends at 17:00 ET).
+        """
+        asset = get_asset(asset_key)
+        et_tz = pytz.timezone('America/New_York')
+
+        # Resolve dates
+        if end_date is None:
+            end_dt = datetime.now()
+        elif isinstance(end_date, str):
+            end_dt = pd.to_datetime(end_date)
+        else:
+            end_dt = end_date
+
+        if start_date is None:
+            start_dt = end_dt - timedelta(days=years_back * 365)
+        elif isinstance(start_date, str):
+            start_dt = pd.to_datetime(start_date)
+        else:
+            start_dt = start_date
+
+        # Fetch one extra day before start to capture overnight session
+        fetch_start = start_dt - timedelta(days=2)
+        # Fetch one extra day after end in case last session spills over
+        fetch_end = end_dt + timedelta(days=1)
+
+        logger.info(
+            f"[CME Session] Downloading hourly {asset.name} ({asset.yahoo_symbol}) "
+            f"from {start_dt.date()} to {end_dt.date()}"
+        )
+
+        ticker = yf.Ticker(asset.yahoo_symbol)
+        df_h = ticker.history(
+            start=fetch_start,
+            end=fetch_end,
+            interval='1h',
+            auto_adjust=True
+        )
+
+        if df_h.empty:
+            raise ValueError(
+                f"No hourly data for {asset_key} ({asset.yahoo_symbol}). "
+                "Note: yfinance limits hourly data to ~730 days."
+            )
+
+        # Ensure timezone-aware index in ET
+        if df_h.index.tz is None:
+            df_h.index = df_h.index.tz_localize('UTC')
+        df_h.index = df_h.index.tz_convert(et_tz)
+
+        # Assign each hourly bar to a CME trade date.
+        # CME session: 18:00 ET (prev day) -> 17:00 ET (trade date)
+        # Rule: if hour >= 18 -> belongs to NEXT calendar day's session
+        #        if hour < 18  -> belongs to CURRENT calendar day's session
+        def assign_trade_date(ts):
+            if ts.hour >= 18:
+                return (ts + timedelta(days=1)).date()
+            return ts.date()
+
+        df_h['trade_date'] = df_h.index.map(assign_trade_date)
+
+        # Resample to daily CME candles
+        df_h.columns = [col.lower().replace(' ', '_') for col in df_h.columns]
+        price_cols = {c: c for c in ['open', 'high', 'low', 'close', 'volume'] if c in df_h.columns}
+
+        agg_map = {}
+        if 'open'   in df_h.columns: agg_map['open']   = 'first'
+        if 'high'   in df_h.columns: agg_map['high']   = 'max'
+        if 'low'    in df_h.columns: agg_map['low']    = 'min'
+        if 'close'  in df_h.columns: agg_map['close']  = 'last'
+        if 'volume' in df_h.columns: agg_map['volume'] = 'sum'
+
+        daily = df_h.groupby('trade_date').agg(agg_map)
+        daily.index = pd.to_datetime(daily.index)
+        daily.index.name = 'Date'
+
+        # Filter to requested date range
+        daily = daily[
+            (daily.index >= pd.to_datetime(start_dt.date())) &
+            (daily.index <= pd.to_datetime(end_dt.date()))
+        ]
+
+        # Drop sessions with fewer than 4 hours of data (incomplete candles)
+        if 'close' in daily.columns:
+            bar_counts = df_h.groupby('trade_date').size()
+            bar_counts.index = pd.to_datetime(bar_counts.index)
+            valid_dates = bar_counts[bar_counts >= 4].index
+            daily = daily[daily.index.isin(valid_dates)]
+
+        daily = daily.sort_index()
+
+        # Add metadata
+        daily.attrs['asset_key']    = asset_key
+        daily.attrs['asset_name']   = asset.name
+        daily.attrs['yahoo_symbol'] = asset.yahoo_symbol
+        daily.attrs['session']      = 'CME_18-17_ET'
+        daily.attrs['download_date'] = datetime.now().isoformat()
+
+        logger.info(
+            f"[CME Session] Built {len(daily)} daily CME candles for {asset.name}"
+        )
+        return daily
+
     def save_to_cache(self, df: pd.DataFrame, asset_key: str) -> Path:
         """Save data to cache directory."""
         if self.cache_dir is None:
@@ -176,3 +301,29 @@ def download_asset_data(
     """
     loader = DataLoader()
     return loader.download(asset_key, start_date, end_date, years_back)
+
+
+def download_asset_data_cme(
+    asset_key: str,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    years_back: int = 5
+) -> pd.DataFrame:
+    """
+    Convenience function to download daily data using CME session boundaries
+    (18:00-17:00 ET), matching TradingView's daily candles for futures.
+
+    Note: yfinance limits hourly data to ~730 days, so years_back > 2
+    is not recommended unless the period is within the last 2 years.
+
+    Args:
+        asset_key: Asset identifier (e.g., 'NQ', 'ES', 'YM')
+        start_date: Optional start date string (YYYY-MM-DD)
+        end_date: Optional end date string (YYYY-MM-DD)
+        years_back: Years of history if start_date not provided
+
+    Returns:
+        DataFrame with OHLCV data resampled to CME session boundaries.
+    """
+    loader = DataLoader()
+    return loader.download_cme_session(asset_key, start_date, end_date, years_back)

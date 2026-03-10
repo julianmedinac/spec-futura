@@ -1,10 +1,22 @@
 output/
 data/
-*.xlsx
-*.pyc
+research_scripts/
+src/
+docs/
+config/
+^GSPC/
 __pycache__/
+.venv/
 .git/
 .agent/
+.agents/
+*.xlsx
+*.pyc
 *.md
+*.png
+*.jpg
+!public/*.png
+!public/*.jpg
+!logo.png
 NQ DOR PRO - SPEC.xlsx
 SPEC RESEARCH LOGO V5 PNG.png

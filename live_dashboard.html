@@ -562,10 +562,6 @@
 
                             <!-- 2. TACTICAL (WEEKLY) -->
                             <div>
-                                <div class="section-title" style="display:flex; justify-content:space-between">
-                                    <span>CAPA TÁCTICA (SEMANAL)</span>
-                                    <div class="d2-btn" onclick="showChart('${asset.asset}')">VER GRÁFICO</div>
-                                </div>
                                 <div class="signal-box" style="border-left-color: ${getColors(layers.weekly.color).main}; opacity: 0.8">
                                     <div class="signal-info">
                                         <span class="signal-target" style="color: ${getColors(layers.weekly.color).main}">${layers.weekly.status}</span>
@@ -580,14 +576,14 @@
                             <!-- 3. EXECUTION (DAILY) -->
                             <div>
                                 <div class="section-title">CAPA DE EJECUCIÓN (DIARIO)</div>
-                                <div class="signal-box" style="border-left-color: ${dailyColors.main}">
+                                <div class="signal-box" style="border-left-color: ${dailyColors.main}; background: ${daily.prob > 0 ? dailyColors.bg : 'rgba(255,255,255,0.03)'}">
                                     <div class="signal-info">
                                         <span class="signal-target" style="color: ${dailyColors.main}">${daily.status}</span>
-                                        <span class="signal-status">Open-to-Close: ${(daily.o2c * 100).toFixed(2)}%</span>
+                                        <span class="signal-status">O2C: ${(daily.o2c * 100).toFixed(2)}% ${daily.target && daily.target !== 'None' ? '→ ' + daily.target : ''}</span>
                                     </div>
                                     <div class="signal-metrics">
-                                        <span class="prob-value">${formatProb(daily.prob)}</span>
-                                        <span class="grade-badge">SIGMA</span>
+                                        <span class="prob-value" style="color: ${dailyColors.main}">${daily.prob > 0 ? formatProb(daily.prob) : '—'}</span>
+                                        <span class="grade-badge" style="${daily.grade && daily.grade !== 'NOISE' ? 'border-color:' + dailyColors.main + '; color:' + dailyColors.main : ''}">${daily.grade || 'SIGMA'}</span>
                                     </div>
                                 </div>
                             </div>

@@ -4,10 +4,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPEC RESEARCH | Dashboard de Alpha</title>
+    <meta name="description" content="Dashboard de Alpha algorítmico y probabilidades para índices.">
+    <link rel="icon" href="/S%20LOGO%20FEED%20new.png">
+    <title>Spec Research</title>
     <link
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap"
         rel="stylesheet">
+
     <style>
         :root {
             --bg: #050508;
@@ -53,15 +56,83 @@
         }
 
         .dashboard {
-            display: grid;
-            gap: 2px;
-            background: var(--border);
+            background: transparent;
             min-height: calc(100vh - 100px);
+            padding: 0 40px;
+            max-width: 800px;
+            margin: 24px auto 0 auto;
+            gap: 24px;
+        }
+
+        /* SHADCN NATIVE TABS CSS */
+        .tabs {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .tabs-list {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            background: rgba(20, 20, 30, 0.6);
+            padding: 8px 4px 4px 4px;
+            margin: 0 auto;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            width: fit-content;
+        }
+
+        .tabs-buttons-row {
+            display: flex;
+            gap: 2px;
+        }
+
+        .tabs-trigger {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 4px;
+            color: var(--text-dim);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+        }
+
+        .tabs-trigger[data-state="active"] {
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .tabs-content {
+            display: none;
+            width: 100%;
+            animation: tabEnter 0.3s ease;
+        }
+
+        .tabs-content[data-state="active"] {
+            display: block;
+        }
+
+        @keyframes tabEnter {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .column {
-            background: var(--bg);
-            padding: 40px 30px;
+            background: transparent;
             display: flex;
             flex-direction: column;
             gap: 30px;
@@ -96,18 +167,18 @@
         }
 
         .m-col .col-tag::before {
-            background: var(--gold);
-            box-shadow: 0 0 10px var(--gold);
+            background: #3e00ea;
+            box-shadow: 0 0 10px #3e00ea;
         }
 
         .w-col .col-tag::before {
-            background: #00d4ff;
-            box-shadow: 0 0 10px #00d4ff;
+            background: #3e00ea;
+            box-shadow: 0 0 10px #3e00ea;
         }
 
         .d-col .col-tag::before {
-            background: var(--green);
-            box-shadow: 0 0 10px var(--green);
+            background: #3e00ea;
+            box-shadow: 0 0 10px #3e00ea;
         }
 
         .asset-list {
@@ -117,31 +188,33 @@
         }
 
         .card {
-            background: var(--clay);
-            border: 1px solid var(--border);
-            border-radius: 12px;
+            background: rgba(20, 20, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             padding: 24px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
         }
 
         .card:hover {
-            border-color: rgba(255, 255, 255, 0.2);
-            transform: scale(1.02);
-            background: rgba(30, 30, 45, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(255, 255, 255, 0.1);
         }
 
         .card-head {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 15px;
+            align-items: flex-start;
+            margin-bottom: 16px;
         }
 
         .asset-symbol {
-            font-size: 24px;
-            font-weight: 900;
+            font-size: 20px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text);
+            margin-bottom: 4px;
         }
 
         .asset-price {
@@ -404,6 +477,144 @@
             font-weight: 700;
             z-index: 10;
         }
+
+        /* MARKET SESSIONS WIDGET */
+        .market-sessions-container {
+            margin: 0 auto 10px auto;
+            max-width: 800px;
+            padding: 10px 20px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .ms-header {
+            margin-bottom: 16px;
+        }
+
+        .ms-header h2 {
+            font-size: 24px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #4ade80 0%, #059669 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0;
+            letter-spacing: -0.5px;
+        }
+
+        .ms-grid {
+            background: rgba(20, 20, 30, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 16px 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px 24px;
+            backdrop-filter: blur(10px);
+        }
+
+        .session-card {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .session-name {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text);
+        }
+
+        .session-name .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .session-name .dot.open {
+            background: var(--green);
+            box-shadow: 0 0 10px var(--green);
+        }
+
+        .session-name .dot.pre {
+            background: #00d4ff;
+            box-shadow: 0 0 10px #00d4ff;
+        }
+
+        .session-name .dot.after {
+            background: #3e00ea;
+            box-shadow: 0 0 10px #3e00ea;
+        }
+
+        .session-name .dot.closed {
+            background: #333344;
+        }
+
+        .session-status {
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+
+        .highlight-open {
+            color: var(--green);
+            font-weight: 700;
+        }
+
+        .highlight-pre {
+            color: #00d4ff;
+            font-weight: 700;
+        }
+
+        .highlight-after {
+            color: #3e00ea;
+            font-weight: 700;
+        }
+
+        .highlight-closed {
+            color: #666;
+            font-weight: 700;
+        }
+
+        @media (max-width: 1000px) {
+            .market-sessions-container {
+                padding: 0 20px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .market-sessions-container {
+                margin: 24px auto 24px auto;
+                padding: 0 20px;
+            }
+
+            .ms-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 12px;
+                padding: 16px;
+            }
+
+            .ms-header h2 {
+                font-size: 18px;
+            }
+
+            .dashboard {
+                margin: 24px auto 0 auto;
+                padding: 0 20px;
+                gap: 24px;
+            }
+
+            .column {
+                padding: 0;
+            }
+
+            .asset-list {
+                gap: 16px;
+            }
+        }
     </style>
 </head>
 
@@ -411,38 +622,66 @@
 
     <div class="loading" id="loader">
         <div class="spinner"></div>
-        <div style="margin-top: 20px; font-family: 'JetBrains Mono'; font-size: 12px;">ESCANEANDO MERCADOS...</div>
+        <div id="loader-status"
+            style="margin-top: 20px; font-family: 'JetBrains Mono'; font-size: 12px; color: var(--green);">PENSANDO...
+        </div>
+        <button id="recovery-btn" onclick="location.reload()"
+            style="display:none; margin-top: 20px; background:var(--red); color:white; border:none; padding:10px 20px; border-radius:4px; cursor:pointer; font-family:'JetBrains Mono'; font-size:10px;">RECARGAR
+            SITIO</button>
     </div>
+
+
 
     <div class="header">
         <img src="/logo.png" alt="SPEC RESEARCH" style="height:36px;object-fit:contain;filter:brightness(0) invert(1)">
-        <div class="alpha-legend" id="alpha-legend" style="display:none; border:none; padding:0">
-            <div class="dot"></div>
-            ALPHA ACTIVO
+        <div style="display: flex; align-items: center; gap: 20px;">
+            <!-- alpha-legend relocated -->
+            <button id="logout-btn"
+                style="display:none; background:transparent; border:1px solid var(--border); color:var(--text-dim); padding:6px 12px; border-radius:4px; font-family:'JetBrains Mono'; font-size:10px; cursor:pointer;"
+                onmouseover="this.style.color='#fff'; this.style.borderColor='rgba(255,255,255,0.4)'"
+                onmouseout="this.style.color='var(--text-dim)'; this.style.borderColor='var(--border)'">LOGOUT</button>
         </div>
     </div>
 
-    <div class="dashboard" id="dashboard" style="display:none">
-        <div class="column m-col" id="col-monthly" style="display:none">
-            <div class="col-header">
-                <div class="col-tag">MENSUAL</div>
+    <div class="market-sessions-container" id="market-sessions-container">
+        <div class="ms-header">
+            <h2 id="greeting">Buenos días.</h2>
+        </div>
+        <div class="ms-grid" id="sessions-grid">
+            <!-- Renderizado desde app via JS -->
+        </div>
+    </div>
+
+    <div class="dashboard tabs" id="dashboard" style="display:none">
+
+        <div class="tabs-list" id="tabs-list">
+            <div class="alpha-legend" id="alpha-legend"
+                style="display:none; border:none; padding:0; justify-content:center; margin-bottom:8px; font-size:10px; color:#ffffff;">
+                <div class="dot"></div>
+                ALPHA ACTIVO
             </div>
+            <div class="tabs-buttons-row">
+                <button class="tabs-trigger" data-state="active" data-target="tab-monthly" id="btn-monthly"
+                    style="display:none">Mensual</button>
+                <button class="tabs-trigger" data-state="inactive" data-target="tab-weekly" id="btn-weekly"
+                    style="display:none">Semanal</button>
+                <button class="tabs-trigger" data-state="inactive" data-target="tab-daily" id="btn-daily"
+                    style="display:none">Diario</button>
+            </div>
+        </div>
+
+        <div class="tabs-content" data-state="active" id="tab-monthly">
             <div class="asset-list" id="monthly-list"></div>
         </div>
-        <div class="column w-col" id="col-weekly" style="display:none">
-            <div class="col-header">
-                <div class="col-title">Capa Tactiva</div>
-                <div class="col-tag">SEMANAL</div>
-            </div>
+
+        <div class="tabs-content" data-state="inactive" id="tab-weekly">
             <div class="asset-list" id="weekly-list"></div>
         </div>
-        <div class="column d-col" id="col-daily" style="display:none">
-            <div class="col-header">
-                <div class="col-title">Capa de Ejecucion</div>
-                <div class="col-tag">DIARIO</div>
-            </div>
+
+        <div class="tabs-content" data-state="inactive" id="tab-daily">
             <div class="asset-list" id="daily-list"></div>
         </div>
+
     </div>
 
     <div class="empty-state" id="empty-state" style="display:none">
@@ -466,113 +705,362 @@
 
     <footer
         style="padding: 40px; text-align: center; font-family: 'JetBrains Mono'; font-size: 11px; color: var(--text-dim); border-top: 1px solid var(--border); background: var(--bg); position: relative; z-index: 10;">
-        <div id="timestamp">SINC: --:--:--</div>
-        <div style="margin-top: 10px; opacity: 0.5;">SPEC RESEARCH &reg; 2026</div>
+        <div id="timestamp">--:--:--</div>
+        <div style="margin-top: 10px; opacity: 0.5;">RESEARCH ALWAYS WINS | SPEC RESEARCH &reg; 2026</div>
     </footer>
 
+    <!-- SUPABASE & CORE LOGIC -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        async function fetchDashboard() {
-            try {
-                var res = await fetch('/api/index');
-                var json = await res.json();
+        (function () {
+            var SUPABASE_URL = 'https://zckjghsdimbjkneifccg.supabase.co';
+            var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpja2pnaHNkaW1iamtuZWlmY2NnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTg4NzIsImV4cCI6MjA4ODQ5NDg3Mn0.Dy-5L4WB35Fy8Z14Jzl269jIGMk8lMVwuW2AT8IuH5s';
+            var supabase = null;
+            var statusEl = document.getElementById('loader-status');
+            var recoveryBtn = document.getElementById('recovery-btn');
 
-                document.getElementById('timestamp').innerText = 'SINC: ' + json.timestamp;
-
-                var hasMonthly = renderSection('monthly-list', json.data, 'monthly');
-                var hasWeekly = renderSection('weekly-list', json.data, 'weekly');
-                var hasDaily = renderSection('daily-list', json.data, 'daily');
-
-                document.getElementById('col-monthly').style.display = hasMonthly ? '' : 'none';
-                document.getElementById('col-weekly').style.display = hasWeekly ? '' : 'none';
-                document.getElementById('col-daily').style.display = hasDaily ? '' : 'none';
-
-                var anyActive = hasMonthly || hasWeekly || hasDaily;
-                var dash = document.getElementById('dashboard');
-                dash.style.display = anyActive ? '' : 'none';
-                document.getElementById('empty-state').style.display = anyActive ? 'none' : '';
-                document.getElementById('alpha-legend').style.display = anyActive ? '' : 'none';
-
-                var cols = [hasMonthly, hasWeekly, hasDaily].filter(Boolean).length;
-                dash.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
-
-                document.getElementById('loader').style.opacity = '0';
-                setTimeout(function () { document.getElementById('loader').style.display = 'none'; }, 500);
-            } catch (e) {
-                console.error(e);
-                document.getElementById('loader').innerHTML = '<div style="color:var(--red);font-family:JetBrains Mono;font-size:12px">Connection error. Retrying...</div>';
-                setTimeout(fetchDashboard, 5000);
+            function log(msg, isError) {
+                console.log("[DEBUG]", msg);
+                if (statusEl) {
+                    statusEl.innerText = msg.toUpperCase();
+                    if (isError) {
+                        statusEl.style.color = '#ff3366';
+                        if (recoveryBtn) recoveryBtn.style.display = 'block';
+                    }
+                }
             }
-        }
 
-        function renderSection(id, assets, layerKey) {
-            var container = document.getElementById(id);
-            container.innerHTML = '';
-            var hasSignals = false;
+            function escapeHTML(str) {
+                if (typeof str !== 'string' && typeof str !== 'number') return str;
+                return String(str).replace(/[&<>'"]/g, function (tag) {
+                    var charsToReplace = { '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' };
+                    return charsToReplace[tag] || tag;
+                });
+            }
 
-            for (var i = 0; i < assets.length; i++) {
-                var asset = assets[i];
-                if (asset.error) continue;
-                var layer = asset.layers[layerKey];
-                if (!layer.signals || layer.signals.length === 0) continue;
+            window.onerror = function (m, s, l) {
+                log("ERROR CRÍTICO: " + m + " (L" + l + ")", true);
+                if (recoveryBtn) recoveryBtn.style.display = 'block';
+                return false;
+            };
 
-                hasSignals = true;
-                var card = document.createElement('div');
-                card.className = 'card';
+            log("SISTEMA ARRANCANDO...");
+
+            // Startup Timeout
+            setTimeout(function () {
+                if (document.getElementById('loader').style.display !== 'none') {
+                    if (recoveryBtn) recoveryBtn.style.display = 'block';
+                    log("CONEXIÓN LENTA - REINTENTA", true);
+                }
+            }, 10000);
+
+            function bootstrap() {
+                log("VALIDANDO LIBRERÍAS...");
+                if (typeof window.supabase === 'undefined') {
+                    log("ERROR: CDN NO CARGADO", true);
+                    return;
+                }
+
+                try {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    log("CLIENTE LISTO.");
+                    fetchDashboard();
+                } catch (e) {
+                    log("ERROR INIT: " + e.message, true);
+                }
+            }
+
+            function fetchDashboard() {
+                log("BUSCANDO SESIÓN...");
+                supabase.auth.getSession().then(function (res) {
+                    var session = res.data.session;
+                    if (!session) {
+                        log("SIN SESIÓN - LOGIN");
+                        window.location.href = '/login.html';
+                        return;
+                    }
+
+                    if (session.user && session.user.user_metadata) {
+                        var fn = session.user.user_metadata.full_name || session.user.user_metadata.name;
+                        if (fn) window.globalUserName = escapeHTML(fn.split(' ')[0]);
+                    }
+                    if (typeof window.updateMarketSessions === 'function') window.updateMarketSessions();
+
+                    log("SINCRONIZANDO ALPHA...");
+                    var apiUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') ? 'https://specstats.com/api/index' : '/api/index';
+                    fetch(apiUrl, {
+                        headers: { 'Authorization': 'Bearer ' + session.access_token }
+                    }).then(function (apiRes) {
+                        if (apiRes.status === 401 || apiRes.status === 403) {
+                            log("EXPIRADO - REINGRESA");
+                            window.location.href = '/login.html';
+                            return;
+                        }
+                        if (!apiRes.ok) {
+                            return apiRes.text().then(function (text) {
+                                throw new Error("HTTP " + apiRes.status + ": " + text);
+                            });
+                        }
+                        return apiRes.json();
+                    }).then(function (json) {
+                        if (!json) {
+                            log("ERROR: RESPUESTA VACÍA", true);
+                            return;
+                        }
+                        var assetCount = (json.data && json.data.length) || 0;
+                        var time = json.timestamp || "SIN FECHA";
+                        log("DATOS RECIBIDOS: " + assetCount + " ASSETS | " + time);
+
+                        if (assetCount === 0) {
+                            log("AVISO: CERO SEÑALES ACTIVAS", false);
+                        }
+
+                        renderAll(json);
+                    }).catch(function (e) {
+                        log("ERROR DATOS: " + e.message, true);
+                    });
+                }).catch(function (e) {
+                    log("ERROR SESIÓN: " + e.message, true);
+                });
+            }
+
+            function renderAll(json) {
+                if (!json) return;
+                var timestampEl = document.getElementById('timestamp');
+                if (timestampEl) timestampEl.innerText = json.timestamp || '--:--:--';
+
+                var data = json.data || [];
+                var errors = [];
+                for (var i = 0; i < data.length; i++) {
+                    if (data[i].error) errors.push(data[i].asset + ": " + data[i].error);
+                }
+
+                if (errors.length > 0) {
+                    log("ERRORES EN DATOS: " + errors.join(" | "), true);
+                }
+
+                var hasM = renderSection('monthly-list', data, 'monthly');
+                var hasW = renderSection('weekly-list', data, 'weekly');
+                var hasD = renderSection('daily-list', data, 'daily');
+
+                document.getElementById('btn-monthly').style.display = hasM ? 'block' : 'none';
+                document.getElementById('btn-weekly').style.display = hasW ? 'block' : 'none';
+                document.getElementById('btn-daily').style.display = hasD ? 'block' : 'none';
+
+                var any = hasM || hasW || hasD;
+                document.getElementById('dashboard').style.display = any ? 'flex' : 'none';
+                document.getElementById('empty-state').style.display = any ? 'none' : 'flex';
+                document.getElementById('alpha-legend').style.display = any ? '' : 'none';
+
+                // Automatically activate the first available tab if current is hidden
+                if (any) {
+                    var tabsContainer = document.getElementById('dashboard');
+                    var activeBtn = tabsContainer.querySelector('.tabs-trigger[data-state="active"]');
+                    if (!activeBtn || activeBtn.style.display === 'none') {
+                        if (hasM) switchTab('btn-monthly');
+                        else if (hasW) switchTab('btn-weekly');
+                        else if (hasD) switchTab('btn-daily');
+                    }
+                }
+
+                var loader = document.getElementById('loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(function () { loader.style.display = 'none'; }, 500);
+                }
+            }
+
+            // Tab Switching Logic
+            function switchTab(btnId) {
+                var buttons = document.querySelectorAll('.tabs-trigger');
+                var contents = document.querySelectorAll('.tabs-content');
+
+                buttons.forEach(function (b) { b.setAttribute('data-state', 'inactive'); });
+                contents.forEach(function (c) { c.setAttribute('data-state', 'inactive'); });
+
+                var targetBtn = document.getElementById(btnId);
+                if (targetBtn) {
+                    targetBtn.setAttribute('data-state', 'active');
+                    var targetContentId = targetBtn.getAttribute('data-target');
+                    var targetContent = document.getElementById(targetContentId);
+                    if (targetContent) {
+                        targetContent.setAttribute('data-state', 'active');
+                    }
+                }
+            }
+
+            document.addEventListener('click', function (e) {
+                if (e.target && e.target.classList.contains('tabs-trigger')) {
+                    switchTab(e.target.id);
+                }
+            });
+
+            function renderSection(id, assets, layer) {
+                var container = document.getElementById(id);
+                if (!container || !assets || !assets.length) return false;
+                container.innerHTML = '';
+                var found = false;
+
+                for (var i = 0; i < assets.length; i++) {
+                    var a = assets[i];
+                    if (!a || a.error || !a.layers) continue;
+                    var l = a.layers[layer];
+                    if (!l || !l.signals || l.signals.length === 0) continue;
+
+                    found = true;
+                    var card = document.createElement('div');
+                    card.className = 'card';
+                    var sigs = '';
+
+                    for (var j = 0; j < l.signals.length; j++) {
+                        var s = l.signals[j];
+                        var escapedTarget = escapeHTML(s.target);
+                        var escapedVal = escapeHTML(s.val);
+                        var escapedStatus = escapeHTML(s.status);
+                        var sColor = escapeHTML(s.color || 'green');
+                        var sProb = escapeHTML(s.prob);
+
+                        sigs += '<div class="signal"><div>' +
+                            '<div class="sig-main">' + escapedTarget + (s.val ? ' <div style="color:var(--text-dim);font-weight:400;font-family:\'JetBrains Mono\', monospace;font-size:10px;margin-top:2px;">' + escapedVal + '</div>' : '') + '</div>' +
+                            '<div class="sig-sub">' + escapedStatus + '</div>' +
+                            '</div><div class="sig-prob" style="color:var(--' + sColor + ')">' + sProb + '%</div></div>' +
+                            '<div class="prob-bar"><div class="prob-fill" style="width:0%;background:var(--' + sColor + ')" data-target="' + sProb + '"></div></div>';
+                    }
+
+                    var bias = l.bias ? '<div class="bias ' + (l.bias === 'ALCISTA' ? 'bull' : 'bear') + '">' + escapeHTML(l.bias) + '</div>' : '';
+
+                    card.innerHTML = '<div class="card-head"><div>' +
+                        '<div class="asset-symbol">' + escapeHTML(a.asset) + '</div>' +
+                        '<div class="asset-price">$' + (a.price ? escapeHTML(typeof a.price === 'number' ? a.price.toLocaleString() : a.price) : '0') + '</div>' +
+                        '</div><div style="text-align:right">' + bias + '</div></div><div class="signals-wrapper" style="display:flex; flex-direction:column; gap:8px;">' + sigs + '</div>';
+
+                    container.appendChild(card);
+                }
+
+                requestAnimationFrame(function () {
+                    var fills = container.querySelectorAll('.prob-fill');
+                    for (var k = 0; k < fills.length; k++) {
+                        fills[k].style.width = fills[k].getAttribute('data-target') + '%';
+                    }
+                });
+
+                return found;
+            }
+
+            document.getElementById('logout-btn').onclick = function () {
+                if (typeof supabase !== 'undefined' && supabase.auth) {
+                    supabase.auth.signOut().then(function () { window.location.href = '/login.html'; });
+                } else {
+                    window.location.href = '/login.html';
+                }
+            };
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', bootstrap);
+            } else {
+                bootstrap();
+            }
+
+            window.showChart = function (s) {
+                var map = { 'NQ': 'NQ', 'ES': 'ES', 'YM': 'DJI', 'GC': 'GC' };
+                var code = map[s] || s;
+                document.getElementById('chart-img').src = '/charts/d2/' + code + '_weekly_fractal_seasonality_styled.png';
+                document.getElementById('chart-modal').classList.add('show');
+            };
+            window.closeChart = function () { document.getElementById('chart-modal').classList.remove('show'); };
+
+            function getNextTimeLeft(nowUTC, targetUTC) {
+                var diff = targetUTC - nowUTC;
+                if (diff < 0) diff += 24;
+                var h = Math.floor(diff);
+                var m = Math.floor((diff - h) * 60);
+                return h + "h " + m + "m";
+            }
+
+            window.updateMarketSessions = function () {
+                var now = new Date();
+
+                var formatter = new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour12: false, hour: 'numeric', minute: 'numeric', second: 'numeric', weekday: 'short' });
+                var parts = formatter.formatToParts(now);
+                var h = 0, m = 0, s = 0, wd = '';
+                parts.forEach(function (p) {
+                    if (p.type === 'hour') h = parseInt(p.value);
+                    if (p.type === 'minute') m = parseInt(p.value);
+                    if (p.type === 'second') s = parseInt(p.value);
+                    if (p.type === 'weekday') wd = p.value;
+                });
+                if (h === 24) h = 0;
+                var hET = h + m / 60 + s / 3600;
+
+                var isWeekend = (wd === 'Sat') || (wd === 'Sun' && hET < 18) || (wd === 'Fri' && hET >= 17);
+
+                var sessions = [
+                    { id: 'NUEVA YORK', pre: 8.5, open: 9.5, close: 16, after: 17 },
+                    { id: 'LONDRES', pre: 2, open: 3, close: 11.5, after: 11.5 },
+                    { id: 'ASIA', pre: 20, open: 20, close: 2, after: 2 },
+                    { id: 'SYDNEY', pre: 18, open: 18, close: 1, after: 1 }
+                ];
+
                 var html = '';
+                sessions.forEach(function (sess) {
+                    var statusHtml = '';
+                    var dotClass = 'closed';
 
-                for (var j = 0; j < layer.signals.length; j++) {
-                    var s = layer.signals[j];
-                    html += '<div class="signal"><div>';
-                    html += '<div class="sig-main">' + s.target;
-                    if (s.val) html += ' <span style="color:var(--text-dim);font-weight:400">[' + s.val + ']</span>';
-                    html += '</div>';
-                    html += '<div class="sig-sub">' + s.status + '</div>';
-                    html += '</div>';
-                    html += '<div class="sig-prob" style="color:var(--' + s.color + ')">' + s.prob + '%</div>';
-                    html += '</div>';
-                    html += '<div class="prob-bar"><div class="prob-fill" style="width:' + s.prob + '%;background:var(--' + s.color + ')"></div></div>';
+                    if (isWeekend) {
+                        statusHtml = '<span class="highlight-closed">CERRADO</span> <span>fin de semana</span>';
+                    } else {
+                        var isOpen = false;
+                        if (sess.open > sess.close) {
+                            isOpen = (hET >= sess.open || hET < sess.close);
+                        } else {
+                            isOpen = (hET >= sess.open && hET < sess.close);
+                        }
+
+                        var isPre = !isOpen && sess.pre < sess.open && (hET >= sess.pre && hET < sess.open);
+                        var isAfter = !isOpen && sess.after > sess.close && (hET >= sess.close && hET < sess.after);
+
+                        if (isOpen) {
+                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra en ' + getNextTimeLeft(hET, sess.close) + '</span>';
+                            dotClass = 'open';
+                        } else if (isPre) {
+                            statusHtml = '<span class="highlight-pre">PRE MARKET</span> <span>abre en ' + getNextTimeLeft(hET, sess.open) + '</span>';
+                            dotClass = 'pre';
+                        } else if (isAfter) {
+                            var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
+                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + '</span>';
+                            dotClass = 'after';
+                        } else {
+                            var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
+                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + '</span>';
+                        }
+                    }
+
+                    html += '<div class="session-card">' +
+                        '<div class="session-name">' +
+                        '<div class="dot ' + dotClass + '"></div>' + sess.id +
+                        '</div>' +
+                        '<div class="session-status">' + statusHtml + '</div>' +
+                        '</div>';
+                });
+
+                var grid = document.getElementById('sessions-grid');
+                if (grid) grid.innerHTML = html;
+
+                var greetingEl = document.getElementById('greeting');
+                if (greetingEl) {
+                    var localHour = now.getHours();
+                    var text = 'Buenas noches';
+                    if (localHour >= 5 && localHour < 12) text = 'Buenos días';
+                    else if (localHour >= 12 && localHour < 19) text = 'Buenas tardes';
+
+                    var name = window.globalUserName ? ', ' + window.globalUserName : '';
+                    greetingEl.innerText = text + name + '.';
                 }
+            };
 
-                var biasHtml = '';
-                if (layer.bias) {
-                    var biasClass = (layer.bias === 'ALCISTA') ? 'bull' : 'bear';
-                    biasHtml = '<div class="bias ' + biasClass + '">' + layer.bias + '</div>';
-                }
+            setInterval(window.updateMarketSessions, 60000);
 
-                // Add D2 chart button for weekly layer
-                var chartBtn = '';
-                if (layerKey === 'weekly') {
-                    chartBtn = '<span class="d2-btn" onclick="showChart(\'' + asset.asset + '\')">VER D2</span>';
-                }
-
-                card.innerHTML = '<div class="card-head"><div>' +
-                    '<div class="asset-symbol">' + asset.asset + chartBtn + '</div>' +
-                    '<div class="asset-price">$' + asset.price.toLocaleString() + '</div>' +
-                    '</div><div style="text-align:right">' + biasHtml + '</div></div>' + html;
-
-                container.appendChild(card);
-            }
-
-            return hasSignals;
-        }
-
-        // --- D2 CHART MODAL ---
-        function showChart(assetSymbol) {
-            var map = { 'NQ': 'NQ', 'ES': 'ES', 'YM': 'DJI', 'GC': 'GC' };
-            var fileCode = map[assetSymbol] || assetSymbol;
-            var src = '/charts/d2/' + fileCode + '_weekly_fractal_seasonality_styled.png';
-            var modal = document.getElementById('chart-modal');
-            var img = document.getElementById('chart-img');
-            img.src = src;
-            modal.classList.add('show');
-        }
-
-        function closeChart() {
-            document.getElementById('chart-modal').classList.remove('show');
-        }
-
-        fetchDashboard();
-        setInterval(fetchDashboard, 60000);
+        })();
     </script>
 </body>
 
