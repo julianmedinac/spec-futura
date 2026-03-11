@@ -360,13 +360,13 @@ def calc_layers(asset, df):
             
             if pos > 0.75:
                 tier_key = 'bull_75'
-                target_close = prefix_target + 'FUERTE ALCISTA'
+                target_close = prefix_target + 'CIERRE ALCISTA → ALTA CONVICCIÓN'
             elif pos > 0.50:
                 tier_key = 'bull_50'
                 target_close = prefix_target + 'CIERRE ALCISTA'
             elif pos < 0.25:
                 tier_key = 'bear_25'
-                target_close = prefix_target + 'FUERTE BAJISTA'
+                target_close = prefix_target + 'CIERRE BAJISTA → ALTA CONVICCIÓN'
             else:
                 tier_key = 'bear_50'
                 target_close = prefix_target + 'CIERRE BAJISTA'

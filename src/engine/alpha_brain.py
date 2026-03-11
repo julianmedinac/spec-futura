@@ -264,13 +264,13 @@ class AlphaBrain:
                         pos = (curr_close - lo) / rng
                         if pos > 0.75:
                             tier_key = 'bull_75'
-                            target = prefix_target + 'FUERTE ALCISTA'
+                            target = prefix_target + 'CIERRE ALCISTA → ALTA CONVICCIÓN'
                         elif pos > 0.50:
                             tier_key = 'bull_50'
                             target = prefix_target + 'CIERRE ALCISTA'
                         elif pos < 0.25:
                             tier_key = 'bear_25'
-                            target = prefix_target + 'FUERTE BAJISTA'
+                            target = prefix_target + 'CIERRE BAJISTA → ALTA CONVICCIÓN'
                         else:
                             tier_key = 'bear_50'
                             target = prefix_target + 'CIERRE BAJISTA'
