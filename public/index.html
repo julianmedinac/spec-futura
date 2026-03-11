@@ -22,7 +22,7 @@
             --green: #00ff9d;
             --red: #ff3366;
             --gold: #ffd700;
-            --text: #ffffff;
+            --text: #fffcf9;
             --text-dim: #888899;
             --shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             --dropdown-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
@@ -41,7 +41,15 @@
             color: var(--text);
             font-family: 'Inter', sans-serif;
             overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% -20%, rgba(0, 255, 157, 0.05), transparent);
+            /* Darken layer, Tint layer, Image */
+            background-image: 
+                linear-gradient(rgba(5, 5, 8, 0.85), rgba(5, 5, 8, 0.95)),
+                linear-gradient(rgba(62, 0, 234, 0.08), rgba(62, 0, 234, 0.08)), 
+                url('/Ultravibe%20-%2002.png');
+            background-size: auto, auto, cover;
+            background-position: center, center, center;
+            background-attachment: scroll, scroll, fixed;
+            background-blend-mode: normal, color, normal;
         }
 
         .header {
@@ -975,7 +983,7 @@
 
         <div class="tabs-list" id="tabs-list">
             <div class="alpha-legend" id="alpha-legend"
-                style="display:none; border:none; padding:0; justify-content:center; margin-bottom:8px; font-size:10px; color:#ffffff;">
+                style="display:none; border:none; padding:0; justify-content:center; margin-bottom:8px; font-size:12px; color:#fffcf9;">
                 <div class="dot"></div>
                 ALPHA ACTIVO
             </div>
@@ -1540,17 +1548,17 @@
 
                         if (isOpen) {
                             var diffOpen = sess.close - hET; if (diffOpen < 0) diffOpen += 24;
-                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra a tus ➝ ' + getLocalTzString(diffOpen) + '</span>';
+                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra a tus ' + getLocalTzString(diffOpen) + '</span>';
                             dotClass = 'open';
                         } else if (isAfter) {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffAft = nextTarget - hET; if (diffAft < 0) diffAft += 24;
-                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre a tus ➝ ' + getLocalTzString(diffAft) + '</span>';
+                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre a tus ' + getLocalTzString(diffAft) + '</span>';
                             dotClass = 'after';
                         } else {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffCls = nextTarget - hET; if (diffCls < 0) diffCls += 24;
-                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre a tus ➝ ' + getLocalTzString(diffCls) + '</span>';
+                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre a tus ' + getLocalTzString(diffCls) + '</span>';
                         }
                     }
 
