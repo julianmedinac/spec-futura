@@ -940,6 +940,9 @@
                             <!-- Inyectado via JS -->
                         </div>
                     </div>
+                    <div style="padding: 0 8px 8px 8px;">
+                        <button id="tz-save-btn" style="width: 100%; border: none; background: var(--green); color: #000; padding: 6px; border-radius: 4px; font-family: 'JetBrains Mono'; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">GUARDAR ZONA</button>
+                    </div>
 
                     <div class="dropdown-separator"></div>
                     <button class="dropdown-item danger" id="logout-btn">
@@ -1337,49 +1340,45 @@
             }
 
             var tzMap = {
-                "(GMT-5) New York": "America/New_York",
-                "(GMT-8) Los Angeles": "America/Los_Angeles",
-                "(GMT-6) Chicago": "America/Chicago",
-                "(GMT-5) Toronto": "America/Toronto",
-                "(GMT-8) Vancouver": "America/Vancouver",
-                "(GMT-3) São Paulo": "America/Sao_Paulo",
-                "(GMT+0) London": "Europe/London",
-                "(GMT+1) Paris": "Europe/Paris",
-                "(GMT+1) Berlin": "Europe/Berlin",
-                "(GMT+1) Rome": "Europe/Rome",
-                "(GMT+1) Madrid": "Europe/Madrid",
-                "(GMT+1) Amsterdam": "Europe/Amsterdam",
-                "(GMT+9) Tokyo": "Asia/Tokyo",
-                "(GMT+8) Shanghai": "Asia/Shanghai",
-                "(GMT+8) Singapore": "Asia/Singapore",
-                "(GMT+4) Dubai": "Asia/Dubai",
-                "(GMT+11) Sydney": "Australia/Sydney",
-                "(GMT+9) Seoul": "Asia/Seoul"
+                "Nueva York": "America/New_York",
+                "Ciudad de México": "America/Mexico_City",
+                "Guadalajara": "America/Mexico_City",
+                "Toronto": "America/Toronto",
+                "Vancouver": "America/Vancouver",
+                "Bogota": "America/Bogota",
+                "Dubai": "Asia/Dubai",
+                "Buenos Aires": "America/Argentina/Buenos_Aires",
+                "Londres": "Europe/London",
+                "París": "Europe/Paris",
+                "Tokio": "Asia/Tokyo",
+                "Sydney": "Australia/Sydney"
             };
 
             var timezones = [
-                { value: "Americas", items: ["(GMT-5) New York", "(GMT-8) Los Angeles", "(GMT-6) Chicago", "(GMT-5) Toronto", "(GMT-8) Vancouver", "(GMT-3) São Paulo"] },
-                { value: "Europe", items: ["(GMT+0) London", "(GMT+1) Paris", "(GMT+1) Berlin", "(GMT+1) Rome", "(GMT+1) Madrid", "(GMT+1) Amsterdam"] },
-                { value: "Asia/Pacific", items: ["(GMT+9) Tokyo", "(GMT+8) Shanghai", "(GMT+8) Singapore", "(GMT+4) Dubai", "(GMT+11) Sydney", "(GMT+9) Seoul"] }
+                { value: "América", items: ["Nueva York", "Ciudad de México", "Guadalajara", "Toronto", "Vancouver", "Bogota", "Buenos Aires"] },
+                { value: "Europa", items: ["Londres", "París"] },
+                { value: "Resto del Mundo", items: ["Dubai", "Tokio", "Sydney"] }
             ];
+
+            var pendingTz = localStorage.getItem('spec_tz_label') || "Nueva York";
 
             function initTimezoneCombobox() {
                 var content = document.getElementById('tz-content');
                 var trigger = document.getElementById('tz-trigger');
                 var display = document.getElementById('tz-display');
                 var container = document.getElementById('tz-combobox');
+                var saveBtn = document.getElementById('tz-save-btn');
                 if (!content || !container || !trigger) return;
 
-                var savedTz = localStorage.getItem('spec_tz_label') || "(GMT-5) New York";
-                if (!tzMap[savedTz]) savedTz = "(GMT-5) New York";
+                if (!tzMap[pendingTz]) pendingTz = "Nueva York";
                 
-                display.innerText = savedTz;
+                display.innerText = pendingTz;
                 var html = '';
                 timezones.forEach(function(group, gIdx) {
                     html += '<div class="combobox-group-label">' + group.value + '</div>';
                     group.items.forEach(function(item) {
-                        var cls = (item === savedTz) ? 'combobox-item selected' : 'combobox-item';
-                        var checkHtml = (item === savedTz) ? '<svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>' : '<span style="width:12px"></span>';
+                        var cls = (item === pendingTz) ? 'combobox-item selected' : 'combobox-item';
+                        var checkHtml = (item === pendingTz) ? '<svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>' : '<span style="width:12px"></span>';
                         html += '<div class="combobox-item ' + cls + '" data-val="' + item + '">' + checkHtml + item + '</div>';
                     });
                     if (gIdx < timezones.length - 1) html += '<div class="combobox-separator"></div>';
@@ -1390,18 +1389,33 @@
                 content.querySelectorAll('.combobox-item').forEach(function(el) {
                     el.onclick = function(e) {
                         e.stopPropagation();
-                        var val = this.getAttribute('data-val');
-                        var iana = tzMap[val];
+                        pendingTz = this.getAttribute('data-val');
+                        container.classList.remove('open');
+                        initTimezoneCombobox(); 
+                    };
+                });
+
+                if (saveBtn) {
+                    saveBtn.onclick = function(e) {
+                        e.stopPropagation();
+                        var iana = tzMap[pendingTz];
                         if (iana) {
-                            localStorage.setItem('spec_tz_label', val);
+                            localStorage.setItem('spec_tz_label', pendingTz);
                             localStorage.setItem('spec_tz_iana', iana);
-                            display.innerText = val;
-                            container.classList.remove('open');
-                            initTimezoneCombobox(); 
+                            
+                            var originalText = saveBtn.innerText;
+                            saveBtn.innerText = "¡GUARDADO!";
+                            saveBtn.style.background = "#fff";
+                            
+                            setTimeout(function() {
+                                saveBtn.innerText = originalText;
+                                saveBtn.style.background = "var(--green)";
+                            }, 1000);
+                            
                             if(typeof window.updateMarketSessions === 'function') window.updateMarketSessions();
                         }
                     };
-                });
+                }
             }
             initTimezoneCombobox();
 
@@ -1481,7 +1495,7 @@
                             var tDate = new Date(now.getTime() + diffHours * 3600 * 1000);
                             try {
                                 var fmt = new Intl.DateTimeFormat('en-US', { timeZone: userIana, hour: 'numeric', minute: '2-digit', hour12: true });
-                                return '(' + fmt.format(tDate).toLowerCase() + ')';
+                                return '&nbsp;' + fmt.format(tDate).toLowerCase();
                             } catch(e) { return ''; }
                         }
 
