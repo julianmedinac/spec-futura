@@ -1564,9 +1564,8 @@
                             statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra a tus ' + getLocalTzString(diffOpen) + '</span>';
                             dotClass = 'open';
                         } else if (isAfter) {
-                            var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
-                            var diffAft = nextTarget - hET; if (diffAft < 0) diffAft += 24;
-                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre a tus ' + getLocalTzString(diffAft) + '</span>';
+                            var diffAft = sess.after - hET; if (diffAft < 0) diffAft += 24;
+                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>cierra a tus ' + getLocalTzString(diffAft) + '</span>';
                             dotClass = 'after';
                         } else {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
