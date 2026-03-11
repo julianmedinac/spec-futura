@@ -71,6 +71,109 @@
             gap: 24px;
         }
 
+        /* COMBOBOX (Timezone Selector) */
+        .dropdown-label {
+            padding: 0 8px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-dim);
+            margin-bottom: 4px;
+            font-family: 'JetBrains Mono';
+        }
+
+        .combobox-container {
+            position: relative;
+            padding: 0 8px;
+            margin-bottom: 8px;
+        }
+
+        .combobox-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 6px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.02);
+            color: var(--text);
+            font-size: 12px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            text-align: left;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        .combobox-trigger:hover {
+            background: var(--surface-hover);
+        }
+
+        .combobox-icon {
+            opacity: 0.5;
+            transition: transform 0.2s;
+        }
+
+        .combobox-container.open .combobox-icon {
+            transform: rotate(180deg);
+        }
+
+        .combobox-content {
+            position: absolute;
+            top: calc(100% + 4px);
+            left: 8px;
+            right: 8px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            box-shadow: 0 44px 16px rgba(0,0,0,0.4);
+            z-index: 1000;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+            padding: 4px;
+            backdrop-filter: blur(10px);
+        }
+
+        .combobox-container.open .combobox-content {
+            display: block;
+        }
+
+        .combobox-group-label {
+            padding: 6px 8px;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono';
+            letter-spacing: 0.5px;
+        }
+
+        .combobox-item {
+            padding: 6px 8px;
+            font-size: 12px;
+            color: var(--text);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .combobox-item:hover {
+            background: var(--surface-hover);
+        }
+
+        .combobox-item.selected {
+            background: rgba(0, 212, 255, 0.1);
+            color: #00d4ff;
+        }
+
+        .combobox-separator {
+            height: 1px;
+            background: var(--border);
+            margin: 4px 0;
+        }
+
         /* SHADCN NATIVE TABS CSS */
         .tabs {
             display: flex;
@@ -826,6 +929,19 @@
                         <div id="dropdown-email" class="dropdown-email">correo@ejemplo.com</div>
                     </div>
                     <div class="dropdown-separator"></div>
+
+                    <div class="dropdown-label">Zona Horaria</div>
+                    <div class="combobox-container" id="tz-combobox">
+                        <button class="combobox-trigger" id="tz-trigger">
+                            <span id="tz-display">Seleccionando...</span>
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="combobox-icon"><path d="M4 6H11L7.5 10.5L4 6Z" fill="currentColor"></path></svg>
+                        </button>
+                        <div class="combobox-content" id="tz-content">
+                            <!-- Inyectado via JS -->
+                        </div>
+                    </div>
+
+                    <div class="dropdown-separator"></div>
                     <button class="dropdown-item danger" id="logout-btn">
                         <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M13.5 7.5L10.5 10.75M13.5 7.5L10.5 4.5M13.5 7.5L4 7.5M8 13.5H1.5V1.5H8"
@@ -1220,6 +1336,82 @@
                 };
             }
 
+            var tzMap = {
+                "(GMT-5) New York": "America/New_York",
+                "(GMT-8) Los Angeles": "America/Los_Angeles",
+                "(GMT-6) Chicago": "America/Chicago",
+                "(GMT-5) Toronto": "America/Toronto",
+                "(GMT-8) Vancouver": "America/Vancouver",
+                "(GMT-3) São Paulo": "America/Sao_Paulo",
+                "(GMT+0) London": "Europe/London",
+                "(GMT+1) Paris": "Europe/Paris",
+                "(GMT+1) Berlin": "Europe/Berlin",
+                "(GMT+1) Rome": "Europe/Rome",
+                "(GMT+1) Madrid": "Europe/Madrid",
+                "(GMT+1) Amsterdam": "Europe/Amsterdam",
+                "(GMT+9) Tokyo": "Asia/Tokyo",
+                "(GMT+8) Shanghai": "Asia/Shanghai",
+                "(GMT+8) Singapore": "Asia/Singapore",
+                "(GMT+4) Dubai": "Asia/Dubai",
+                "(GMT+11) Sydney": "Australia/Sydney",
+                "(GMT+9) Seoul": "Asia/Seoul"
+            };
+
+            var timezones = [
+                { value: "Americas", items: ["(GMT-5) New York", "(GMT-8) Los Angeles", "(GMT-6) Chicago", "(GMT-5) Toronto", "(GMT-8) Vancouver", "(GMT-3) São Paulo"] },
+                { value: "Europe", items: ["(GMT+0) London", "(GMT+1) Paris", "(GMT+1) Berlin", "(GMT+1) Rome", "(GMT+1) Madrid", "(GMT+1) Amsterdam"] },
+                { value: "Asia/Pacific", items: ["(GMT+9) Tokyo", "(GMT+8) Shanghai", "(GMT+8) Singapore", "(GMT+4) Dubai", "(GMT+11) Sydney", "(GMT+9) Seoul"] }
+            ];
+
+            function initTimezoneCombobox() {
+                var content = document.getElementById('tz-content');
+                var trigger = document.getElementById('tz-trigger');
+                var display = document.getElementById('tz-display');
+                var container = document.getElementById('tz-combobox');
+                if (!content || !container || !trigger) return;
+
+                var savedTz = localStorage.getItem('spec_tz_label') || "(GMT-5) New York";
+                if (!tzMap[savedTz]) savedTz = "(GMT-5) New York";
+                
+                display.innerText = savedTz;
+                var html = '';
+                timezones.forEach(function(group, gIdx) {
+                    html += '<div class="combobox-group-label">' + group.value + '</div>';
+                    group.items.forEach(function(item) {
+                        var cls = (item === savedTz) ? 'combobox-item selected' : 'combobox-item';
+                        var checkHtml = (item === savedTz) ? '<svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>' : '<span style="width:12px"></span>';
+                        html += '<div class="combobox-item ' + cls + '" data-val="' + item + '">' + checkHtml + item + '</div>';
+                    });
+                    if (gIdx < timezones.length - 1) html += '<div class="combobox-separator"></div>';
+                });
+                content.innerHTML = html;
+
+                trigger.onclick = function(e) { e.stopPropagation(); container.classList.toggle('open'); };
+                content.querySelectorAll('.combobox-item').forEach(function(el) {
+                    el.onclick = function(e) {
+                        e.stopPropagation();
+                        var val = this.getAttribute('data-val');
+                        var iana = tzMap[val];
+                        if (iana) {
+                            localStorage.setItem('spec_tz_label', val);
+                            localStorage.setItem('spec_tz_iana', iana);
+                            display.innerText = val;
+                            container.classList.remove('open');
+                            initTimezoneCombobox(); 
+                            if(typeof window.updateMarketSessions === 'function') window.updateMarketSessions();
+                        }
+                    };
+                });
+            }
+            initTimezoneCombobox();
+
+            document.addEventListener('click', function (e) {
+                var tzCont = document.getElementById('tz-combobox');
+                if (tzCont && tzCont.classList.contains('open') && !tzCont.contains(e.target)) {
+                    tzCont.classList.remove('open');
+                }
+            });
+
             if (document.readyState === 'loading') {
                 document.addEventListener('DOMContentLoaded', bootstrap);
             } else {
@@ -1284,19 +1476,32 @@
                         var isPre = !isOpen && sess.pre < sess.open && (hET >= sess.pre && hET < sess.open);
                         var isAfter = !isOpen && sess.after > sess.close && (hET >= sess.close && hET < sess.after);
 
+                        var userIana = localStorage.getItem('spec_tz_iana') || 'America/New_York';
+                        function getLocalTzString(diffHours) {
+                            var tDate = new Date(now.getTime() + diffHours * 3600 * 1000);
+                            try {
+                                var fmt = new Intl.DateTimeFormat('en-US', { timeZone: userIana, hour: 'numeric', minute: '2-digit', hour12: true });
+                                return '(' + fmt.format(tDate).toLowerCase() + ')';
+                            } catch(e) { return ''; }
+                        }
+
                         if (isOpen) {
-                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra en ' + getNextTimeLeft(hET, sess.close) + '</span>';
+                            var diffOpen = sess.close - hET; if (diffOpen < 0) diffOpen += 24;
+                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra en ' + getNextTimeLeft(hET, sess.close) + ' <span style="opacity:0.6">' + getLocalTzString(diffOpen) + '</span></span>';
                             dotClass = 'open';
                         } else if (isPre) {
-                            statusHtml = '<span class="highlight-pre">PRE MARKET</span> <span>abre en ' + getNextTimeLeft(hET, sess.open) + '</span>';
+                            var diffPre = sess.open - hET; if (diffPre < 0) diffPre += 24;
+                            statusHtml = '<span class="highlight-pre">PRE MARKET</span> <span>abre en ' + getNextTimeLeft(hET, sess.open) + ' <span style="opacity:0.6">' + getLocalTzString(diffPre) + '</span></span>';
                             dotClass = 'pre';
                         } else if (isAfter) {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
-                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + '</span>';
+                            var diffAft = nextTarget - hET; if (diffAft < 0) diffAft += 24;
+                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + ' <span style="opacity:0.6">' + getLocalTzString(diffAft) + '</span></span>';
                             dotClass = 'after';
                         } else {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
-                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + '</span>';
+                            var diffCls = nextTarget - hET; if (diffCls < 0) diffCls += 24;
+                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + ' <span style="opacity:0.6">' + getLocalTzString(diffCls) + '</span></span>';
                         }
                     }
 
