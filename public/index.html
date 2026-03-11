@@ -1341,10 +1341,10 @@
 
             var tzMap = {
                 "Nueva York": "America/New_York",
+                "Los Angeles": "America/Los_Angeles",
                 "Ciudad de México": "America/Mexico_City",
                 "Guadalajara": "America/Mexico_City",
-                "Toronto": "America/Toronto",
-                "Vancouver": "America/Vancouver",
+                "Tijuana": "America/Tijuana",
                 "Bogota": "America/Bogota",
                 "Dubai": "Asia/Dubai",
                 "Buenos Aires": "America/Argentina/Buenos_Aires",
@@ -1355,12 +1355,13 @@
             };
 
             var timezones = [
-                { value: "América", items: ["Nueva York", "Ciudad de México", "Guadalajara", "Toronto", "Vancouver", "Bogota", "Buenos Aires"] },
+                { value: "América", items: ["Nueva York", "Los Angeles", "Ciudad de México", "Guadalajara", "Tijuana", "Bogota", "Buenos Aires"] },
                 { value: "Europa", items: ["Londres", "París"] },
                 { value: "Resto del Mundo", items: ["Dubai", "Tokio", "Sydney"] }
             ];
 
             var pendingTz = localStorage.getItem('spec_tz_label') || "Nueva York";
+            var isEditingTz = !localStorage.getItem('spec_tz_label'); // Si nunca ha guardado, permite editar por defecto.
 
             function initTimezoneCombobox() {
                 var content = document.getElementById('tz-content');
@@ -1385,34 +1386,67 @@
                 });
                 content.innerHTML = html;
 
-                trigger.onclick = function(e) { e.stopPropagation(); container.classList.toggle('open'); };
+                if (isEditingTz) {
+                    trigger.style.opacity = '1';
+                    trigger.style.cursor = 'pointer';
+                    saveBtn.innerText = "GUARDAR ZONA";
+                    saveBtn.style.background = "var(--green)";
+                    saveBtn.style.color = "#000";
+                } else {
+                    trigger.style.opacity = '0.5';
+                    trigger.style.cursor = 'not-allowed';
+                    saveBtn.innerText = "EDITAR ZONA";
+                    saveBtn.style.background = "rgba(255, 255, 255, 0.05)";
+                    saveBtn.style.color = "var(--text)";
+                    container.classList.remove('open');
+                }
+
+                trigger.onclick = function(e) { 
+                    e.stopPropagation(); 
+                    if (isEditingTz) {
+                        container.classList.toggle('open'); 
+                    }
+                };
+                
                 content.querySelectorAll('.combobox-item').forEach(function(el) {
                     el.onclick = function(e) {
                         e.stopPropagation();
-                        pendingTz = this.getAttribute('data-val');
-                        container.classList.remove('open');
-                        initTimezoneCombobox(); 
+                        if (isEditingTz) {
+                            pendingTz = this.getAttribute('data-val');
+                            container.classList.remove('open');
+                            initTimezoneCombobox(); 
+                        }
                     };
                 });
 
                 if (saveBtn) {
                     saveBtn.onclick = function(e) {
                         e.stopPropagation();
-                        var iana = tzMap[pendingTz];
-                        if (iana) {
-                            localStorage.setItem('spec_tz_label', pendingTz);
-                            localStorage.setItem('spec_tz_iana', iana);
-                            
-                            var originalText = saveBtn.innerText;
-                            saveBtn.innerText = "¡GUARDADO!";
-                            saveBtn.style.background = "#fff";
-                            
-                            setTimeout(function() {
-                                saveBtn.innerText = originalText;
-                                saveBtn.style.background = "var(--green)";
-                            }, 1000);
-                            
-                            if(typeof window.updateMarketSessions === 'function') window.updateMarketSessions();
+                        
+                        if (!isEditingTz) {
+                            // Cambia a modo edicion
+                            isEditingTz = true;
+                            initTimezoneCombobox();
+                        } else {
+                            // Guarda la zona y vuelve a modo bloqueado
+                            var iana = tzMap[pendingTz];
+                            if (iana) {
+                                localStorage.setItem('spec_tz_label', pendingTz);
+                                localStorage.setItem('spec_tz_iana', iana);
+                                
+                                var originalText = saveBtn.innerText;
+                                saveBtn.innerText = "¡GUARDADO!";
+                                saveBtn.style.background = "#fff";
+                                saveBtn.style.color = "#000";
+                                
+                                isEditingTz = false;
+                                
+                                setTimeout(function() {
+                                    initTimezoneCombobox();
+                                }, 1000);
+                                
+                                if(typeof window.updateMarketSessions === 'function') window.updateMarketSessions();
+                            }
                         }
                     };
                 }
