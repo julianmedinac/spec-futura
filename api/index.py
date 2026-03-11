@@ -380,11 +380,11 @@ def calc_layers(asset, df):
                     if is_bull:
                         w_signals.append({'target': target_close, 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
                         s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
-                        w_signals.append({'target': prefix_target + 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
+                        w_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
                     else:
                         w_signals.append({'target': target_close, 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
                         s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
-                        w_signals.append({'target': prefix_target + 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
+                        w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
 
     # 3. Weekly Alpha Matrix (Mean Reversion only — Bull Momentum removed, T < 1)
     # Check if the PREVIOUS WEEK closed beyond mean reversion threshold
@@ -581,6 +581,7 @@ class handler(BaseHTTPRequestHandler):
                         continue
 
                     layers = calc_layers(k, df_ticker)
+
                     res.append({
                         'asset': k, 
                         'name': ASSET_NAMES[k], 

@@ -37,9 +37,9 @@ class AlphaBrain:
                 # Can add other months as needed
             },
             'monday_drive': {'prob_bull': 0.823, 'grade': 'GOLD +'},
-            'tuesday_reversion': {'trigger': 'PANIC (<-1σ)', 'target': 'WEDNESDAY REBOUND', 'prob': 0.554, 'grade': 'GOLD (T>2.1)'},
-            'wednesday_drive': {'trigger': 'DRIVE (>1σ)', 'target': 'GREEN WEEK CLOSE', 'prob': 0.695, 'grade': 'GOLD+'},
-            'thursday_reversion': {'trigger': 'DRIVE (>1σ)', 'target': 'FRIDAY REVERSION', 'prob': 0.578, 'grade': 'BRONZE'}
+            'tuesday_reversion': {'trigger': 'PANIC (<-1σ)', 'target': 'REBERSIÓN DE MIÉRCOLES', 'prob': 0.554, 'grade': 'GOLD (T>2.1)'},
+            'wednesday_drive': {'trigger': 'DRIVE (>1σ)', 'target': 'CIERRE DE SEMANA VERDE', 'prob': 0.695, 'grade': 'GOLD+'},
+            'thursday_reversion': {'trigger': 'DRIVE (>1σ)', 'target': 'REVERSIÓN DE JUEVES', 'prob': 0.578, 'grade': 'BRONZE'}
         },
         'ES': {
             'sigma': {'daily': 0.0109, 'weekly': 0.0230},
@@ -56,7 +56,7 @@ class AlphaBrain:
                 }
             },
             'monday_drive': {'prob_bull': 0.865, 'grade': 'GOLD +'},
-            'wednesday_drive': {'trigger': 'DRIVE (>1σ)', 'target': 'GREEN WEEK CLOSE', 'prob': 0.721, 'grade': 'GOLD+'},
+            'wednesday_drive': {'trigger': 'DRIVE (>1σ)', 'target': 'CIERRE DE SEMANA VERDE', 'prob': 0.721, 'grade': 'GOLD+'},
         },
         'YM': {
             'sigma': {'daily': 0.0106, 'weekly': 0.0231},
@@ -72,7 +72,7 @@ class AlphaBrain:
                 }
             },
             'monday_drive': {'prob_bull': 0.780, 'grade': 'SILVER'},
-            'friday_reversion': {'trigger': 'PANIC (<-1σ)', 'target': 'MONDAY REBOUND', 'prob': 0.679, 'grade': 'SILVER (T>1.5)'}
+            'friday_reversion': {'trigger': 'PANIC (<-1σ)', 'target': 'REBOTE DE LUNES', 'prob': 0.679, 'grade': 'SILVER (T>1.5)'}
         }
     }
 
@@ -155,7 +155,7 @@ class AlphaBrain:
             signals.append({
                 'name': 'MONTHLY BIAS',
                 'condition': 'BEARISH (W2 < 50%)',
-                'target': 'RED CLOSE',
+                'target': 'CIERRE BAJISTA',
                 'prob': probs.get('prob_red', 0.60),
                 'status': 'ACTIVE', # Always active until month end
                 'color': 'RED',
@@ -181,7 +181,7 @@ class AlphaBrain:
             signals.append({
                 'name': 'MONTHLY BIAS',
                 'condition': 'BULLISH (W2 > 50%)',
-                'target': 'GREEN CLOSE',
+                'target': 'CIERRE ALCISTA',
                 'prob': probs.get('prob_green', 0.80),
                 'status': 'ACTIVE',
                 'color': 'GREEN',
