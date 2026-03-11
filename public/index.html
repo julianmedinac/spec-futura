@@ -1501,21 +1501,21 @@
 
                         if (isOpen) {
                             var diffOpen = sess.close - hET; if (diffOpen < 0) diffOpen += 24;
-                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra en ' + getNextTimeLeft(hET, sess.close) + ' <span style="opacity:0.6">' + getLocalTzString(diffOpen) + '</span></span>';
+                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra en ' + getNextTimeLeft(hET, sess.close) + '</span>';
                             dotClass = 'open';
                         } else if (isPre) {
                             var diffPre = sess.open - hET; if (diffPre < 0) diffPre += 24;
-                            statusHtml = '<span class="highlight-pre">PRE MARKET</span> <span>abre en ' + getNextTimeLeft(hET, sess.open) + ' <span style="opacity:0.6">' + getLocalTzString(diffPre) + '</span></span>';
+                            statusHtml = '<span class="highlight-pre">PRE MARKET</span> <span>abre en ' + getNextTimeLeft(hET, sess.open) + '</span>';
                             dotClass = 'pre';
                         } else if (isAfter) {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffAft = nextTarget - hET; if (diffAft < 0) diffAft += 24;
-                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + ' <span style="opacity:0.6">' + getLocalTzString(diffAft) + '</span></span>';
+                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + '</span>';
                             dotClass = 'after';
                         } else {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffCls = nextTarget - hET; if (diffCls < 0) diffCls += 24;
-                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + ' <span style="opacity:0.6">' + getLocalTzString(diffCls) + '</span></span>';
+                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + '</span>';
                         }
                     }
 
