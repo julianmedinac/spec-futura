@@ -1540,17 +1540,17 @@
 
                         if (isOpen) {
                             var diffOpen = sess.close - hET; if (diffOpen < 0) diffOpen += 24;
-                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra a las ' + getLocalTzString(diffOpen) + '</span>';
+                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra a tus ➝ ' + getLocalTzString(diffOpen) + '</span>';
                             dotClass = 'open';
                         } else if (isAfter) {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffAft = nextTarget - hET; if (diffAft < 0) diffAft += 24;
-                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre a las ' + getLocalTzString(diffAft) + '</span>';
+                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre a tus ➝ ' + getLocalTzString(diffAft) + '</span>';
                             dotClass = 'after';
                         } else {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffCls = nextTarget - hET; if (diffCls < 0) diffCls += 24;
-                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre a las ' + getLocalTzString(diffCls) + '</span>';
+                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre a tus ➝ ' + getLocalTzString(diffCls) + '</span>';
                         }
                     }
 
