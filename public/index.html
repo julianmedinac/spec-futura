@@ -1505,8 +1505,8 @@
                 var isWeekend = (wd === 'Sat') || (wd === 'Sun' && hET < 18) || (wd === 'Fri' && hET >= 17);
 
                 var sessions = [
-                    { id: 'NUEVA YORK', pre: 8.5, open: 9.5, close: 16, after: 17 },
-                    { id: 'LONDRES', pre: 2, open: 3, close: 11.5, after: 11.5 },
+                    { id: 'NUEVA YORK', pre: 9.5, open: 9.5, close: 16, after: 17 },
+                    { id: 'LONDRES', pre: 3, open: 3, close: 11.5, after: 11.5 },
                     { id: 'TOKIO', pre: 20, open: 20, close: 2, after: 2 },
                     { id: 'SYDNEY', pre: 18, open: 18, close: 1, after: 1 }
                 ];
@@ -1542,10 +1542,6 @@
                             var diffOpen = sess.close - hET; if (diffOpen < 0) diffOpen += 24;
                             statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra a las ' + getLocalTzString(diffOpen) + '</span>';
                             dotClass = 'open';
-                        } else if (isPre) {
-                            var diffPre = sess.open - hET; if (diffPre < 0) diffPre += 24;
-                            statusHtml = '<span class="highlight-pre">PRE MARKET</span> <span>abre a las ' + getLocalTzString(diffPre) + '</span>';
-                            dotClass = 'pre';
                         } else if (isAfter) {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffAft = nextTarget - hET; if (diffAft < 0) diffAft += 24;
