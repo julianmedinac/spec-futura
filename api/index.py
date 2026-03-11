@@ -303,11 +303,11 @@ def calc_layers(asset, df):
                 p_set = probs.get('bear') if is_bear else probs.get('bull')
                 if p_set and is_bear:
                     m_signals.append({'target': 'CIERRE BAJISTA', 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
-                    s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
+                    s = 'COMPLETADO' if curr_lo < (lo * 0.9995) else 'PENDIENTE'
                     m_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
                 elif p_set and not is_bear:
                     m_signals.append({'target': 'CIERRE ALCISTA', 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
-                    s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
+                    s = 'COMPLETADO' if curr_hi > (hi * 1.0005) else 'PENDIENTE'
                     m_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green'})
                 # If p_set is None → this month/direction has no audited data → m_signals stays empty
 
@@ -379,11 +379,11 @@ def calc_layers(asset, df):
                 if p_set:
                     if is_bull:
                         w_signals.append({'target': target_close, 'prob': p_set['prob_green'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_green']), 'color': 'green'})
-                        s = 'COMPLETADO' if curr_hi > hi else 'PENDIENTE'
+                        s = 'COMPLETADO' if curr_hi > (hi * 1.0005) else 'PENDIENTE'
                         w_signals.append({'target': 'NUEVO ALTO', 'prob': p_set['prob_high'], 'status': s, 'grade': get_grade(p_set['prob_high']), 'color': 'green' if s=='PENDIENTE' else 'green'})
                     else:
                         w_signals.append({'target': target_close, 'prob': p_set['prob_red'], 'status': 'ACTIVO', 'grade': get_grade(p_set['prob_red']), 'color': 'red'})
-                        s = 'COMPLETADO' if curr_lo < lo else 'PENDIENTE'
+                        s = 'COMPLETADO' if curr_lo < (lo * 0.9995) else 'PENDIENTE'
                         w_signals.append({'target': 'NUEVO BAJO', 'prob': p_set['prob_low'], 'status': s, 'grade': get_grade(p_set['prob_low']), 'color': 'red' if s=='PENDIENTE' else 'green'})
 
     # 3. Weekly Alpha Matrix (Mean Reversion only — Bull Momentum removed, T < 1)
