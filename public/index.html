@@ -125,7 +125,7 @@
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 6px;
-            box-shadow: 0 44px 16px rgba(0,0,0,0.4);
+            box-shadow: 0 44px 16px rgba(0, 0, 0, 0.4);
             z-index: 1000;
             max-height: 200px;
             overflow-y: auto;
@@ -934,14 +934,19 @@
                     <div class="combobox-container" id="tz-combobox">
                         <button class="combobox-trigger" id="tz-trigger">
                             <span id="tz-display">Seleccionando...</span>
-                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" class="combobox-icon"><path d="M4 6H11L7.5 10.5L4 6Z" fill="currentColor"></path></svg>
+                            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"
+                                xmlns="http://www.w3.org/2000/svg" class="combobox-icon">
+                                <path d="M4 6H11L7.5 10.5L4 6Z" fill="currentColor"></path>
+                            </svg>
                         </button>
                         <div class="combobox-content" id="tz-content">
                             <!-- Inyectado via JS -->
                         </div>
                     </div>
                     <div style="padding: 0 8px 8px 8px;">
-                        <button id="tz-save-btn" style="width: 100%; border: none; background: var(--green); color: #000; padding: 6px; border-radius: 4px; font-family: 'JetBrains Mono'; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">GUARDAR ZONA</button>
+                        <button id="tz-save-btn"
+                            style="width: 100%; border: none; background: var(--green); color: #000; padding: 6px; border-radius: 4px; font-family: 'JetBrains Mono'; font-size: 10px; font-weight: 700; cursor: pointer; transition: all 0.2s;">GUARDAR
+                            ZONA</button>
                     </div>
 
                     <div class="dropdown-separator"></div>
@@ -1372,12 +1377,12 @@
                 if (!content || !container || !trigger) return;
 
                 if (!tzMap[pendingTz]) pendingTz = "Nueva York";
-                
+
                 display.innerText = pendingTz;
                 var html = '';
-                timezones.forEach(function(group, gIdx) {
+                timezones.forEach(function (group, gIdx) {
                     html += '<div class="combobox-group-label">' + group.value + '</div>';
-                    group.items.forEach(function(item) {
+                    group.items.forEach(function (item) {
                         var cls = (item === pendingTz) ? 'combobox-item selected' : 'combobox-item';
                         var checkHtml = (item === pendingTz) ? '<svg width="12" height="12" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0"><path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"></path></svg>' : '<span style="width:12px"></span>';
                         html += '<div class="combobox-item ' + cls + '" data-val="' + item + '">' + checkHtml + item + '</div>';
@@ -1389,40 +1394,40 @@
                 if (isEditingTz) {
                     trigger.style.opacity = '1';
                     trigger.style.cursor = 'pointer';
-                    saveBtn.innerText = "GUARDAR ZONA";
+                    saveBtn.innerText = "GUARDAR";
                     saveBtn.style.background = "var(--green)";
                     saveBtn.style.color = "#000";
                 } else {
                     trigger.style.opacity = '0.5';
                     trigger.style.cursor = 'not-allowed';
-                    saveBtn.innerText = "EDITAR ZONA";
+                    saveBtn.innerText = "EDITAR";
                     saveBtn.style.background = "rgba(255, 255, 255, 0.05)";
                     saveBtn.style.color = "var(--text)";
                     container.classList.remove('open');
                 }
 
-                trigger.onclick = function(e) { 
-                    e.stopPropagation(); 
+                trigger.onclick = function (e) {
+                    e.stopPropagation();
                     if (isEditingTz) {
-                        container.classList.toggle('open'); 
+                        container.classList.toggle('open');
                     }
                 };
-                
-                content.querySelectorAll('.combobox-item').forEach(function(el) {
-                    el.onclick = function(e) {
+
+                content.querySelectorAll('.combobox-item').forEach(function (el) {
+                    el.onclick = function (e) {
                         e.stopPropagation();
                         if (isEditingTz) {
                             pendingTz = this.getAttribute('data-val');
                             container.classList.remove('open');
-                            initTimezoneCombobox(); 
+                            initTimezoneCombobox();
                         }
                     };
                 });
 
                 if (saveBtn) {
-                    saveBtn.onclick = function(e) {
+                    saveBtn.onclick = function (e) {
                         e.stopPropagation();
-                        
+
                         if (!isEditingTz) {
                             // Cambia a modo edicion
                             isEditingTz = true;
@@ -1433,19 +1438,19 @@
                             if (iana) {
                                 localStorage.setItem('spec_tz_label', pendingTz);
                                 localStorage.setItem('spec_tz_iana', iana);
-                                
+
                                 var originalText = saveBtn.innerText;
                                 saveBtn.innerText = "¡GUARDADO!";
                                 saveBtn.style.background = "#fff";
                                 saveBtn.style.color = "#000";
-                                
+
                                 isEditingTz = false;
-                                
-                                setTimeout(function() {
+
+                                setTimeout(function () {
                                     initTimezoneCombobox();
                                 }, 1000);
-                                
-                                if(typeof window.updateMarketSessions === 'function') window.updateMarketSessions();
+
+                                if (typeof window.updateMarketSessions === 'function') window.updateMarketSessions();
                             }
                         }
                     };
@@ -1528,28 +1533,28 @@
                         function getLocalTzString(diffHours) {
                             var tDate = new Date(now.getTime() + diffHours * 3600 * 1000);
                             try {
-                                var fmt = new Intl.DateTimeFormat('en-US', { timeZone: userIana, hour: 'numeric', minute: '2-digit', hour12: true });
-                                return '&nbsp;' + fmt.format(tDate).toLowerCase();
-                            } catch(e) { return ''; }
+                                var fmt = new Intl.DateTimeFormat('es-MX', { timeZone: userIana, hour: 'numeric', minute: '2-digit', hour12: true });
+                                return fmt.format(tDate).toLowerCase();
+                            } catch (e) { return ''; }
                         }
 
                         if (isOpen) {
                             var diffOpen = sess.close - hET; if (diffOpen < 0) diffOpen += 24;
-                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra en ' + getNextTimeLeft(hET, sess.close) + '</span>';
+                            statusHtml = '<span class="highlight-open">ABIERTO</span> <span>cierra a las ' + getLocalTzString(diffOpen) + '</span>';
                             dotClass = 'open';
                         } else if (isPre) {
                             var diffPre = sess.open - hET; if (diffPre < 0) diffPre += 24;
-                            statusHtml = '<span class="highlight-pre">PRE MARKET</span> <span>abre en ' + getNextTimeLeft(hET, sess.open) + '</span>';
+                            statusHtml = '<span class="highlight-pre">PRE MARKET</span> <span>abre a las ' + getLocalTzString(diffPre) + '</span>';
                             dotClass = 'pre';
                         } else if (isAfter) {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffAft = nextTarget - hET; if (diffAft < 0) diffAft += 24;
-                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + '</span>';
+                            statusHtml = '<span class="highlight-after">AFTER HOURS</span> <span>abre a las ' + getLocalTzString(diffAft) + '</span>';
                             dotClass = 'after';
                         } else {
                             var nextTarget = (sess.pre < sess.open) ? sess.pre : sess.open;
                             var diffCls = nextTarget - hET; if (diffCls < 0) diffCls += 24;
-                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre en ' + getNextTimeLeft(hET, nextTarget) + '</span>';
+                            statusHtml = '<span class="highlight-closed">CERRADO</span> <span>abre a las ' + getLocalTzString(diffCls) + '</span>';
                         }
                     }
 
