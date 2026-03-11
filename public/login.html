@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Login para el Dashboard de Alpha de SPEC RESEARCH.">
+    <link rel="icon" href="/S%20LOGO%20FEED%20new.png">
+    <title>SPEC RESEARCH | Login</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --bg: #050508;
+            --clay: rgba(20, 20, 30, 0.7);
+            --border: rgba(255, 255, 255, 0.08);
+            --green: #00ff9d;
+            --text: #ffffff;
+            --text-dim: #888899;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: radial-gradient(circle at 50% -20%, rgba(0, 255, 157, 0.05), transparent);
+        }
+
+        .login-card {
+            background: var(--clay);
+            border: 2px solid rgba(0, 255, 157, 0.3);
+            border-radius: 16px;
+            padding: 50px 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(20px);
+            animation: glowPulse 3s infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 10px rgba(0, 255, 157, 0.1) inset, 0 0 10px rgba(0, 255, 157, 0.1);
+                border-color: rgba(0, 255, 157, 0.2);
+            }
+
+            100% {
+                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 255, 157, 0.2) inset, 0 0 20px rgba(0, 255, 157, 0.4);
+                border-color: rgba(0, 255, 157, 0.6);
+            }
+        }
+
+        @media (max-width: 500px) {
+            .login-card {
+                max-width: 90%;
+                padding: 40px 20px;
+            }
+        }
+
+        .logo {
+            height: 48px;
+            object-fit: contain;
+            filter: brightness(0) invert(1);
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .google-btn {
+            background: #131314;
+            color: #e3e3e3;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 15px;
+            border: 1px solid #8e918f;
+            border-radius: 50px;
+            padding: 10px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            width: 100%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .google-btn:hover {
+            background: #2b2b2b;
+            border-color: #e3e3e3;
+        }
+
+        .google-btn svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .error-msg {
+            color: #ff3366;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin-top: 20px;
+            min-height: 16px;
+        }
+
+        #loading {
+            display: none;
+            color: var(--text-dim);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-card">
+        <img src="/logo.png" alt="SPEC RESEARCH" class="logo">
+        <div class="subtitle">AUTENTICACIÓN REQUERIDA</div>
+
+        <button class="google-btn" id="btn-google">
+            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                <g>
+                    <path fill="#EA4335"
+                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z">
+                    </path>
+                    <path fill="#4285F4"
+                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z">
+                    </path>
+                    <path fill="#FBBC05"
+                        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z">
+                    </path>
+                    <path fill="#34A853"
+                        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z">
+                    </path>
+                    <path fill="none" d="M0 0h48v48H0z"></path>
+                </g>
+            </svg>
+            INICIA SESIÓN CON GOOGLE
+        </button>
+
+        <div id="loading">CONECTANDO...</div>
+        <div class="error-msg" id="error-message"></div>
+    </div>
+
+    <div id="debug-log"
+        style="font-family:'JetBrains Mono', monospace; font-size:10px; color:var(--text-dim); margin-top:20px; text-align:center; opacity:0.6;">
+    </div>
+
+    <script>
+        (function () {
+            var SUPABASE_URL = 'https://zckjghsdimbjkneifccg.supabase.co';
+            var SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inpja2pnaHNkaW1iamtuZWlmY2NnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI5MTg4NzIsImV4cCI6MjA4ODQ5NDg3Mn0.Dy-5L4WB35Fy8Z14Jzl269jIGMk8lMVwuW2AT8IuH5s';
+            var supabase = null;
+            var errorEl = document.getElementById('error-message');
+            var loadingEl = document.getElementById('loading');
+            var debugEl = document.getElementById('debug-log');
+
+            function logDebug(msg) {
+                console.log("[DEBUG]", msg);
+                // hide from UI so user only sees "CONECTANDO..." below button
+                // if (debugEl) debugEl.innerText = msg.toUpperCase();
+            }
+
+            function showError(msg) {
+                if (errorEl) errorEl.innerText = msg;
+                if (loadingEl) loadingEl.style.display = 'none';
+            }
+
+            logDebug("INICIALIZANDO ACCESO...");
+
+            // 1. Initialize Supabase
+            if (typeof window.supabase === 'undefined') {
+                showError("Error: Librería de Supabase no cargada.");
+                return;
+            }
+
+            try {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                logDebug("SISTEMA DE ACCESO LISTO.");
+            } catch (e) {
+                showError("Fallo de configuración: " + e.message);
+            }
+
+            // 2. Button Action
+            document.getElementById('btn-google').onclick = function () {
+                if (!supabase) {
+                    showError("Error: Cliente no inicializado.");
+                    return;
+                }
+
+                logDebug("CONECTANDO CON GOOGLE...");
+                loadingEl.style.display = 'block';
+                loadingEl.innerText = 'CONECTANDO...';
+                loadingEl.style.color = 'var(--text-dim)';
+                errorEl.innerText = '';
+
+                supabase.auth.signInWithOAuth({
+                    provider: 'google',
+                    options: {
+                        redirectTo: window.location.origin
+                    }
+                }).then(function (res) {
+                    if (res.error) {
+                        showError("Error OAuth: " + res.error.message);
+                    }
+                }).catch(function (err) {
+                    showError("Fallo de conexión: " + err.message);
+                });
+            };
+
+            // Parse URL hash for Supabase Trigger Errors 
+            // (e.g. #error=server_error&error_description=Acceso+Denegado...)
+            var hash = window.location.hash.substring(1);
+            var params = new URLSearchParams(hash);
+            if (params.get('error')) {
+                var errDesc = params.get('error_description') || 'Acceso Denegado por el servidor.';
+                // Decode formatting
+                errDesc = decodeURIComponent(errDesc.replace(/\+/g, '%20'));
+                showError(errDesc);
+
+                // Clean the URL so refreshing doesn't show the error again
+                window.history.replaceState(null, null, window.location.pathname);
+            }
+
+            // 3. Auto-redirect if session exists
+            function checkSession() {
+                if (!supabase) return;
+                logDebug("BUSCANDO SESIÓN EXISTENTE...");
+                supabase.auth.getSession().then(function (res) {
+                    if (res.data && res.data.session) {
+                        logDebug("SESIÓN ENCONTRADA. REDIRIGIENDO...");
+                        if (loadingEl) {
+                            loadingEl.style.display = 'block';
+                            loadingEl.innerText = 'CORREO AUTORIZADO ✅';
+                            loadingEl.style.color = 'var(--green)';
+                        }
+                        setTimeout(function () {
+                            window.location.href = '/';
+                        }, 1000);
+                    } else {
+                        // Empty string implies we clear the loading messages so it's clean while they log in
+                        if (debugEl) debugEl.innerText = "";
+                    }
+                }).catch(function (e) {
+                    logDebug("ERROR SESIÓN: " + e.message);
+                });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', checkSession);
+            } else {
+                checkSession();
+            }
+        })();
+    </script>
+</body>
+
+</html>
