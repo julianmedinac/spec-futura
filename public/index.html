@@ -17,7 +17,7 @@
             --clay: rgba(20, 20, 30, 0.7);
             --surface: rgba(20, 20, 30, 0.4);
             --surface-hover: rgba(30, 30, 45, 0.6);
-            --dropdown-bg: rgba(20, 20, 30, 0.95);
+            --dropdown-bg: rgba(20, 20, 30, 0.4);
             --border: rgba(255, 255, 255, 0.08);
             --green: #00ff9d;
             --red: #ff3366;
@@ -131,6 +131,7 @@
             overflow-y: auto;
             display: none;
             padding: 4px;
+            -webkit-backdrop-filter: blur(20px);
             backdrop-filter: blur(20px);
             background: rgba(20, 20, 30, 0.65);
         }
@@ -476,7 +477,8 @@
             right: 0;
             width: 240px;
             background: var(--dropdown-bg);
-            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(20px);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border);
             border-radius: 8px;
             padding: 4px;
